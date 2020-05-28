@@ -42,14 +42,21 @@ $('#btn_submit').click(function(){
 		sex = $('#cbo_sex').val(),
 		birthdate = $('#text_birthdate').val(),
 		number = $('#text_number').val(),
-		email = $('#text_email').val();
+		email = $('#text_email').val(),
+		error = false;
 
 	if (firstname == ''){
 		$('#text_firstname').addClass('is-invalid');
+		error = true;
 	}
 
 	if (lastname == ''){
 		$('#text_lastname').addClass('is-invalid');
+		error = true
+	}
+
+	if (error == false){
+		insert_patient(patient_id, firstname, middlename, lastname, extension, addr_citymun, addr_barangay, addr_purok, sex, birthdate, number, email);
 	}
 })
 
@@ -61,7 +68,20 @@ function insert_patient(patient_id, firstname, middlename, lastname, extension, 
 		data: {patient_id:patient_id, firstname:firstname, middlename:middlename, lastname:lastname, extension:extension, addr_citymun:addr_citymun, addr_barangay:addr_barangay, addr_purok:addr_purok, sex:sex, birthdate:birthdate, number:number, email:email},
 		dataType: 'html',
 		success: function(result) {
+			var msg;
 
+			if (result == 1){
+				msg = 'Patient information successfully saved!';
+			}
+			else if (result == 2){
+				msg = 'Patient information successfully updated!';
+			}
+			
+			$('#modal_body_message').html(msg);
+			$('#modal_confirm').modal('show');
+			setTimeout(function(){ $('#modal_confirm').modal('toggle'); }, 3000);
+			setTimeout(function(){ $('#modal_patient_form').modal('toggle'); }, 3000);
+			clear();
 		}
 	})
 }
@@ -89,4 +109,19 @@ function get_patient_id(){
 			$('#text_patient_id').val(result);
 		}
 	})
+}
+
+//Function: Clear Fields
+function clear(){
+	$('#text_firstname').val('');
+	$('#text_middlename').val('');
+	$('#text_lastname').val('');
+	$('#cbo_extension').val('');
+	$('#cbo_muncity').val('');
+	$('#cbo_brgy').val('');
+	$('#cbo_purok').val('');
+	$('#cbo_sex').val('');
+	$('#text_birthdate').val('');
+	$('#text_number').val('');
+	$('#text_email').val('');
 }

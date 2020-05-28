@@ -23,7 +23,7 @@ class patientController extends controller{
 	}
 
 	public function insert_patient(){
-		$patiend_id = $_POST['patient_id'];
+		$patient_id = $_POST['patient_id'];
 		$firstname = $_POST['firstname'];
 		$middlename = $_POST['middlename'];
 		$lastname = $_POST['lastname'];
@@ -39,7 +39,8 @@ class patientController extends controller{
 		$datetime = date('Y-m-d H:i:s');
 
 		$patient_obj = new patientModel();
-		$result = $patient_obj->insert_patient();
+		$result = $patient_obj->insert_patient($patient_id, $firstname, $middlename, $lastname, $extension, $addr_citymun, $addr_barangay, $addr_purok, $sex, $birthdate, $number, $email, $user, $datetime);
+		echo $result;
 
 	}
 

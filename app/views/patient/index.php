@@ -40,7 +40,8 @@
         <div class="row-fluid p-2 shadow-none">
           <div class="row">
             <div class="col-lg-12">
-              <button class="btn btn-success btn-sm" id="btn_new_patient"><icon class="fas fa-user-plus"></icon>&nbsp;New Patient</button>
+              <button class="btn btn-success btn-sm" id="btn_new_patient" style="width:110px"><icon class="fas fa-user-plus"></icon>&nbsp;New Patient</button>&nbsp;
+              <button class="btn btn-danger btn-sm" id="btn_new_patient" style="width:110px"><icon class="fas fa-user-times"></icon>&nbsp;Inactive</button>
               <br><br>
               <table class="table table-sm table-striped" id="table_patient_list" style="width:100%">
                 <thead>
@@ -113,7 +114,7 @@
             </div>
             <div class="col-sm-4">
               <select class="form-control" id="cbo_muncity">
-                <option value='0'>[ City / Municipality ]</option>
+                <option value=''>[ City / Municipality ]</option>
                 <?php
                   $mun_cities = $data['muncities'];
                   foreach ($mun_cities as $key => $mun_city) {
@@ -189,8 +190,8 @@
 </div>
 
 <!-- Modal Confirm -->
-<div class="modal fade" id="modal_remove_confirm" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
-  <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+<div class="modal fade" id="modal_confirm" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-body">
         <span id="modal_body_message"></span>
@@ -198,9 +199,9 @@
           <button class="close" type="button" data-dismiss="modal" aria-label="Close">x</button> 
         </div>
       </div>
-      <div class="modal-footer">
+      <!--<div class="modal-footer">
         <button class="btn btn-primary" id="btn_confirm">Yes</button>
-      </div>
+      </div>-->
     </div>
   </div>
 </div>
