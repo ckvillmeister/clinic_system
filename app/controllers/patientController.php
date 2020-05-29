@@ -8,6 +8,14 @@ class patientController extends controller{
 		$this->view()->render('main.php', array('content' => 'patient/index.php', 'muncities' => $muncities));
 	}
 
+	public function retrieve_patients(){
+		$status = $_POST['status'];
+
+		$patient_obj = new patientModel();
+		$patients = $patient_obj->retrieve_patients($status);
+		$this->view()->render('patient/patient_list.php', array('patients' => $patients));
+	}
+
 	public function retrieve_barangays(){
 		$mun_city_code = $_POST['code'];
 
@@ -20,6 +28,13 @@ class patientController extends controller{
 		$patient_obj = new patientModel();
 		$patient_id = $patient_obj->get_latest_id();
 		echo $patient_id;
+	}
+
+	public function get_patient_info(){
+		$id = $_POST['id'];
+		$patient_obj = new patientModel();
+		$patient_info = $patient_obj->get_patient_info($id);
+		echo json_encode($patient_info);
 	}
 
 	public function insert_patient(){

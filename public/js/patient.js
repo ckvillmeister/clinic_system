@@ -1,10 +1,4 @@
-var dt_patient_list = $('#table_patient_list').DataTable({
-					        "ordering": false,
-					        "pageLength": 10,
-					        "deferRender": true,
-					        "responsive": true,
-					        "scrollY": true,
-					    });
+retrieve_patients(1);
 
 $('#text_firstname').on('change', function() {
 	$('#text_firstname').removeClass('is-invalid');
@@ -14,12 +8,26 @@ $('#text_lastname').on('change', function() {
 	$('#text_lastname').removeClass('is-invalid');
 });
 
+$('#text_birthdate').on('change', function() {
+	var birthdate = $("#text_birthdate").val().toString();
+	calculate_age(birthdate);
+});
+
 $('#btn_new_patient').click(function(){
 	$("#modal_patient_form").modal({
 		backdrop: 'static',
     	keyboard: false
 	});
 	get_patient_id();
+});
+
+$('body').on('click', '#btn_edit_control', function(){
+	var id = $(this).val();
+	get_patient_info(id);
+	$("#modal_patient_form").modal({
+		backdrop: 'static',
+    	keyboard: false
+	});
 });
 
 $('#cbo_muncity').on('change', function() {
@@ -68,17 +76,21 @@ function insert_patient(patient_id, firstname, middlename, lastname, extension, 
 		data: {patient_id:patient_id, firstname:firstname, middlename:middlename, lastname:lastname, extension:extension, addr_citymun:addr_citymun, addr_barangay:addr_barangay, addr_purok:addr_purok, sex:sex, birthdate:birthdate, number:number, email:email},
 		dataType: 'html',
 		success: function(result) {
-			var msg;
+			var msg, header;
 
 			if (result == 1){
+				header = 'Saved';
 				msg = 'Patient information successfully saved!';
 			}
 			else if (result == 2){
+				header = 'Updated';
 				msg = 'Patient information successfully updated!';
 			}
 			
+			$('#modal_body_header').html(header);
 			$('#modal_body_message').html(msg);
 			$('#modal_confirm').modal('show');
+
 			setTimeout(function(){ $('#modal_confirm').modal('toggle'); }, 3000);
 			setTimeout(function(){ $('#modal_patient_form').modal('toggle'); }, 3000);
 			clear();
@@ -111,6 +123,82 @@ function get_patient_id(){
 	})
 }
 
+//Function: Retrieve All Patients
+function retrieve_patients(status){
+	$.ajax({
+		url: 'patient/retrieve_patients',
+		method: 'POST',
+		data: {status: status},
+		dataType: 'html',
+		beforeSend: function() {
+		    $('.overlay-wrapper').html('<div class="overlay">' +
+		    					'<i class="fas fa-3x fa-sync-alt fa-spin"></i>' +
+		    					'<div class="text-bold pt-2">Loading...</div>' +
+            					'</div>');
+		},
+		complete: function(){
+		    $('.overlay-wrapper').html('');
+		},
+		success: function(result) {
+			$('#patient_list').html(result);
+		}
+	})
+}
+
+//Function: Retrieve All Patients
+function get_patient_info(id){
+	$.ajax({
+		url: 'patient/get_patient_info',
+		method: 'POST',
+		data: {id: id},
+		dataType: 'json',
+		success: function(result) {
+			clear();
+			$('#text_patient_id').val(result['patientid']);
+			$('#text_firstname').val(result['firstname']);
+			$('#text_middlename').val(result['middlename']);
+			$('#text_lastname').val(result['lastname']);
+			$('#cbo_extension').val(result['extension']);
+			$('#cbo_purok').val(result['address_purok']);
+			$('#cbo_sex').val(result['sex']);
+			$('#text_birthdate').val(result['birthdate']);
+			$('#text_number').val(result['contact_number']);
+			$('#text_email').val(result['email']);
+			$("#cbo_muncity option[value=" + result['address_citymun'] + "]").prop("selected",true);
+			$('#cbo_muncity').change();
+			setTimeout(function(){ $("#cbo_brgy option[value=" + result['address_brgy'] + "]").prop("selected",true); }, 100);
+			var birthdate = result['birthdate'].toString();
+
+			if(birthdate != '0000-00-00'){
+				calculate_age(birthdate);
+			}
+		}
+	})
+}
+
+//Function: Calculate Age
+function calculate_age(date){
+    var mdate = date;
+    var yearThen = parseInt(mdate.substring(0,4), 10);
+    var monthThen = parseInt(mdate.substring(5,7), 10);
+    var dayThen = parseInt(mdate.substring(8,10), 10);
+    
+    var today = new Date();
+    var birthday = new Date(yearThen, monthThen-1, dayThen);
+    
+    var differenceInMilisecond = today.valueOf() - birthday.valueOf();
+    
+    var year_age = Math.floor(differenceInMilisecond / 31536000000);
+    var day_age = Math.floor((differenceInMilisecond % 31536000000) / 86400000);
+    var month_age = Math.floor(day_age/30);
+    
+    day_age = day_age % 30;
+     
+    if (!(isNaN(year_age) || isNaN(month_age) || isNaN(day_age))) {
+         $("#text_age").val(year_age);
+    }
+}
+
 //Function: Clear Fields
 function clear(){
 	$('#text_firstname').val('');
@@ -124,4 +212,5 @@ function clear(){
 	$('#text_birthdate').val('');
 	$('#text_number').val('');
 	$('#text_email').val('');
+	$('#text_age').val('');
 }

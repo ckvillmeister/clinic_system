@@ -67,11 +67,84 @@ class patientModel extends model{
 		return $patient_id;
 	}
 
+	public function retrieve_patients($status){
+		$query = 'SELECT record_id, patient_id, firstname, middlename, lastname, 
+							extension, sex, birthdate, address_purok, 
+							address_brgy, address_citymun, contact_number, email, created_by
+							FROM tbl_patient_information AS tpi
+						WHERE status = ? ORDER BY record_id ASC';
+		
+		$stmt = $this->con->prepare($query);
+		$stmt->bind_param("s", $status);
+		$stmt->execute();
+		$stmt->bind_result($id, $patientid, $firstname, $middlename, $lastname, $extension, $sex, $birthdate, $address_purok, $address_brgy, $address_citymun, $contact_number, $email, $created_by);
+		$ctr=0;
+
+		while ($stmt->fetch()) {
+			$userObj = new userModel();
+			$user_info = $userObj->get_user_info($created_by);
+			$creator = trim($user_info['firstname'].' '.$user_info['middlename'].' '.$user_info['lastname'].' '.$user_info['extension']);
+
+			$patients[$ctr++] = array('id' => $id, 
+										'patientid' => $patientid,
+										'firstname' => $firstname,
+										'middlename' => $middlename,
+										'lastname' => $lastname,
+										'extension' => $extension,
+										'sex' => $sex,
+										'birthdate' => $birthdate,
+										'address_purok' => $address_purok,
+										'address_brgy' => $address_brgy,
+										'address_citymun' => $address_citymun,
+										'contact_number' => $contact_number,
+										'email' => $email,
+										'createdby' => $creator);
+		}
+
+		$stmt->close();
+		$this->con->close();
+		return $patients;
+	}
+
+	public function get_patient_info($id){
+		$query = 'SELECT record_id, patient_id, firstname, middlename, lastname, 
+							extension, sex, birthdate, address_purok, 
+							address_brgy, address_citymun, contact_number, email, created_by
+							FROM tbl_patient_information AS tpi
+						WHERE record_id = ?';
+		
+		$stmt = $this->con->prepare($query);
+		$stmt->bind_param("s", $id);
+		$stmt->execute();
+		$stmt->bind_result($id, $patientid, $firstname, $middlename, $lastname, $extension, $sex, $birthdate, $address_purok, $address_brgy, $address_citymun, $contact_number, $email, $created_by);
+		$patient;
+
+		while ($stmt->fetch()) {
+			$patient = array('id' => $id, 
+										'patientid' => $patientid,
+										'firstname' => $firstname,
+										'middlename' => $middlename,
+										'lastname' => $lastname,
+										'extension' => $extension,
+										'sex' => $sex,
+										'birthdate' => $birthdate,
+										'address_purok' => $address_purok,
+										'address_brgy' => $address_brgy,
+										'address_citymun' => $address_citymun,
+										'contact_number' => $contact_number,
+										'email' => $email);
+		}
+
+		$stmt->close();
+		$this->con->close();
+		return $patient;
+	}
+
 	public function insert_patient($patient_id, $firstname, $middlename, $lastname, $extension, $addr_citymun, $addr_barangay, $addr_purok, $sex, $birthdate, $number, $email, $user, $datetime){
 
-		$firstname = strtoupper($firstname); 
-		$middlename = strtoupper($middlename);
-		$lastname = strtoupper($lastname);
+		$firstname = ucwords($firstname); 
+		$middlename = ucwords($middlename);
+		$lastname = ucwords($lastname);
 		$status = 1;
 		$query = 'SELECT * FROM tbl_patient_information WHERE patient_id = ?';
 		$stmt = $this->con->prepare($query);
@@ -80,24 +153,24 @@ class patientModel extends model{
 		$result = $stmt->get_result();
 
 		if ($result->num_rows >= 1){
-			$query = 'UPDATE tbl_patient_information SET patient_id = ?
-															firstname = ?
-															middlename = ?
-															lastname = ?
-															extension = ?
-															sex = ?
-															birthdate = ?
-															address_purok = ?
-															address_brgy = ?
-															address_citymun = ?
-															contact_number = ?
-															email = ?
-															created_by = ?
-															date_created = ?
+			$query = 'UPDATE tbl_patient_information SET patient_id = ?,
+															firstname = ?,
+															middlename = ?,
+															lastname = ?,
+															extension = ?,
+															sex = ?,
+															birthdate = ?,
+															address_purok = ?,
+															address_brgy = ?,
+															address_citymun = ?,
+															contact_number = ?,
+															email = ?,
+															updated_by = ?,
+															date_updated = ?,
 															status = ?
 															WHERE patient_id = ?';
-			$stmt->bind_param('ssssssssssssssss', $patient_id, $firstname, $middlename, $lastname, $extension, $sex, $birthdate, $addr_purok, $addr_barangay, $addr_citymun, $number, $email, $user, $datetime, $status);
 			$stmt = $this->con->prepare($query);
+			$stmt->bind_param('ssssssssssssssss', $patient_id, $firstname, $middlename, $lastname, $extension, $sex, $birthdate, $addr_purok, $addr_barangay, $addr_citymun, $number, $email, $user, $datetime, $status, $patient_id);
 			$stmt->execute();
 			return 2;
 		}

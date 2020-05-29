@@ -43,18 +43,9 @@
               <button class="btn btn-success btn-sm" id="btn_new_patient" style="width:110px"><icon class="fas fa-user-plus"></icon>&nbsp;New Patient</button>&nbsp;
               <button class="btn btn-danger btn-sm" id="btn_new_patient" style="width:110px"><icon class="fas fa-user-times"></icon>&nbsp;Inactive</button>
               <br><br>
-              <table class="table table-sm table-striped" id="table_patient_list" style="width:100%">
-                <thead>
-                  <tr>
-                    <th style="width: 50px" class="text-center">No.</th>
-                    <th>Patient Full Name</th>
-                    <th>Added By</th>
-                    <th style="width:150px">Control</th>
-                  </tr>
-                </thead>
-                <tbody>
-                </tbody>
-              </table>
+              <div id="patient_list">
+
+              </div>
             </div>
           </div>
         </div>
@@ -192,16 +183,9 @@
 <!-- Modal Confirm -->
 <div class="modal fade" id="modal_confirm" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-body">
+    <div class="alert alert-success alert-dismissible" style="height: 150px">
+        <h5><i class="icon fas fa-check"></i><span id="modal_body_header"></span></h5>
         <span id="modal_body_message"></span>
-        <div class="float-right">
-          <button class="close" type="button" data-dismiss="modal" aria-label="Close">x</button> 
-        </div>
       </div>
-      <!--<div class="modal-footer">
-        <button class="btn btn-primary" id="btn_confirm">Yes</button>
-      </div>-->
-    </div>
   </div>
 </div>
