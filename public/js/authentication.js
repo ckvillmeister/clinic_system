@@ -31,16 +31,16 @@ $(document).ready(function(){
 		setTimeout(function(){ $('#password_message').fadeOut(3000);}, 4000);
 	});
 
-	//$('#text_password').keypress(function(event){
-    // 	var keycode = (event.keyCode ? event.keyCode : event.which);
-	//	if(keycode == '13'){
-	//		login();
-	//	}
-    //});
+	$('#text_password').keypress(function(event){
+     	var keycode = (event.keyCode ? event.keyCode : event.which);
+		if(keycode == '13'){
+			login();
+		}
+    });
 
 	function login(){
 		$.ajax({
-		    url: 'login/validate_login',
+		    url: 'authentication/validate_login',
 	        method: 'POST',
 	        data: {username: $('#text_username').val(), password: $('#text_password').val()},
 	        dataType: 'JSON',

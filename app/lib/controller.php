@@ -14,6 +14,13 @@ class controller{
 		return $this->view;
 	}
 
+	public function system_name(){
+		$settings_obj = new settingsModel();
+		$settings = $settings_obj->retrieve_settings();
+		$system_name_detail = (object) $settings[0];
+		return $system_name_detail->desc;
+	}
+
 
 }
 

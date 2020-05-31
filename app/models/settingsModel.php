@@ -10,9 +10,8 @@ class settingsModel extends model{
 		$this->con = $db->connection();
 	}
 
-	public function get_settings(){
-
-		$query = 'SELECT record_id, setting_name, setting_desc FROM tbl_sys_settings';
+	public function retrieve_settings(){
+		$query = 'SELECT record_id, setting_name, description FROM tbl_settings WHERE status = 1';
 
 		$stmt = $this->con->prepare($query);
 		$stmt->execute();
@@ -28,21 +27,50 @@ class settingsModel extends model{
 		return $setting;
 	}
 
-	public function get_barangay(){
+	public function save_settings($system_name, $branch_no){
+		if ($branch_no < 10){
+			$branch_no = '0'.ltrim($branch_no, '0');
+		}
 
-		$query = 'SELECT record_id, barangay_name FROM tbl_barangay';
-
+		$query = 'SELECT * FROM tbl_settings WHERE setting_name = "System Name"';
 		$stmt = $this->con->prepare($query);
 		$stmt->execute();
-		$stmt->bind_result($id, $name);
-		$ctr=0;
-		while ($stmt->fetch()) {
-			$barangay[$ctr++] = array('id' => $id, 
-							'name' => $name);
+		$result = $stmt->get_result();
+
+		if ($result->num_rows >= 1){
+			$query = 'UPDATE tbl_settings SET description = ? WHERE setting_name = "System Name"';
+			$stmt = $this->con->prepare($query);
+			$stmt->bind_param('s', $system_name);
+			$stmt->execute();
 		}
+		else{
+			$query = 'INSERT INTO tbl_settings (setting_name, description, status) VALUES ("System Name", ?, 1)';
+			$stmt = $this->con->prepare($query);
+			$stmt->bind_param('s', $system_name);
+			$stmt->execute();
+		}
+
+		$query = 'SELECT * FROM tbl_settings WHERE setting_name = "Branch Number"';
+		$stmt = $this->con->prepare($query);
+		$stmt->execute();
+		$result = $stmt->get_result();
+
+		if ($result->num_rows >= 1){
+			$query = 'UPDATE tbl_settings SET description = ? WHERE setting_name = "Branch Number"';
+			$stmt = $this->con->prepare($query);
+			$stmt->bind_param('s', $branch_no);
+			$stmt->execute();
+		}
+		else{
+			$query = 'INSERT INTO tbl_settings (setting_name, description, status) VALUES ("Branch Number", ?, 1)';
+			$stmt = $this->con->prepare($query);
+			$stmt->bind_param('s', $branch_no);
+			$stmt->execute();
+		}
+
 		$stmt->close();
 		$this->con->close();
-		return $barangay;
+		return 1;
 	}
 
 }

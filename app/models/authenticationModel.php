@@ -1,6 +1,6 @@
 <?php
 
-class loginModel extends model{
+class authenticationModel extends model{
 
 	private $con;
 
@@ -11,7 +11,7 @@ class loginModel extends model{
 	
 	public function validate_login($param = array()){
 		$username = $param['username'];
-		$password = $param['password'];
+		$password = md5($param['password']);
 
 		$stmt = $this->con->prepare("SELECT * FROM tbl_users WHERE username = ?");
 		$stmt->bind_param("s", $username);

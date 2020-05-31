@@ -1,13 +1,32 @@
+<?php
+$settings = $data['settings'];
+$system_name_detail = (object) $settings[0];
+$branch_no_detail = (object) $settings[1];
+?>
+<style>
+  .content{
+    font-family: 'Arial Narrow';
+  }
+
+  #modal_user_form{
+    font-family: 'Arial Narrow';
+  }
+
+  #text_patient_id, #text_age{
+    background: #fff;
+  }
+</style>
+
 <div class="content-wrapper">
   <div class="content-header">
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h1 class="m-0 text-dark">System Settings</h1>
+        <h1 class="m-0 text-dark ml-2"><strong><icon class="fas fa-cogs"></icon>&nbsp;System Settings</strong></h1>
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="main">Main</a></li>
+            <li class="breadcrumb-item"><a href="<?php echo ROOT; ?>main">Main</a></li>
             <li class="breadcrumb-item active">System Settings</li>
           </ol>
         </div>
@@ -17,131 +36,76 @@
 
   <section class="content">
     <div class="container-fluid">
-      <div class="card p-5">
-
-        <div class="row">
-          <div class="col-lg-2 align-self-center">
-              System Name:
-          </div>
-          <div class="col-lg-6">
-              <input type="text" class="form-control" id="text_system_name">
-          </div>
+      <div class="card">
+        
+        <div class="overlay-wrapper">
+        
         </div>
 
-        <div class="row mt-4">
-          <div class="col-lg-2 align-self-center">
-              Active Year:
-          </div>
-          <div class="col-lg-6">
-              <input type="number" class="form-control" id="text_year">
-          </div>
-        </div>
+        <div class="row-fluid pt-4 pl-4 pr-3 shadow-none">
 
-        <div class="row mt-4">
-          <div class="col-lg-12 align-self-center">
-            <div class="float-right">
-              <button class="btn btn-primary"><icon class="fas fa-thumbs-up">&nbsp;&nbsp;Submit</icon></button>
+          <div class="form-group row">
+            <div class="col-sm-2 align-self-center">
+                Clinic Name:
+            </div>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" id="text_system_name" value="<?php echo $system_name_detail->desc; ?>">
             </div>
           </div>
-        </div>
 
+          <div class="form-group row">
+            <div class="col-sm-2 align-self-center">
+                Branch Number:
+            </div>
+            <div class="col-sm-6">
+                <input type="number" class="form-control" min="1" max="99" id="text_branch_no" value="<?php echo $branch_no_detail->desc; ?>">
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <div class="col-sm-12 align-self-center">
+              <div class="float-right">
+                <button class="btn btn-primary btn-sm" id="btn_submit"><icon class="fas fa-thumbs-up">&nbsp;&nbsp;Submit</icon></button>
+              </div>
+            </div>
+          </div>
+
+        </div>
       </div>    
     </div>
   </section>
 </div>
 
-<div class="modal fade" id="modal_user_account_form" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
-  <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+<!-- Modal Message -->
+<div class="modal fade" id="modal_message" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="modal_title">User Account Information</h5>
+      <div class="message_modal_header modal-header bg-success">
+        <h5><i class="message_icon icon fas fa-check"></i><span class="ml-2" id="modal_body_header"></span></h5>
       </div>
       <div class="modal-body">
-
-        <legend><h6>Account Information</h6></legend>
-
-        <div class="row mt-4">
-          <div class="col-lg-2 align-self-center">
-              Username:
-          </div>
-          <div class="col-lg-4">
-              <input type="text" class="form-control" id="text_username">
-          </div>
-        </div>
-
-        <div class="row mt-3">
-          <div class="col-lg-2 align-self-center">
-              Password:
-          </div>
-          <div class="col-lg-4">
-              <input type="password" class="form-control" id="text_password">
-          </div>
-          <div class="col-lg-2 align-self-center">
-              Confirm Pass:
-          </div>
-          <div class="col-lg-4">
-              <input type="password" class="form-control" id="text_cpassword">
-          </div>
-        </div>
-
-        <hr>
-        <legend><h6>User Information</h6></legend>
-
-        <div class="row mt-4">
-          <div class="col-lg-2 align-self-center">
-              First Name:
-          </div>
-          <div class="col-lg-4">
-              <input type="text" class="form-control" id="text_firstname">
-          </div>
-          <div class="col-lg-2 align-self-center">
-              Middle Name:
-          </div>
-          <div class="col-lg-4">
-              <input type="text" class="form-control" id="text_middlename">
-          </div>
-        </div>
-
-        <div class="row mt-3">
-          <div class="col-lg-2 align-self-center">
-              Last Name:
-          </div>
-          <div class="col-lg-4">
-              <input type="text" class="form-control" id="text_lastname">
-          </div>
-          <div class="col-lg-2 align-self-center">
-              Suffix:
-          </div>
-          <div class="col-lg-4">
-              <select class="form-control" id="cbo_suffix">
-                <option value="0"></option>
-              </select>
-          </div>
-        </div>
-
-        <div class="row mt-3">
-          <div class="col-lg-2 align-self-center">
-              Role:
-          </div>
-          <div class="col-lg-4">
-              <select class="form-control" id="cbo_role">
-                <option value="0"></option>
-              </select>
-          </div>
-        </div>
-
-        <div class="row mt-3 mr-0 ml-0 p-2 bg-light rounded">
-          <div class="col-lg-8">
-            <span id="message"></span>
-          </div>
-          <div class="col-lg-4">
-            <div class="float-right">
-              <button class="btn btn-success"><icon class="fas fa-thumbs-up">&nbsp;&nbsp;Submit</icon></button>
-            </div>
-          </div>
-        </div>
-
+        <span id="modal_body_message"></span>
       </div>
     </div>
   </div>
 </div>
+
+<!-- Modal Message -->
+<div class="modal fade" id="modal_confirm" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5>Confirm</h5>
+      </div>
+      <div class="modal-body">
+        <span id="modal_confirm_message"></span>
+      </div>
+      <div class="modal-footer">
+        <div class="float-right">
+          <button class="btn btn-sm btn-primary" id="btn_yes">Yes</button>&nbsp;<button class="btn btn-sm btn-secondary" data-dismiss="modal">No</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

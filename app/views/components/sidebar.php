@@ -12,13 +12,11 @@
 
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
   <!-- Brand Logo -->
-  <a href="<?php echo ROOT; ?>main" class="brand-link"> 
-    <div class="text-center">
-      <span class="brand-text font-weight-light">
-        <strong>DWG</strong>
-        <h6>Clinic System</h6>
-      </span>
-    </div>
+
+  <a href="<?php echo ROOT; ?>main" class="brand-link">
+    <img src="<?php echo ROOT; ?>public/image/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3 mr-3"
+         style="opacity: .8">
+    <span class="brand-text font-weight-light">Dental Clinic</span>
   </a>
 
   <div class="sidebar">
@@ -43,29 +41,13 @@
             </p>
           </a>
         </li>
-        </li>
-        <li class="nav-item has-treeview <?php if ($link=='services'){ echo 'menu-open'; } ?>">
-          <a href="#" class="nav-link <?php if ($link=='services'){ echo 'active'; } ?>">
-            <i class="nav-icon fas fa-user-nurse"></i>
+        <li class="nav-item">
+          <a href="<?php echo ROOT; ?>transaction" class="nav-link <?php echo ($link == 'transaction') ? 'active' : ''; ?>">
+            <i class="nav-icon fas fa-hand-holding-medical"></i>
             <p>
-              Services
-              <i class="right fas fa-angle-left"></i>
+              Services Transaction
             </p>
           </a>
-          <ul class="nav nav-treeview">
-            <li class="nav-item">
-              <a href="<?php echo ROOT; ?>services/extraction" class="nav-link ml-4 <?php echo ($link_2 == 'extraction') ? 'active' : ''; ?>">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Extraction</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="<?php echo ROOT; ?>services/orto" class="nav-link ml-4 <?php echo ($link_2 == 'election_result') ? 'active' : ''; ?>">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Election Results</p>
-              </a>
-            </li>
-          </ul>
         </li>
         <li class="nav-item">
           <a href="<?php echo ROOT; ?>payment" class="nav-link <?php echo ($link == 'payment') ? 'active' : ''; ?>">
@@ -75,8 +57,16 @@
             </p>
           </a>
         </li>
-        <li class="nav-item has-treeview <?php if ($link=='accessrole' | $link=='accounts' | $link=='settings'){ echo 'menu-open'; } ?>">
-          <a href="#" class="nav-link <?php if ($link=='accessrole' | $link=='accounts' | $link=='settings'){ echo 'active'; } ?>">
+        <li class="nav-item">
+          <a href="<?php echo ROOT; ?>report" class="nav-link <?php echo ($link == 'report') ? 'active' : ''; ?>">
+            <i class="nav-icon fas fa-list"></i>
+            <p>
+              Reports
+            </p>
+          </a>
+        </li>
+        <li class="nav-item has-treeview <?php if ($link == 'service' | $link == 'product' | $link=='accessrole' | $link=='user' | $link=='settings'){ echo 'menu-open'; } ?>">
+          <a href="#" class="nav-link <?php if ($link == 'service' | $link == 'product' | $link=='accessrole' | $link=='user' | $link=='settings'){ echo 'active'; } ?>">
             <i class="nav-icon fas fa-wrench"></i>
             <p>
               Maintenance
@@ -85,13 +75,25 @@
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item ml-4">
+              <a href="<?php echo ROOT; ?>product" class="nav-link <?php echo ($link == 'product') ? 'active' : ''; ?>">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Dental Products</p>
+              </a>
+            </li>
+            <li class="nav-item ml-4">
+              <a href="<?php echo ROOT; ?>service" class="nav-link <?php echo ($link == 'service') ? 'active' : ''; ?>">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Services Management</p>
+              </a>
+            </li>
+            <li class="nav-item ml-4">
               <a href="<?php echo ROOT; ?>accessrole" class="nav-link <?php echo ($link == 'accessrole') ? 'active' : ''; ?>">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Access Roles</p>
               </a>
             </li>
             <li class="nav-item ml-4">
-              <a href="<?php echo ROOT; ?>accounts" class="nav-link <?php echo ($link == 'accounts') ? 'active' : ''; ?>">
+              <a href="<?php echo ROOT; ?>user" class="nav-link <?php echo ($link == 'user') ? 'active' : ''; ?>">
                 <i class="far fa-circle nav-icon"></i>
                 <p>User Accounts</p>
               </a>

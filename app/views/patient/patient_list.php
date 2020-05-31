@@ -15,6 +15,7 @@
   <tbody>
     <?php
       $patients = $data['patients'];
+      $status = $data['status'];
       $ctr = 0;
       foreach ($patients as $key => $patient) {
           $patient_detail = (object) $patient;
@@ -22,11 +23,21 @@
           <tr>
             <td class="text-center"><?php echo ++$ctr; ?></td>
             <td><?php echo $patient_detail->firstname.' '.$patient_detail->middlename.' '.$patient_detail->lastname.' '.$patient_detail->extension; ?></td>
-            <td><span class="badge bg-primary"><?php echo $patient_detail->createdby; ?></span></td>
+            <td><span class="badge bg-secondary"><?php echo $patient_detail->createdby; ?></span></td>
             <td>
+              <?php
+                if ($status == 1){
+              ?>
               <button class="btn btn-sm btn-warning controls" id="btn_edit_control" value="<?php echo $patient_detail->id; ?>"><i class="fas fa-edit"></i>&nbsp;Edit</button>
               <button class="btn btn-sm btn-danger controls" id="btn_delete_control" value="<?php echo $patient_detail->id; ?>"><i class="fas fa-trash"></i>&nbsp;Delete</button>
-              <button class="btn btn-sm btn-primary controls" id="btn_view_control" value="<?php echo $patient_detail->id; ?>"><i class="fas fa-eye"></i>&nbsp;View</button>
+              <a href="<?php echo ROOT; ?>patient/patient_profile?id=<?php echo $patient_detail->id; ?>" class="btn btn-sm btn-primary controls" id="btn_view_control" value="<?php echo $patient_detail->id; ?>"><i class="fas fa-eye"></i>&nbsp;View</a>
+              <?php }
+                elseif ($status == 0){
+              ?>
+              <button class="btn btn-sm btn-success controls" id="btn_reactivate_control" value="<?php echo $patient_detail->id; ?>" style="width:100px"><i class="fas fa-check"></i>&nbsp;Re-Activate</button>
+              <?php
+                }
+              ?>
             </td>
           </tr>
     <?php

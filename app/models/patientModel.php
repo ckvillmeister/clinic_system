@@ -79,6 +79,7 @@ class patientModel extends model{
 		$stmt->execute();
 		$stmt->bind_result($id, $patientid, $firstname, $middlename, $lastname, $extension, $sex, $birthdate, $address_purok, $address_brgy, $address_citymun, $contact_number, $email, $created_by);
 		$ctr=0;
+		$patients = array();
 
 		while ($stmt->fetch()) {
 			$userObj = new userModel();
@@ -106,17 +107,37 @@ class patientModel extends model{
 		return $patients;
 	}
 
+	public function toggle_patient_status($id, $status){
+	
+		$query = 'SELECT * FROM tbl_patient_information WHERE record_id = ?';
+		$stmt = $this->con->prepare($query);
+		$stmt->bind_param('s', $id);
+		$stmt->execute();
+		$result = $stmt->get_result();
+
+		if ($result->num_rows >= 1){
+			$query = 'UPDATE tbl_patient_information SET status = ? WHERE record_id = ?';
+			$stmt = $this->con->prepare($query);
+			$stmt->bind_param('ss', $status, $id);
+			$stmt->execute();
+			return 1;
+		}
+	}
+
 	public function get_patient_info($id){
-		$query = 'SELECT record_id, patient_id, firstname, middlename, lastname, 
-							extension, sex, birthdate, address_purok, 
-							address_brgy, address_citymun, contact_number, email, created_by
+		$query = 'SELECT tpi.record_id, tpi.patient_id, tpi.firstname, tpi.middlename, tpi.lastname, 
+							tpi.extension, tpi.sex, tpi.birthdate, tpi.address_purok, 
+							tb.barangay_description, tc.city_municipality_description, tpi.contact_number, tpi.email, tpi.created_by, tpi.address_brgy, tpi.address_citymun
 							FROM tbl_patient_information AS tpi
-						WHERE record_id = ?';
+							INNER JOIN tbl_citymun AS tc ON tc.city_municipality_code = tpi.address_citymun
+							INNER JOIN tbl_barangay AS tb ON tb.id = tpi.address_brgy
+						WHERE tpi.record_id = ?
+						GROUP BY tpi.record_id';
 		
 		$stmt = $this->con->prepare($query);
 		$stmt->bind_param("s", $id);
 		$stmt->execute();
-		$stmt->bind_result($id, $patientid, $firstname, $middlename, $lastname, $extension, $sex, $birthdate, $address_purok, $address_brgy, $address_citymun, $contact_number, $email, $created_by);
+		$stmt->bind_result($id, $patientid, $firstname, $middlename, $lastname, $extension, $sex, $birthdate, $address_purok, $address_brgy, $address_citymun, $contact_number, $email, $created_by, $address_brgy_id, $address_citymun_id);
 		$patient;
 
 		while ($stmt->fetch()) {
@@ -132,7 +153,9 @@ class patientModel extends model{
 										'address_brgy' => $address_brgy,
 										'address_citymun' => $address_citymun,
 										'contact_number' => $contact_number,
-										'email' => $email);
+										'email' => $email,
+										'address_brgy_id' => $address_brgy_id,
+										'address_citymun_id' => $address_citymun_id);
 		}
 
 		$stmt->close();
@@ -142,9 +165,10 @@ class patientModel extends model{
 
 	public function insert_patient($patient_id, $firstname, $middlename, $lastname, $extension, $addr_citymun, $addr_barangay, $addr_purok, $sex, $birthdate, $number, $email, $user, $datetime){
 
-		$firstname = ucwords($firstname); 
-		$middlename = ucwords($middlename);
-		$lastname = ucwords($lastname);
+		$firstname = ucwords(strtolower($firstname)); 
+		$middlename = ucwords(strtolower($middlename));
+		$lastname = ucwords(strtolower($lastname));
+		$extension = ($extension == 'II' | $extension == 'III' | $extension == 'IV') ? $extension : ucwords(strtolower($extension == 'II'));
 		$status = 1;
 		$query = 'SELECT * FROM tbl_patient_information WHERE patient_id = ?';
 		$stmt = $this->con->prepare($query);
@@ -217,9 +241,7 @@ class patientModel extends model{
 		elseif ($number < 10000000){
 			$newID = '0'.$number;
 		}
-		//echo $prefix.'<br>';
-		//echo $branch.'<br>';
-		//echo $newID.'<br>';
+		
 		$newID = $prefix.'-'.$branch.'-'.$newID;
 
 		return $newID;

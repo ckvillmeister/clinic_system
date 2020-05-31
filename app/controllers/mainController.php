@@ -3,7 +3,7 @@
 class mainController extends controller{
 
 	public function index(){
-		$this->view()->render('main.php', array('content' => 'main/index.php'));
+		$this->view()->render('main.php', array('content' => 'main/index.php', 'system_name' => $this->system_name()));
 	}
 }
 ?>

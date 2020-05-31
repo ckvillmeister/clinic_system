@@ -1,3 +1,6 @@
+var global_id;
+var global_action;
+
 retrieve_patients(1);
 
 $('#text_firstname').on('change', function() {
@@ -14,12 +17,21 @@ $('#text_birthdate').on('change', function() {
 });
 
 $('#btn_new_patient').click(function(){
+	clear();
 	$("#modal_patient_form").modal({
 		backdrop: 'static',
     	keyboard: false
 	});
 	get_patient_id();
 });
+
+$('#btn_active').click(function(){
+	retrieve_patients(1);
+})
+
+$('#btn_inactive').click(function(){
+	retrieve_patients(0);
+})
 
 $('body').on('click', '#btn_edit_control', function(){
 	var id = $(this).val();
@@ -28,6 +40,26 @@ $('body').on('click', '#btn_edit_control', function(){
 		backdrop: 'static',
     	keyboard: false
 	});
+});
+
+$('body').on('click', '#btn_delete_control', function(){
+	$("#modal_confirm").modal({
+		backdrop: 'static',
+    	keyboard: false
+	});
+	$('#modal_confirm_message').html("Are you sure you want to remove this record?");
+	global_id = $(this).val();
+	global_action = 'remove';
+});
+
+$('body').on('click', '#btn_reactivate_control', function(){
+	$("#modal_confirm").modal({
+		backdrop: 'static',
+    	keyboard: false
+	});
+	$('#modal_confirm_message').html("Are you sure you want to re-activate this record?");
+	global_id = $(this).val();
+	global_action = 'reactivate';
 });
 
 $('#cbo_muncity').on('change', function() {
@@ -68,6 +100,15 @@ $('#btn_submit').click(function(){
 	}
 })
 
+$('#btn_yes').click(function(){
+	if (global_action == 'remove'){
+		toggle_patient_status(global_id, 0);
+	}
+	else if (global_action == 'reactivate'){
+		toggle_patient_status(global_id, 1);
+	}
+})
+
 //Function: Save Patient Info
 function insert_patient(patient_id, firstname, middlename, lastname, extension, addr_citymun, addr_barangay, addr_purok, sex, birthdate, number, email){
 	$.ajax({
@@ -89,11 +130,12 @@ function insert_patient(patient_id, firstname, middlename, lastname, extension, 
 			
 			$('#modal_body_header').html(header);
 			$('#modal_body_message').html(msg);
-			$('#modal_confirm').modal('show');
+			$('#modal_message').modal('show');
 
-			setTimeout(function(){ $('#modal_confirm').modal('toggle'); }, 3000);
+			setTimeout(function(){ $('#modal_message').modal('toggle'); }, 3000);
 			setTimeout(function(){ $('#modal_patient_form').modal('toggle'); }, 3000);
-			clear();
+			setTimeout(function(){ retrieve_patients(1); }, 4000);
+			setTimeout(function(){ clear(); }, 4000);
 		}
 	})
 }
@@ -145,7 +187,7 @@ function retrieve_patients(status){
 	})
 }
 
-//Function: Retrieve All Patients
+//Function: Retrieve Patient Information
 function get_patient_info(id){
 	$.ajax({
 		url: 'patient/get_patient_info',
@@ -164,13 +206,51 @@ function get_patient_info(id){
 			$('#text_birthdate').val(result['birthdate']);
 			$('#text_number').val(result['contact_number']);
 			$('#text_email').val(result['email']);
-			$("#cbo_muncity option[value=" + result['address_citymun'] + "]").prop("selected",true);
+			$("#cbo_muncity option[value=" + result['address_citymun_id'] + "]").prop("selected",true);
 			$('#cbo_muncity').change();
-			setTimeout(function(){ $("#cbo_brgy option[value=" + result['address_brgy'] + "]").prop("selected",true); }, 100);
+			setTimeout(function(){ $("#cbo_brgy option[value=" + result['address_brgy_id'] + "]").prop("selected",true); }, 500);
 			var birthdate = result['birthdate'].toString();
 
 			if(birthdate != '0000-00-00'){
 				calculate_age(birthdate);
+			}
+		}
+	})
+}
+
+//Function: Change Patient Record Status
+function toggle_patient_status(id, status){
+	$.ajax({
+		url: 'patient/toggle_patient_status',
+		data: {id: id, status: status},
+		method: 'POST',
+		dataType: 'html',
+		success: function(result) {
+			if (result == 1){
+				var header, msg;
+
+				if (global_action == 'remove'){
+					var header = 'Removed';
+					var msg = 'Patient record removed!';
+				}
+				else if (global_action == 'reactivate'){
+					var header = 'Reactivated';
+					var msg = 'Patient record reactivated!';
+				}
+								
+				$('#modal_confirm').modal('toggle');
+				$('#modal_body_header').html(header);
+				$('#modal_body_message').html(msg);
+				$('#modal_message').modal('show');
+
+				setTimeout(function(){ $('#modal_message').modal('toggle'); }, 3000);
+				if (global_action == 'remove'){
+					setTimeout(function(){ retrieve_patients(1); }, 4000);
+				}
+				else if (global_action == 'reactivate'){
+					setTimeout(function(){ retrieve_patients(0); }, 4000);
+				}
+				
 			}
 		}
 	})

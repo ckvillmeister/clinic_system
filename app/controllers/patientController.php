@@ -5,7 +5,7 @@ class patientController extends controller{
 	public function index(){
 		$patient_obj = new patientModel();
 		$muncities = $patient_obj->get_city_mun();
-		$this->view()->render('main.php', array('content' => 'patient/index.php', 'muncities' => $muncities));
+		$this->view()->render('main.php', array('content' => 'patient/index.php', 'muncities' => $muncities, 'system_name' => $this->system_name()));
 	}
 
 	public function retrieve_patients(){
@@ -13,7 +13,16 @@ class patientController extends controller{
 
 		$patient_obj = new patientModel();
 		$patients = $patient_obj->retrieve_patients($status);
-		$this->view()->render('patient/patient_list.php', array('patients' => $patients));
+		$this->view()->render('patient/patient_list.php', array('patients' => $patients, 'status' => $status));
+	}
+
+	public function toggle_patient_status(){
+		$id = $_POST['id'];
+		$status = $_POST['status'];
+
+		$patient_obj = new patientModel();
+		$result = $patient_obj->toggle_patient_status($id, $status);
+		echo $result;
 	}
 
 	public function retrieve_barangays(){
@@ -56,7 +65,14 @@ class patientController extends controller{
 		$patient_obj = new patientModel();
 		$result = $patient_obj->insert_patient($patient_id, $firstname, $middlename, $lastname, $extension, $addr_citymun, $addr_barangay, $addr_purok, $sex, $birthdate, $number, $email, $user, $datetime);
 		echo $result;
+	}
 
+	public function patient_profile(){
+		$id = $_GET['id'];
+
+		$patient_obj = new patientModel();
+		$patient_info = $patient_obj->get_patient_info($id);
+		$this->view()->render('main.php', array('content' => 'patient/profile.php', 'patient_info' => $patient_info));
 	}
 
 }

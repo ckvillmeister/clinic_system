@@ -74,7 +74,25 @@
   }
 
   if ($link == 'patient'){
-    echo '<script src="public/js/patient.js"></script>';
+    echo '<script src="'.ROOT.'public/js/patient.js"></script>';
+  }
+  elseif ($link == 'transaction'){
+    echo '<script src="'.ROOT.'public/js/transaction.js"></script>';
+  }
+  elseif ($link == 'service'){
+    echo '<script src="'.ROOT.'public/js/service.js"></script>';
+  }
+  elseif ($link == 'product'){
+    echo '<script src="'.ROOT.'public/js/product.js"></script>';
+  }
+  elseif ($link == 'accessrole'){
+    echo '<script src="'.ROOT.'public/js/role.js"></script>';
+  }
+  elseif ($link == 'user'){
+    echo '<script src="'.ROOT.'public/js/user.js"></script>';
+  }
+  elseif ($link == 'settings'){
+    echo '<script src="'.ROOT.'public/js/setting.js"></script>';
   }
   
 ?>
