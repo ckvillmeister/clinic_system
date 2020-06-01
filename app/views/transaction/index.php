@@ -283,8 +283,7 @@
               <div class="col-sm-2"></div>
               <div class="col-sm-8">
                 <div class='text-center'>
-                  <strong style='font-size: 16pt'>DR. WENDELL GARAY</strong><br>
-                  <span style='font-size: 14pt'>Dental Clinic</span><br>
+                  <strong style='font-size: 16pt'><?php echo $data['system_name']; ?></strong><br>
                   Poblacion, Talibon, Bohol
                 </div>
               </div>
