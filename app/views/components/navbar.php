@@ -1,7 +1,13 @@
 <?php
-  $firstname = $_SESSION['firstname'];
-  $middlename = $_SESSION['middlename'];
-  $lastname = $_SESSION['lastname'];
+  $firstname = '';
+  $middlename = '';
+  $lastname = '';
+
+  if (isset($_SESSION['firstname']) & isset($_SESSION['middlename']) & isset($_SESSION['lastname'])){
+    $firstname = $_SESSION['firstname'];
+    $middlename = $_SESSION['middlename'];
+    $lastname = $_SESSION['lastname'];
+  }
 ?>
 
 <nav class="main-header navbar navbar-expand navbar-white navbar-light">

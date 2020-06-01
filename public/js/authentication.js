@@ -5,30 +5,47 @@ $(document).ready(function(){
 	$('#btn_login').click(function(e){
 		var username = $('#text_username').val(),
 			password = $('#text_password').val(),
-			error = false;
+			error = false,
+			msg,
+			header;
+
 
 		if (username == ''){
-			$('#username_error_msg').html("<span id='username_message' class='mb-5 text-danger'>Please enter a username!</span>");
+			header = 'Blank Username';
+			msg = 'Please enter a username!';
+			$('.message_modal_header').removeClass('bg-success');
+			$('.message_modal_header').addClass('bg-danger');
+			$('.message_icon').removeClass('fas fa-check');
+			$('.message_icon').addClass('fas fa-times');
+			$('#modal_body_header').html(header);
+			$('#modal_body_message').html(msg);
+			$('#modal_message').modal({
+				backdrop: 'static',
+		    	keyboard: false
+			});
 			error = true;
+			setTimeout(function(){ $('#modal_message').modal('toggle'); }, 4000);
 		}
-		else{
-			$('#username_message').fadeOut();
-		}
-
-		if(password == ''){
-			$('#password_error_msg').html("<span id='password_message' class='mb-5 text-danger'>Please enter a password!</span>");
+		else if(password == ''){
+			header = 'Blank Password';
+			msg = 'Please enter a password!';
+			$('.message_modal_header').removeClass('bg-success');
+			$('.message_modal_header').addClass('bg-danger');
+			$('.message_icon').removeClass('fas fa-check');
+			$('.message_icon').addClass('fas fa-times');
+			$('#modal_body_header').html(header);
+			$('#modal_body_message').html(msg);
+			$('#modal_message').modal({
+				backdrop: 'static',
+		    	keyboard: false
+			});
 			error = true;
-		}
-		else{
-			$('#password_message').fadeOut();
+			setTimeout(function(){ $('#modal_message').modal('toggle'); }, 4000);
 		}
 		
 		if (error == false){
 			login();
 		}
-
-		setTimeout(function(){ $('#username_message').fadeOut(3000);}, 4000);
-		setTimeout(function(){ $('#password_message').fadeOut(3000);}, 4000);
 	});
 
 	$('#text_password').keypress(function(event){
@@ -45,19 +62,54 @@ $(document).ready(function(){
 	        data: {username: $('#text_username').val(), password: $('#text_password').val()},
 	        dataType: 'JSON',
 	    	success: function(result) {
-	    		if (result == 1){
-	    			$('#modal_message_box').modal('show');
-	    			$('#modal_body').html('Login Successful!');
-		    		setTimeout(function(){ window.location = 'main';}, 4000);
-		    	}
-		    	else if (result == 2){
-		    		$('#username_error_msg').html("<span id='username_message' class='mb-5 text-danger'>Invalid username!</span>");
-		    		setTimeout(function(){ $('#username_message').fadeOut(3000);}, 4000);
-		    	}
-		    	else if (result == 3){
-		    		$('#password_error_msg').html("<span id='password_message' class='mb-5 text-danger'>Incorrect password!</span>");
-		    		setTimeout(function(){ $('#password_message').fadeOut(3000);}, 4000);
-		    	}
+	    		var msg, header;
+
+				if (result == 1){
+					header = 'Login Success';
+					msg = 'Login Successful!';
+					$('.message_modal_header').removeClass('bg-danger');
+					$('.message_modal_header').addClass('bg-success');
+					$('.message_icon').removeClass('fas fa-times');
+					$('.message_icon').addClass('fas fa-check');
+					$('#modal_body_header').html(header);
+					$('#modal_body_message').html(msg);
+					$('#modal_message').modal({
+						backdrop: 'static',
+				    	keyboard: false
+					});
+					setTimeout(function(){ window.location = 'main';}, 4000);
+				}
+				else if (result == 2){
+					header = 'Login Error';
+					msg = 'Invalid username!';
+					$('.message_modal_header').removeClass('bg-success');
+					$('.message_modal_header').addClass('bg-danger');
+					$('.message_icon').removeClass('fas fa-check');
+					$('.message_icon').addClass('fas fa-times');
+					$('#modal_body_header').html(header);
+					$('#modal_body_message').html(msg);
+					$('#modal_message').modal({
+						backdrop: 'static',
+				    	keyboard: false
+					});
+					setTimeout(function(){ $('#modal_message').modal('toggle'); }, 4000);
+				}
+				else if (result == 3){
+					header = 'Login Error';
+					msg = 'Incorrect password!';
+					$('.message_modal_header').removeClass('bg-success');
+					$('.message_modal_header').addClass('bg-danger');
+					$('.message_icon').removeClass('fas fa-check');
+					$('.message_icon').addClass('fas fa-times');
+					$('#modal_body_header').html(header);
+					$('#modal_body_message').html(msg);
+					$('#modal_message').modal({
+						backdrop: 'static',
+				    	keyboard: false
+					});
+					setTimeout(function(){ $('#modal_message').modal('toggle'); }, 4000);
+				}
+
 		    }
 		})
 	}

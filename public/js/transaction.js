@@ -16,6 +16,8 @@ $('#btn_search').click(function(){
 
 $('#cbo_services').on('change', function(){
 	$('#text_service_name').val($("#cbo_services :selected").text());
+	var id = $("#cbo_services").val();
+	get_service_info(id);
 	$("#modal_service_form").modal({
 		backdrop: 'static',
     	keyboard: false
@@ -58,7 +60,27 @@ $('#btn_add_product').click(function(){
 		$('.message_modal_header').addClass('bg-danger');
 		$('.message_icon').removeClass('fas fa-check');
 		$('.message_icon').addClass('fas fa-times');
-		$('#modal_message').modal('show');
+		$('#modal_message').modal({
+			backdrop: 'static',
+	    	keyboard: false
+		});
+
+		setTimeout(function(){ $('#modal_message').modal('toggle'); }, 3000);
+	}
+	else if (!(qty.match(/^\d+/))){
+		var header = 'Invalid',
+			msg = 'Invalid quantity!';
+		
+		$('#modal_body_header').html(header);
+		$('#modal_body_message').html(msg);
+		$('.message_modal_header').removeClass('bg-success');
+		$('.message_modal_header').addClass('bg-danger');
+		$('.message_icon').removeClass('fas fa-check');
+		$('.message_icon').addClass('fas fa-times');
+		$('#modal_message').modal({
+			backdrop: 'static',
+	    	keyboard: false
+		});
 
 		setTimeout(function(){ $('#modal_message').modal('toggle'); }, 3000);
 	}
@@ -72,7 +94,10 @@ $('#btn_add_product').click(function(){
 		$('.message_modal_header').addClass('bg-danger');
 		$('.message_icon').removeClass('fas fa-check');
 		$('.message_icon').addClass('fas fa-times');
-		$('#modal_message').modal('show');
+		$('#modal_message').modal({
+			backdrop: 'static',
+	    	keyboard: false
+		});
 
 		setTimeout(function(){ $('#modal_message').modal('toggle'); }, 3000);
 	}
@@ -96,6 +121,7 @@ $('#btn_add_service').click(function(){
 	var service_id = $('#cbo_services').val(),
 		prescription = $('#text_prescription').val(),
 		remarks = $('#text_remarks').val(),
+		charge = $('#text_charge').val(),
 		service_name = $("#cbo_services :selected").text();
 
 	if (isRecordExist(service_id, '#table_services_availed')){
@@ -109,16 +135,17 @@ $('#btn_add_service').click(function(){
 		});
 	}
 	else{
-
 		$('#table_services_availed tbody').append('<tr><td style="display:none">'+ service_id +'</td>'+ 
 										'<td>'+ ++global_service_row_ctr +'</td>'+
 										'<td>'+ service_name +'</td>'+
 										'<td>'+ prescription +'</td>'+
 										'<td>'+ remarks +'</td>'+
+										'<td>'+ charge +'</td>'+
 										'<td>'+
 										'<button value="' + service_id + '" class="btn btn-sm btn-warning mr-2" id="btn_edit_service" style="width:90px"><i class="fas fa-edit"> Edit</i></button>'+
 										'<button value="' + service_id + '" class="btn btn-sm btn-danger" id="btn_remove_service" style="width:90px"><i class="fas fa-trash"> Remove</i></button>'+
 										'</td></tr>');
+		
 	}
 
 	$('#modal_service_form').modal('toggle');
@@ -312,6 +339,20 @@ function get_product_info(id, qty){
 										'<td><button type="button" value="' + id + '" class="btn btn-sm btn-danger" id="btn_remove_product" data-toggle="tooltip" data-placement="top" title="Remove Product"><i class="fas fa-trash"> Remove</i></button></td></tr>');
 			$('#modal_quantity').modal('toggle');
 			$('#text_number_of_products').val('');
+		}
+	})
+}
+
+//Function: Retrieve Service Info
+function get_service_info(id, qty){
+	$.ajax({
+		url: 'transaction/get_service_info',
+		method: 'POST',
+		data: {id: id},
+		dataType: 'json',
+		success: function(result) {
+			var rate = formatNumber(result['rate'].toFixed(2));
+			$('#text_charge').val(rate);
 		}
 	})
 }

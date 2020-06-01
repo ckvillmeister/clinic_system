@@ -44,6 +44,13 @@ class transactionController extends controller{
 		echo json_encode($product_info);
 	}
 
+	public function get_service_info(){
+		$id = $_POST['id'];
+		$service_obj = new serviceModel();
+		$service_info = $service_obj->get_service_info($id);
+		echo json_encode($service_info);
+	}
+
 }
 
 ?>

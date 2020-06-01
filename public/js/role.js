@@ -114,7 +114,10 @@ function insert_accessrole(id, name, description){
 			
 			$('#modal_body_header').html(header);
 			$('#modal_body_message').html(msg);
-			$('#modal_message').modal('show');
+			$('#modal_message').modal({
+				backdrop: 'static',
+		    	keyboard: false
+			});
 
 			setTimeout(function(){ $('#modal_message').modal('toggle'); }, 3000);
 			setTimeout(function(){ $('#modal_accessrole_form').modal('toggle'); }, 3000);
@@ -184,7 +187,10 @@ function toggle_accessrole_status(id, status){
 				$('#modal_confirm').modal('toggle');
 				$('#modal_body_header').html(header);
 				$('#modal_body_message').html(msg);
-				$('#modal_message').modal('show');
+				$('#modal_message').modal({
+					backdrop: 'static',
+			    	keyboard: false
+				});
 
 				setTimeout(function(){ $('#modal_message').modal('toggle'); }, 3000);
 				if (global_action == 'remove'){

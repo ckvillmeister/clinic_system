@@ -37,17 +37,15 @@
   </nav>
 </div>  
 
-<div class="modal fade" id="modal_message_box" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<!-- Modal Message -->
+<div class="modal fade" id="modal_message" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="modal_title"></h5>
+      <div class="message_modal_header modal-header bg-success">
+        <h5><i class="message_icon icon fas fa-check"></i><span class="ml-2" id="modal_body_header"></span></h5>
       </div>
       <div class="modal-body">
-        <h6 class="modal-body" id="modal_body"></h5>
-      </div>
-      <div class="modal-footer">
-    
+        <span id="modal_body_message"></span>
       </div>
     </div>
   </div>
