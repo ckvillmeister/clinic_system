@@ -1,6 +1,5 @@
 var global_id;
 var global_action;
-
 retrieve_services(1);
 
 $('#text_name').on('change', function() {
@@ -78,6 +77,11 @@ $('#btn_submit').click(function(){
 		error = true;
 	}
 
+	if(!(rate.match(/^\d+.\d+$/))) {
+		$('#text_rate').addClass('is-invalid');
+	    error = true;
+	}
+
 	if (error == false){
 		if (global_action=='edit'){
 			insert_service(global_id, name, description, rate);
@@ -119,7 +123,10 @@ function insert_service(id, name, description, rate){
 			
 			$('#modal_body_header').html(header);
 			$('#modal_body_message').html(msg);
-			$('#modal_message').modal('show');
+			$('#modal_message').modal({
+				backdrop: 'static',
+		    	keyboard: false
+			});
 
 			setTimeout(function(){ $('#modal_message').modal('toggle'); }, 3000);
 			setTimeout(function(){ $('#modal_service_form').modal('toggle'); }, 3000);
@@ -190,7 +197,10 @@ function toggle_service_status(id, status){
 				$('#modal_confirm').modal('toggle');
 				$('#modal_body_header').html(header);
 				$('#modal_body_message').html(msg);
-				$('#modal_message').modal('show');
+				$('#modal_message').modal({
+					backdrop: 'static',
+			    	keyboard: false
+				});
 
 				setTimeout(function(){ $('#modal_message').modal('toggle'); }, 3000);
 				if (global_action == 'remove'){

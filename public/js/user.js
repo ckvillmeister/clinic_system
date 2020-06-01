@@ -152,7 +152,10 @@ function insert_user(id, username, password, firstname, middlename, lastname, ex
 			$('.message_icon').addClass('fas fa-check');
 			$('#modal_body_header').html(header);
 			$('#modal_body_message').html(msg);
-			$('#modal_message').modal('show');
+			$('#modal_message').modal({
+				backdrop: 'static',
+		    	keyboard: false
+			});
 
 			setTimeout(function(){ $('#modal_message').modal('toggle'); }, 3000);
 			setTimeout(function(){ $('#modal_user_form').modal('toggle'); }, 3000);
@@ -231,7 +234,10 @@ function toggle_user_status(id, status){
 				$('.message_modal_header').addClass('bg-success');
 				$('.message_icon').removeClass('fas fa-times');
 				$('.message_icon').addClass('fas fa-check');
-				$('#modal_message').modal('show');
+				$('#modal_message').modal({
+					backdrop: 'static',
+			    	keyboard: false
+				});
 
 				setTimeout(function(){ $('#modal_message').modal('toggle'); }, 3000);
 				if (global_action == 'remove'){
@@ -253,7 +259,10 @@ function toggle_user_status(id, status){
 				$('.message_modal_header').addClass('bg-danger');
 				$('.message_icon').removeClass('fas fa-check');
 				$('.message_icon').addClass('fas fa-times');
-				$('#modal_message').modal('show');
+				$('#modal_message').modal({
+					backdrop: 'static',
+			    	keyboard: false
+				});
 
 				setTimeout(function(){ $('#modal_message').modal('toggle'); }, 3000);
 			}

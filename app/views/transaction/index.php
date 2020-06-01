@@ -181,6 +181,7 @@
                     <th>Service Name</th>
                     <th>Prescription</th>
                     <th>Remarks</th>
+                    <th>Charge</th>
                     <th style="width:200px">Control</th>
                   </tr>
                 </thead>
@@ -314,6 +315,15 @@
               </div>
               <div class="col-sm-9">
                 <textarea class="form-control" rows="3" id="text_remarks" placeholder="Remarks" style="resize:none;"></textarea>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <div class="col-sm-3">
+                <label class="col-form-label">Charge:</label>
+              </div>
+              <div class="col-sm-4">
+                <input type="text" id="text_charge" class="form-control form-control-sm bg-white" readonly="readonly">
               </div>
             </div>
 

@@ -15,6 +15,10 @@ $('#text_quantity').on('change', function() {
 	$('#text_quantity').removeClass('is-invalid');
 });
 
+$('#text_reorder').on('change', function() {
+	$('#text_reorder').removeClass('is-invalid');
+});
+
 $('#btn_new_product').click(function(){
 	clear();
 	global_action = 'add';
@@ -75,13 +79,18 @@ $('#btn_submit').click(function(){
 		error = true;
 	}
 
-	if (price == ''){
+	if (price == '' | !(price.match(/^\d+.\d+$/))){
 		$('#text_price').addClass('is-invalid');
 		error = true;
 	}
 
-	if (quantity == ''){
+	if (quantity == '' | !(quantity.match(/^\d+$/))){
 		$('#text_quantity').addClass('is-invalid');
+		error = true;
+	}
+
+	if (!(reorder.match(/^\d+$/))){
+		$('#text_reorder').addClass('is-invalid');
 		error = true;
 	}
 
@@ -126,7 +135,10 @@ function insert_product(id, name, description, price, quantity, reorder){
 			
 			$('#modal_body_header').html(header);
 			$('#modal_body_message').html(msg);
-			$('#modal_message').modal('show');
+			$('#modal_message').modal({
+				backdrop: 'static',
+		    	keyboard: false
+			});
 
 			setTimeout(function(){ $('#modal_message').modal('toggle'); }, 3000);
 			setTimeout(function(){ $('#modal_product_form').modal('toggle'); }, 3000);
@@ -199,7 +211,10 @@ function toggle_product_status(id, status){
 				$('#modal_confirm').modal('toggle');
 				$('#modal_body_header').html(header);
 				$('#modal_body_message').html(msg);
-				$('#modal_message').modal('show');
+				$('#modal_message').modal({
+					backdrop: 'static',
+			    	keyboard: false
+				});
 
 				setTimeout(function(){ $('#modal_message').modal('toggle'); }, 3000);
 				if (global_action == 'remove'){
