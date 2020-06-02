@@ -37,7 +37,7 @@
           <a href="<?php echo ROOT; ?>patient" class="nav-link <?php echo ($link == 'patient') ? 'active' : ''; ?>">
             <i class="nav-icon fas fas fa-users"></i>
             <p>
-              Patient Records
+              Patient Registration
             </p>
           </a>
         </li>

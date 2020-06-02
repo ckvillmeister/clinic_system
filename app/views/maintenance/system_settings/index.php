@@ -1,7 +1,20 @@
 <?php
 $settings = $data['settings'];
-$system_name_detail = (object) $settings[0];
-$branch_no_detail = (object) $settings[1];
+$ctr = 0;
+
+foreach ($settings as $key => $setting) {
+  if ($ctr == 0){
+    $system_name_detail = (object) $settings[0];
+  }
+  else if ($ctr == 1){
+    $branch_no_detail = (object) $settings[1];
+  }
+  else if ($ctr == 2){
+    $down_payment_detail = (object) $settings[2];
+  }
+  $ctr++;
+}
+
 ?>
 <style>
   .content{
@@ -59,6 +72,15 @@ $branch_no_detail = (object) $settings[1];
             </div>
             <div class="col-sm-6">
                 <input type="number" class="form-control" min="1" max="99" id="text_branch_no" value="<?php echo $branch_no_detail->desc; ?>">
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <div class="col-sm-2 align-self-center">
+                Down Payment Percentage:
+            </div>
+            <div class="col-sm-6">
+                <input type="number" class="form-control" min="1" max="99" id="text_dpp" value="<?php echo $down_payment_detail->desc * 100; ?>">
             </div>
           </div>
 

@@ -27,7 +27,7 @@ class settingsModel extends model{
 		return $setting;
 	}
 
-	public function save_settings($system_name, $branch_no){
+	public function save_settings($system_name, $branch_no, $down_payment){
 		if ($branch_no < 10){
 			$branch_no = '0'.ltrim($branch_no, '0');
 		}
@@ -65,6 +65,25 @@ class settingsModel extends model{
 			$query = 'INSERT INTO tbl_settings (setting_name, description, status) VALUES ("Branch Number", ?, 1)';
 			$stmt = $this->con->prepare($query);
 			$stmt->bind_param('s', $branch_no);
+			$stmt->execute();
+		}
+
+		$down_payment = $down_payment / 100;
+		$query = 'SELECT * FROM tbl_settings WHERE setting_name = "Down Payment Percentage"';
+		$stmt = $this->con->prepare($query);
+		$stmt->execute();
+		$result = $stmt->get_result();
+
+		if ($result->num_rows >= 1){
+			$query = 'UPDATE tbl_settings SET description = ? WHERE setting_name = "Down Payment Percentage"';
+			$stmt = $this->con->prepare($query);
+			$stmt->bind_param('s', $down_payment);
+			$stmt->execute();
+		}
+		else{
+			$query = 'INSERT INTO tbl_settings (setting_name, description, status) VALUES ("Down Payment Percentage", ?, 1)';
+			$stmt = $this->con->prepare($query);
+			$stmt->bind_param('s', $down_payment);
 			$stmt->execute();
 		}
 

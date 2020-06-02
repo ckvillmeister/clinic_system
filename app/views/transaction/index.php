@@ -56,7 +56,7 @@
           
           <div class="row">
             <div class="col-sm-3 text-center">
-              <img class="profile-user-img img-fluid img-circle" src="<?php echo ROOT; ?>public/image/system_logo.jpg" width="250px" height="100px">
+              
             </div>
             <div class="col-sm-6">
               <div class='text-center'>
@@ -383,6 +383,112 @@
   </div>
 </div>
 
+<!-- Modal Summary -->
+<div class="modal fade" id="modal_summary" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5><i class="fas fa-file-invoice mr-2"></i>Invoice</h5>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        
+        <div class="invoice p-3 mb-3">
+          <div id="to_print">
+            <div class="row">
+              <div class="col-12">
+                <h4>
+                  <i class="fas fa-globe mr-2"></i><span id="span_clinic_name"><?php echo $data['system_name']; ?></span>
+                  <small class="float-right"> <span class="text-muted pr-3">Date:</span><span id="span_date"></span></small>
+                </h4>
+              </div>
+            </div><br>
+          
+            <div class="row invoice-info">
+              <div class="col-sm-6 invoice-col">
+                <span class="text-muted pr-3">Transaction ID:</span><b><span id="span_transaction_id"></span></b><br>
+                <br>
+                <span class="text-muted pr-3">Patient ID:</span><b><span id="span_patient_id"></span></b><br>
+                <span class="text-muted pr-3">Patient Fullname:</span><b><span id="span_fullname"></span></b><br>
+                <span class="text-muted pr-3">Address:</span><b><span id="span_address"></span></b><br>
+              </div>
+              <div class="col-sm-4 invoice-col">
+                <span class="text-muted"></span><br>
+                <br>
+                <span class="text-muted pr-3">Sex:</span><b><span id="span_sex"></span></b><br>
+                <span class="text-muted pr-3">Age:</span><b><span id="span_age"></span></b><br>
+                <span class="text-muted pr-3">Contact Number:</span><b><span id="span_contact_number"></span></b><br>
+              </div>
+            </div><br>
+
+            <div class="row">
+              <div class="col-12 table-responsive">
+                <table class="table table-striped" id="table_summary">
+                  <thead>
+                  <tr>
+                    <th style="display: none"></th>
+                    <th>No.</th>
+                    <th>Item/Service</th>
+                    <th>Type</th>
+                    <th>Charge</th>
+                    <th>Qty</th>
+                    <th>Total</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="row">
+
+              <div class="col-6">
+                
+              </div>
+
+              <div class="col-6">
+                <p class="lead">Amount Due:</p>
+
+                <div class="table-responsive">
+                  <table class="table">
+                    <tr>
+                      <th style="width:50%">Subtotal:</th>
+                      <td><span id="span_sub_total"></span></td>
+                    </tr>
+                    <tr>
+                      <th>Required Downpayment:</th>
+                      <td><span id="span_required_dp"></span></td>
+                    </tr>
+                    <tr>
+                      <th>Discount:</th>
+                      <td><span id="span_discount_price"></span></td>
+                    </tr>
+                    <tr>
+                      <th>Total:</th>
+                      <td><span id="span_grand_total"></span></td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row no-print">
+            <div class="col-12">
+              <button type="button" id="btn_save_transaction" class="btn btn-success float-right" style="width:180px"><i class="far fa-credit-card"></i> Save Transaction
+              </button>
+              <button type="button" id="btn_print_bill" class="btn btn-primary float-right mr-2" style="width:180px"><i class="fas fa-print"></i> Print</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- Modal Message -->
 <div class="modal fade" id="modal_message" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
@@ -411,173 +517,6 @@
         <div class="float-right">
           <button class="btn btn-sm btn-primary" id="btn_yes">Yes</button>&nbsp;<button class="btn btn-sm btn-secondary" data-dismiss="modal">No</button>
         </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<!-- Modal Summary -->
-<div class="modal fade" id="modal_summary" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
-  <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5><i class="fas fa-file-invoice mr-2"></i>Summary</h5>
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-      </div>
-      <div class="modal-body">
-         <div class="invoice p-3 mb-3">
-          <!-- title row -->
-          <div class="row">
-            <div class="col-12">
-              <h4>
-                <i class="fas fa-globe"></i> AdminLTE, Inc.
-                <small class="float-right">Date: 2/10/2014</small>
-              </h4>
-            </div>
-            <!-- /.col -->
-          </div>
-          <!-- info row -->
-          <div class="row invoice-info">
-            <div class="col-sm-4 invoice-col">
-              From
-              <address>
-                <strong>Admin, Inc.</strong><br>
-                795 Folsom Ave, Suite 600<br>
-                San Francisco, CA 94107<br>
-                Phone: (804) 123-5432<br>
-                Email: info@almasaeedstudio.com
-              </address>
-            </div>
-            <!-- /.col -->
-            <div class="col-sm-4 invoice-col">
-              To
-              <address>
-                <strong>John Doe</strong><br>
-                795 Folsom Ave, Suite 600<br>
-                San Francisco, CA 94107<br>
-                Phone: (555) 539-1037<br>
-                Email: john.doe@example.com
-              </address>
-            </div>
-            <!-- /.col -->
-            <div class="col-sm-4 invoice-col">
-              <b>Invoice #007612</b><br>
-              <br>
-              <b>Order ID:</b> 4F3S8J<br>
-              <b>Payment Due:</b> 2/22/2014<br>
-              <b>Account:</b> 968-34567
-            </div>
-            <!-- /.col -->
-          </div>
-          <!-- /.row -->
-
-          <!-- Table row -->
-          <div class="row">
-            <div class="col-12 table-responsive">
-              <table class="table table-striped">
-                <thead>
-                <tr>
-                  <th>Qty</th>
-                  <th>Product</th>
-                  <th>Serial #</th>
-                  <th>Description</th>
-                  <th>Subtotal</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                  <td>1</td>
-                  <td>Call of Duty</td>
-                  <td>455-981-221</td>
-                  <td>El snort testosterone trophy driving gloves handsome</td>
-                  <td>$64.50</td>
-                </tr>
-                <tr>
-                  <td>1</td>
-                  <td>Need for Speed IV</td>
-                  <td>247-925-726</td>
-                  <td>Wes Anderson umami biodiesel</td>
-                  <td>$50.00</td>
-                </tr>
-                <tr>
-                  <td>1</td>
-                  <td>Monsters DVD</td>
-                  <td>735-845-642</td>
-                  <td>Terry Richardson helvetica tousled street art master</td>
-                  <td>$10.70</td>
-                </tr>
-                <tr>
-                  <td>1</td>
-                  <td>Grown Ups Blue Ray</td>
-                  <td>422-568-642</td>
-                  <td>Tousled lomo letterpress</td>
-                  <td>$25.99</td>
-                </tr>
-                </tbody>
-              </table>
-            </div>
-            <!-- /.col -->
-          </div>
-          <!-- /.row -->
-
-          <div class="row">
-            <!-- accepted payments column -->
-            <div class="col-6">
-              <p class="lead">Payment Methods:</p>
-              <img src="../../dist/img/credit/visa.png" alt="Visa">
-              <img src="../../dist/img/credit/mastercard.png" alt="Mastercard">
-              <img src="../../dist/img/credit/american-express.png" alt="American Express">
-              <img src="../../dist/img/credit/paypal2.png" alt="Paypal">
-
-              <p class="text-muted well well-sm shadow-none" style="margin-top: 10px;">
-                Etsy doostang zoodles disqus groupon greplin oooj voxy zoodles, weebly ning heekya handango imeem
-                plugg
-                dopplr jibjab, movity jajah plickers sifteo edmodo ifttt zimbra.
-              </p>
-            </div>
-            <!-- /.col -->
-            <div class="col-6">
-              <p class="lead">Amount Due 2/22/2014</p>
-
-              <div class="table-responsive">
-                <table class="table">
-                  <tr>
-                    <th style="width:50%">Subtotal:</th>
-                    <td>$250.30</td>
-                  </tr>
-                  <tr>
-                    <th>Tax (9.3%)</th>
-                    <td>$10.34</td>
-                  </tr>
-                  <tr>
-                    <th>Shipping:</th>
-                    <td>$5.80</td>
-                  </tr>
-                  <tr>
-                    <th>Total:</th>
-                    <td>$265.24</td>
-                  </tr>
-                </table>
-              </div>
-            </div>
-            <!-- /.col -->
-          </div>
-          <!-- /.row -->
-
-          <!-- this row will not appear when printing -->
-          <div class="row no-print">
-            <div class="col-12">
-              <a href="invoice-print.html" target="_blank" class="btn btn-default"><i class="fas fa-print"></i> Print</a>
-              <button type="button" class="btn btn-success float-right"><i class="far fa-credit-card"></i> Submit
-                Payment
-              </button>
-              <button type="button" class="btn btn-primary float-right" style="margin-right: 5px;">
-                <i class="fas fa-download"></i> Generate PDF
-              </button>
-            </div>
-          </div>
-          </div>
       </div>
     </div>
   </div>

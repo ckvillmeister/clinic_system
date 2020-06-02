@@ -51,6 +51,25 @@ class transactionController extends controller{
 		echo json_encode($service_info);
 	}
 
+	public function insert_transaction(){
+		$transaction_id = $_POST['transaction_id'];
+		$date = date('Y-m-d H:i:s');
+		$patientid = $_POST['patientid'];
+		$age = $_POST['age'];
+		$transaction_detail = array($_POST['transaction_detail']);
+		$user = $_SESSION['user_id'];
+		$datetime = date('Y-m-d H:i:s');
+
+		$transaction_obj = new transactionModel();
+		$result = $transaction_obj->insert_transaction($transaction_id, $date, $patientid, $age, $transaction_detail, $user, $datetime);
+		echo $result;
+	}
+
+	public function print_bill(){
+		$print_page = $_POST['print_page'];
+		$this->view()->render('transaction/billing.php', array('page' => $print_page));
+	}
+
 }
 
 ?>

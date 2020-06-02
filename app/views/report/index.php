@@ -1,14 +1,10 @@
 <style>
-  .content{
-    font-family: 'Arial Narrow';
+  select, button{
+    height:30px;
   }
 
-  #modal_patient_form{
-    font-family: 'Arial Narrow';
-  }
-
-  #text_patient_id, #text_age{
-    background: #fff;
+  select{
+    width: 150px;
   }
 </style>
 
@@ -31,15 +27,101 @@
 
   <section class="content">
     <div class="container-fluid">
-      <div class="card">
 
-        <div class="overlay-wrapper">
-        
+      <div class="overlay-wrapper"></div>
+
+      <div class="card card-primary card-outline card-outline-tabs">
+        <div class="card-header p-0 border-bottom-0">
+          <ul class="nav nav-tabs" id="custom-tabs-four-tab" role="tablist">
+            <li class="nav-item">
+              <a class="nav-link active" id="custom-tabs-four-home-tab" data-toggle="pill" href="#tab_transactions" role="tab" aria-controls="custom-tabs-four-home" aria-selected="true">Transactions</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="custom-tabs-four-profile-tab" data-toggle="pill" href="#tab_patients" role="tab" aria-controls="custom-tabs-four-profile" aria-selected="false">Patients</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="custom-tabs-four-messages-tab" data-toggle="pill" href="#tab_products" role="tab" aria-controls="custom-tabs-four-messages" aria-selected="false">Products</a>
+            </li>
+          </ul>
         </div>
+        <div class="card-body">
+          <div class="tab-content" id="custom-tabs-four-tabContent">
+            <div class="tab-pane fade show active" id="tab_transactions" role="tabpanel" aria-labelledby="custom-tabs-four-home-tab">
 
-        
+              <div class="row-fluid p-2 shadow-none">
+                <div class="row">
+                  <div class="col-lg-12">
 
-      </div>    
+                    <div class="row">
+                      <select class="form-group form-group-sm mr-2">
+                        <option value=""> [ Status ] </option>
+                      </select>
+                      <select class="form-group form-group-sm mr-2">
+                        <option value=""> [ Service Type ] </option>
+                      </select>
+                      <button class="btn btn-sm btn-primary form-group form-group-sm"><i class="fas fa-recycle mr-2"></i>Generate</button>
+                    </div>
+
+                    <div id="transaction_list" class="">
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+            <div class="tab-pane fade" id="tab_patients" role="tabpanel" aria-labelledby="custom-tabs-four-profile-tab">
+
+              <div class="row-fluid p-2 shadow-none">
+                <div class="row">
+                  <div class="col-lg-12">
+
+                    <div class="row">
+                      <select class="form-group form-group-sm mr-2">
+                        <option value=""> [ Status ] </option>
+                      </select>
+                      <select class="form-group form-group-sm mr-2">
+                        <option value=""> [ Balance ] </option>
+                      </select>
+                      <button class="btn btn-sm btn-primary form-group form-group-sm"><i class="fas fa-recycle mr-2"></i>Generate</button>
+                    </div>
+
+                    <div id="patient_list" class="">
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+            <div class="tab-pane fade" id="tab_products" role="tabpanel" aria-labelledby="custom-tabs-four-messages-tab">
+
+              <div class="row-fluid p-2 shadow-none">
+                <div class="row">
+                  <div class="col-lg-12">
+
+                    <div class="row">
+                      <select class="form-group form-group-sm mr-2">
+                        <option value=""> [ Status ] </option>
+                      </select>
+                      <select class="form-group form-group-sm mr-2">
+                        <option value=""> [ Balance ] </option>
+                      </select>
+                      <button class="btn btn-sm btn-primary form-group form-group-sm"><i class="fas fa-recycle mr-2"></i>Generate</button>
+                    </div>
+
+                    <div id="patient_list" class="">
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </section>
 </div>
