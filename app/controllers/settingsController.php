@@ -11,9 +11,10 @@ class settingsController extends controller{
 	public function save_settings(){
 		$system_name = $_POST['system_name'];
 		$branch_no = $_POST['branch_no'];
+		$down_payment = $_POST['down_payment'];
 
 		$setting_obj = new settingsModel();
-		$result = $setting_obj->save_settings($system_name, $branch_no);
+		$result = $setting_obj->save_settings($system_name, $branch_no, $down_payment);
 		echo $result;
 	}
 

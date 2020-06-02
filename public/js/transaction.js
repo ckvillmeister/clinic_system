@@ -5,6 +5,7 @@ var global_service_id;
 var global_remove_action;
 
 get_transaction_id();
+date();
 
 $('#btn_search').click(function(){
 	retrieve_patients(1);
@@ -34,6 +35,7 @@ $('#btn_search_product').click(function(){
 
 $('body').on('click', '#btn_select_patient_control', function(){
 	id = $(this).val();
+	$('#text_id').val(id);
 	get_patient_info(id);
 	$('#modal_patient_list').modal('toggle');
 });
@@ -224,11 +226,244 @@ $('#btn_yes').click(function(){
 })
 
 $('#btn_confirm').click(function(){
-	$('#modal_summary').modal({
-		backdrop: 'static',
-    	keyboard: false
-	});
+	var record = [];
+	var ctr = 0;
+	var row_ctr = 0;
+	var item_ctr = 0;
+	var subtotal = 0, down_payment = 0, discount = 0, grand_total = 0;
+	var patientid = $('#text_id').val();
+	var error = false;
+	var no_of_rows = $('#table_services_availed tbody tr').length;
+
+	if (patientid.trim() == ''){
+		var header = 'Error',
+			msg = 'Please provide patient information.';
+
+		$('#modal_body_header').html(header);
+		$('#modal_body_message').html(msg);
+		$('.message_modal_header').removeClass('bg-success');
+		$('.message_modal_header').addClass('bg-danger');
+		$('.message_icon').removeClass('fas fa-check');
+		$('.message_icon').addClass('fas fa-times');
+		$('#modal_message').modal({
+			backdrop: 'static',
+	    	keyboard: false
+		});
+		setTimeout(function(){ $('#modal_message').modal('toggle'); }, 3000);
+		error = true;
+	}
+	else if (no_of_rows <= 0){
+		var header = 'Error',
+			msg = 'No services availed. Please select at least one.';
+
+		$('#modal_body_header').html(header);
+		$('#modal_body_message').html(msg);
+		$('.message_modal_header').removeClass('bg-success');
+		$('.message_modal_header').addClass('bg-danger');
+		$('.message_icon').removeClass('fas fa-check');
+		$('.message_icon').addClass('fas fa-times');
+		$('#modal_message').modal({
+			backdrop: 'static',
+	    	keyboard: false
+		});
+		setTimeout(function(){ $('#modal_message').modal('toggle'); }, 3000);
+		error = true;
+	}
+
+	if (error == false){
+		$('#span_date').html($('#text_date').val());
+		$('#span_transaction_id').html($('#text_transaction_id').val());
+		$('#span_patient_id').html($('#text_patient_id').val());
+		$('#span_fullname').html($('#text_fullname').val());
+		$('#span_address').html($('#text_address').val());
+		$('#span_sex').html($('#text_sex').val());
+		$('#span_age').html($('#text_age').val());
+		$('#span_contact_number').html($('#text_contact_number').val());
+
+		$('#table_services_availed tbody').find('tr').each(function(){
+	      var $this = $(this);
+	      var total = parseFloat($('td:eq(5)', $this).text().replace(/,/g, '')) * parseFloat(1);
+	      total = formatNumber(total.toFixed(2));
+	      record[ctr] = [$('td:eq(0)', $this).text(), ++row_ctr, $('td:eq(2)', $this).text(), 'Service', $('td:eq(5)', $this).text(), '1', total];
+	      ctr++;
+	      item_ctr++;
+	    });
+
+	    $('#table_products_ordered tbody').find('tr').each(function(){
+	      var $this = $(this);
+	      var total = parseFloat($('td:eq(4)', $this).text().replace(/,/g, '')) * parseFloat($('td:eq(5)', $this).text().replace(/,/g, ''));
+	      total = formatNumber(total.toFixed(2));
+	      record[ctr] = [$('td:eq(0)', $this).text(), ++row_ctr, $('td:eq(2)', $this).text(), 'Product', $('td:eq(4)', $this).text(), $('td:eq(5)', $this).text(), total];
+	      ctr++;
+	      item_ctr++;
+	    });
+
+	    $('#table_summary tbody').html('');
+
+	    for (var i = 0; i < item_ctr; i++){
+			$('#table_summary tbody').append('<tr><td style="display:none">'+ record[i][0] +'</td>'+ 
+	    											'<td>'+ record[i][1] +'</td>'+
+	    											'<td>'+ record[i][2] +'</td>'+ 
+	    											'<td>'+ record[i][3] +'</td>'+ 
+	    											'<td>'+ record[i][4] +'</td>'+ 
+	    											'<td>'+ record[i][5] +'</td>'+
+	    											'<td>'+ record[i][6] +'</td></tr>');
+
+	    }
+
+	    $('#table_summary tbody').find('tr').each(function(){
+	      var $this = $(this);
+	      subtotal += parseFloat($('td:eq(6)', $this).text().replace(/,/g, ''));
+	    });
+
+	    grand_total = subtotal + down_payment + discount;
+
+	    $('#span_sub_total').html(formatNumber(subtotal.toFixed(2)));
+	    $('#span_required_dp').html(formatNumber(down_payment.toFixed(2)));
+	    $('#span_discount_price').html(formatNumber(discount.toFixed(2)));
+	    $('#span_grand_total').html(formatNumber(grand_total.toFixed(2)));
+
+		$('#modal_summary').modal({
+			backdrop: 'static',
+	    	keyboard: false
+		});
+	}
 });
+
+$('#btn_save_transaction').click(function(){
+	var transaction_id = $('#text_transaction_id').val(),
+		date = $('#text_date').val(),
+		patientid = $('#text_id').val(),
+		age = $('#text_age').val(),
+		transaction_detail = [],
+		ctr = 0;
+
+	$('#table_services_availed tbody').find('tr').each(function(){
+      var $this = $(this);
+      var total = parseFloat($('td:eq(5)', $this).text().replace(/,/g, '')) * parseFloat(1);
+      total = formatNumber(total.toFixed(2));
+      transaction_detail[ctr] = [$('td:eq(0)', $this).text(), 'Service', $('td:eq(5)', $this).text(), '1', total];
+      ctr++;
+    });
+
+    $('#table_products_ordered tbody').find('tr').each(function(){
+      var $this = $(this);
+      var total = parseFloat($('td:eq(4)', $this).text().replace(/,/g, '')) * parseFloat($('td:eq(5)', $this).text().replace(/,/g, ''));
+      total = formatNumber(total.toFixed(2));
+      transaction_detail[ctr] = [$('td:eq(0)', $this).text(), 'Product', $('td:eq(4)', $this).text(), $('td:eq(5)', $this).text(), total];
+      ctr++;
+    });
+
+    insert_transaction(transaction_id, date, patientid, age, transaction_detail);
+});
+
+$('#btn_print_bill').click(function(){
+	var css = '<link rel="stylesheet" href="public/bootstrap/plugins/fontawesome-free/css/all.min.css">' +
+			  '<link rel="stylesheet" href="public/bootstrap/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">' +
+			  '<link rel="stylesheet" href="public/bootstrap/dist/css/adminlte.min.css">' +
+			  '<link rel="stylesheet" href="public/bootstrap/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">' +
+			  '<link rel="stylesheet" href="public/bootstrap/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">' +
+			  '<link rel="stylesheet" href="public/bootstrap/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">';
+	var html = $('#to_print').html();
+	var js = '<script src="public/bootstrap/plugins/jquery/jquery.min.js"></script>' +
+				'<script src="public/bootstrap/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>' +
+				'<script src="public/bootstrap/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>' +
+				'<script src="public/bootstrap/dist/js/adminlte.js"></script>' +
+				'<script src="public/bootstrap/dist/js/demo.js"></script>' +
+				'<script src="public/bootstrap/plugins/jquery-mousewheel/jquery.mousewheel.js"></script>' +
+				'<script src="public/bootstrap/plugins/raphael/raphael.min.js"></script>' +
+				'<script src="public/bootstrap/plugins/jquery-mapael/jquery.mapael.min.js"></script>' +
+				'<script src="public/bootstrap/plugins/jquery-mapael/maps/usa_states.min.js"></script>' +
+				'<script src="public/bootstrap/plugins/chart.js/Chart.min.js"></script>' +
+				'<script src="public/bootstrap/dist/js/pages/dashboard2.js"></script>' +
+				'<script src="public/bootstrap/plugins/datatables/jquery.dataTables.min.js"></script>' +
+				'<script src="public/bootstrap/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>' +
+				'<script src="public/bootstrap/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>' +
+				'<script src="public/bootstrap/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>' +
+				'<script src="public/bootstrap/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>';
+	var title = 'Patient Billing';
+	var params = [
+		    'height='+screen.height,
+		    'width='+screen.width,
+		    'fullscreen=yes' 
+		].join(',');
+    var mywindow = window.open('', title, params);
+    mywindow.document.write(css);
+	mywindow.document.write(html);
+	mywindow.document.write(js);
+	mywindow.document.write('<title>' + title + '</title>');
+	setTimeout(function(){ mywindow.print(); }, 1000);
+	/*$.ajax({
+       url: 'transaction/print_bill',
+        method: 'GET',
+        data: {print_page: html},
+        dataType: 'HTML'
+    }).done(function(response) {
+    	var title = 'Patient Billing';
+    	var params = [
+			    'height='+screen.height,
+			    'width='+screen.width,
+			    'fullscreen=yes' 
+			].join(',');
+        var mywindow = window.open('', title, params);
+		mywindow.document.write(response);
+		mywindow.document.write('<title>' + title + '</title>');
+		setTimeout(function(){ mywindow.print(); }, 1000);
+    })*/
+});
+
+function insert_transaction(transaction_id, date, patientid, age, transaction_detail){
+	$.ajax({
+		url: 'transaction/insert_transaction',
+		method: 'POST',
+		data: {transaction_id: transaction_id, date: date, patientid: patientid, age: age, transaction_detail: transaction_detail},
+		dataType: 'html',
+		success: function(result) {
+
+			var msg, header;
+
+			if (result == 1){
+				header = 'Saved';
+				msg = 'Transaction successfully saved!';
+				$('#modal_body_header').html(header);
+				$('#modal_body_message').html(msg);
+				$('.message_modal_header').removeClass('bg-danger');
+				$('.message_modal_header').addClass('bg-success');
+				$('.message_icon').removeClass('fas fa-times');
+				$('.message_icon').addClass('fas fa-check');
+				$('#modal_message').modal({
+					backdrop: 'static',
+			    	keyboard: false
+				});
+				setTimeout(function(){ $('#modal_message').modal('toggle'); }, 3000);
+				setTimeout(function(){ $('#modal_summary').modal('toggle'); }, 3000);
+				clear_all();
+				get_transaction_id();
+			}
+			else{
+				header = 'Error';
+				msg = 'Error during saving!';
+				$('#modal_body_header').html(header);
+				$('#modal_body_message').html(msg);
+				$('.message_modal_header').removeClass('bg-success');
+				$('.message_modal_header').addClass('bg-danger');
+				$('.message_icon').removeClass('fas fa-check');
+				$('.message_icon').addClass('fas fa-times');
+				$('#modal_message').modal({
+					backdrop: 'static',
+			    	keyboard: false
+				});
+				setTimeout(function(){ $('#modal_message').modal('toggle'); }, 3000);
+			}			
+
+			$('.modal').on("hidden.bs.modal", function (e) { 
+			    if ($('.modal:visible').length) { 
+			            $('body').addClass('modal-open'); 
+			    }
+			});
+		}
+	})
+}
 
 //Function: Get Latest Transaction ID
 function get_transaction_id(){
@@ -272,13 +507,14 @@ function get_patient_info(id){
 		data: {id: id},
 		dataType: 'json',
 		success: function(result) {
-			clear();
-			var purok;
-			if (!(result['address_purok']==''|result['address_purok']=='0')){
-				purok = 'Purok ' + result['address_purok'];
+			clear_patient_info();
+			var purok = '';
+			
+			if (!(result['address_purok'].trim() ==''|result['address_purok'].trim() =='0')){
+				purok = 'Purok ' + result['address_purok'] + ', ';
 			}
 			var fullname = result['firstname']+' '+result['middlename']+' '+result['lastname']+' '+result['extension'];
-			var address = purok+', '+result['address_brgy']+', '+result['address_citymun']+' Bohol';
+			var address = purok+result['address_brgy']+', '+result['address_citymun']+' Bohol';
 
 			$('#text_patient_id').val(result['patientid']);
 			$('#text_fullname').val(fullname.toUpperCase());
@@ -403,7 +639,29 @@ function formatNumber(num) {
     return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
 }
 
-function clear(){
+function date(){
+	var today = new Date();
+    var day = today.getDate();
+    var month = today.getMonth()+1;
+    var year = today.getFullYear();
+    var formatted_date;
+
+    if (day < 10)
+    {
+    	day='0'+day;
+	}
+
+	if (month < 10)
+    {
+    	month='0'+month;
+	}
+
+	formatted_date = month.toString() + '-' + day.toString() + '-' + year.toString();
+
+	$('#text_date').val(formatted_date);
+}
+
+function clear_patient_info(){
 	$('#text_patient_id').val('');
 	$('#text_fullname').val('');
 	$("#text_address").val('');
@@ -412,4 +670,23 @@ function clear(){
 	$('#text_email').val('');
 	$('#text_birthdate').val('');
 	$('#text_age').val('');
+}
+
+function clear_all(){
+	$('#text_id').val('');
+	$('#text_patient_id').val('');
+	$('#text_fullname').val('');
+	$("#text_address").val('');
+	$('#text_sex').val('');
+	$('#text_contact_number').val('');
+	$('#text_email').val('');
+	$('#text_birthdate').val('');
+	$('#text_age').val('');
+	$("#table_services_availed > tbody").html("");
+	$("#table_products_ordered > tbody").html("");
+	var global_product_row_ctr = 0;
+	var global_service_row_ctr = 0;
+	var global_product_id = 0;
+	var global_service_id = 0;
+	var global_remove_action = '';
 }

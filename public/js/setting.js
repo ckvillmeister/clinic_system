@@ -1,7 +1,8 @@
 
 $('#btn_submit').click(function(){
 	var system_name = $('#text_system_name').val(),
-		branch_no = $('#text_branch_no').val();
+		branch_no = $('#text_branch_no').val(),
+		down_payment = $('#text_dpp').val();
 
 	if (branch_no > 99){
 		var header = 'Error';
@@ -21,16 +22,16 @@ $('#btn_submit').click(function(){
 		setTimeout(function(){ $('#modal_message').modal('toggle'); }, 3000);
 	}
 	else{
-		save_settings(system_name, branch_no);
+		save_settings(system_name, branch_no, down_payment);
 	}
 })
 
 //Function: Save Settings
-function save_settings(system_name, branch_no){
+function save_settings(system_name, branch_no, down_payment){
 	$.ajax({
 		url: 'settings/save_settings',
 		method: 'POST',
-		data: {system_name: system_name, branch_no: branch_no},
+		data: {system_name: system_name, branch_no: branch_no, down_payment: down_payment},
 		dataType: 'html',
 		success: function(result) {
 			var msg, header;

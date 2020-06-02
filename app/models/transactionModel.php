@@ -30,7 +30,59 @@ class transactionModel extends model{
 		$branch = $data['description'];
 		
 		$patient_id = $this->id_format($id, 'TRANS', $branch);
+		$stmt->close();
+		$this->con->close();
 		return $patient_id;
+	}
+
+	public function insert_transaction($transaction_id, $date, $patientid, $age, array $transaction_detail, $user, $datetime){
+		$status = 1;
+		
+		$query = 'INSERT INTO tbl_transaction_main (transaction_id, transaction_date, patient_id, age_during_clinic_visit, created_by, date_created, status) VALUES (?, ?, ?, ?, ?, ?, ?)';
+		$stmt = $this->con->prepare($query);
+		$stmt->bind_param('sssssss', $transaction_id, $date, $patientid, $age, $user, $datetime, $status);
+			$stmt->execute();
+
+		$stmt = $this->con->prepare("SELECT record_id FROM tbl_transaction_main WHERE record_id = (SELECT MAX(record_id) FROM tbl_transaction_main)");
+		$stmt->execute();
+		$data = $stmt->get_result()->fetch_assoc();
+	 	$recordid	= $data['record_id'];
+
+		foreach($transaction_detail as $row)
+		{
+			foreach($row as $data)
+			{	
+				$service_product_id = $data[0];
+    			$type = $data[1];
+    			$charge = $data[2];
+    			$qty = $data[3];
+    			$total = $data[4];
+
+    			$query = 'INSERT INTO tbl_transaction_details (transaction_id, service_product_id, type, cost, quantity, total, created_by, date_created, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
+				$stmt = $this->con->prepare($query);
+				$stmt->bind_param('sssssssss', $recordid, $service_product_id, $type, $charge, $qty, $total, $user, $datetime, $status);
+				$stmt->execute();
+    			
+				if ($type == 'Product'){
+					$stmt = $this->con->prepare("SELECT quantity_on_hand FROM tbl_products WHERE record_id = ?");
+					$stmt->bind_param('s', $service_product_id);
+					$stmt->execute();
+					$data = $stmt->get_result()->fetch_assoc();
+				 	$qty_on_hand	= $data['quantity_on_hand'];
+
+				 	$qty_on_hand -= $qty;
+				 	$stmt = $this->con->prepare("UPDATE tbl_products SET quantity_on_hand = ? WHERE record_id = ?");
+					$stmt->bind_param('ss', $qty_on_hand, $service_product_id);
+					$stmt->execute();
+				}
+
+			}
+		}
+
+		$stmt->close();
+		$this->con->close();
+		return 1;
+
 	}
 
 	public function id_format($id, $prefix, $branch){
