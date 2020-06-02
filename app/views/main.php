@@ -79,6 +79,9 @@
   elseif ($link == 'transaction'){
     echo '<script src="'.ROOT.'public/js/transaction.js"></script>';
   }
+  elseif ($link == 'payment'){
+    echo '<script src="'.ROOT.'public/js/payment.js"></script>';
+  }
   elseif ($link == 'service'){
     echo '<script src="'.ROOT.'public/js/service.js"></script>';
   }

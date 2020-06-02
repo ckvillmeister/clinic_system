@@ -393,23 +393,6 @@ $('#btn_print_bill').click(function(){
 	mywindow.document.write(js);
 	mywindow.document.write('<title>' + title + '</title>');
 	setTimeout(function(){ mywindow.print(); }, 1000);
-	/*$.ajax({
-       url: 'transaction/print_bill',
-        method: 'GET',
-        data: {print_page: html},
-        dataType: 'HTML'
-    }).done(function(response) {
-    	var title = 'Patient Billing';
-    	var params = [
-			    'height='+screen.height,
-			    'width='+screen.width,
-			    'fullscreen=yes' 
-			].join(',');
-        var mywindow = window.open('', title, params);
-		mywindow.document.write(response);
-		mywindow.document.write('<title>' + title + '</title>');
-		setTimeout(function(){ mywindow.print(); }, 1000);
-    })*/
 });
 
 function insert_transaction(transaction_id, date, patientid, age, transaction_detail){

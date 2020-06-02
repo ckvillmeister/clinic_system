@@ -37,68 +37,40 @@
         
         </div>
 
+        <div class="row-fluid p-2 shadow-none" >
         
+          <div class="row p-2">
+            <div class="col-lg-3">
+              <input type="text" class="form-control form-control-sm" id="text_transaction_id" placeholder="Transaction ID">
+            </div>
+            <div class="col-lg-1">
+              <button class="btn btn-primary btn-sm" id="btn_search" style="width:35px">
+                <i class="fas fa-search"></i>
+              </button>  
+              <button class="btn btn-secondary btn-sm" id="btn_transaction_list" style="width:35px">
+                <i class="fas fa-list-alt"></i>
+              </button>  
+            </div>
+          </div><br>
 
+          <div id="payment_detail">
+          </div>
+        </div>
       </div>    
     </div>
   </section>
 </div>
 
-<!-- Modal Product Form -->
-<div class="modal fade" id="modal_product_form" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
+<!-- Modal Transaction List -->
+<div class="modal fade" id="modal_transaction_list" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title" id="modal_title"><strong><icon class="fas fa-tooth"></icon>&nbsp;Product Information Form</h4></strong>
+        <h4 class="modal-title" id="modal_title"><strong><icon class="fas fa-list-alt"></icon>&nbsp;Transactions List</strong></h4>
         <button type="button" class="close" data-dismiss="modal">&times;</button>
       </div>
       <div class="modal-body">
-        <form id="form_patient_info">
-          <div class="form-group row">
-            <div class="col-sm-4">
-              <label class="col-form-label">Product Name:</label>
-            </div>
-            <div class="col-sm-8">
-              <input type="text" class="form-control" id="text_name" placeholder="Product Name">
-            </div>
-          </div>
-          <div class="form-group row">
-            <div class="col-sm-4">
-              <label class="col-form-label">Description:</label>
-            </div>
-            <div class="col-sm-8">
-              <textarea class="form-control" rows="3" id="text_description" placeholder="Description" style="resize:none;"></textarea>
-            </div>
-          </div>
-          <div class="form-group row">
-            <div class="col-sm-4">
-              <label class="col-form-label">Price:</label>
-            </div>
-            <div class="col-sm-8">
-              <input type="text" class="form-control" id="text_price" placeholder="Price">
-            </div>
-          </div>
-          <div class="form-group row">
-            <div class="col-sm-4">
-              <label class="col-form-label">Quantity on Hand:</label>
-            </div>
-            <div class="col-sm-8">
-              <input type="text" class="form-control" id="text_quantity" placeholder="Quantity on Hand">
-            </div>
-          </div>
-          <div class="form-group row">
-            <div class="col-sm-4">
-              <label class="col-form-label">Re-order Level:</label>
-            </div>
-            <div class="col-sm-8">
-              <input type="text" class="form-control" id="text_reorder" placeholder="Re-order Level">
-            </div>
-          </div>
-        </div>
-      </form>
-      <div class="modal-footer">
-        <div class="float-right">
-          <button class="btn btn-primary" id="btn_submit"><icon class="fas fa-share-square"></icon>&nbsp;Submit</button>
+        <div id="transaction_list">
         </div>
       </div>
     </div>
@@ -109,8 +81,8 @@
 <div class="modal fade" id="modal_message" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
-      <div class="modal-header bg-success">
-        <h5><i class="icon fas fa-check"></i><span class="ml-2" id="modal_body_header"></span></h5>
+      <div class="message_modal_header modal-header bg-success">
+        <h5><i class="message_icon icon fas fa-check"></i><span class="ml-2" id="modal_body_header"></span></h5>
       </div>
       <div class="modal-body">
         <span id="modal_body_message"></span>
