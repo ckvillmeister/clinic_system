@@ -20,7 +20,7 @@
             <td><?php echo $transaction_detail->transaction_id; ?></td>
             <td><?php echo $fullname; ?></td>
             <td>
-              <button class="btn btn-sm btn-success controls" id="btn_select" style="width:100px"><i class="fas fa-check"></i>&nbsp;Select</button>
+              <button class="btn btn-sm btn-success controls" id="btn_select" value="<?php echo $transaction_detail->id; ?>" style="width:100px"><i class="fas fa-check"></i>&nbsp;Select</button>
             </td>
           </tr>
         <?php

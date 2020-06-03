@@ -7,6 +7,7 @@ class paymentController extends controller{
 	}
 
 	public function get_transaction_detail(){
+		$trans_sys_id = $_POST['id'];
 		$transaction_id = $_POST['transaction_id'];
 
 		$payment_obj = new paymentModel();
@@ -16,9 +17,22 @@ class paymentController extends controller{
 			echo $trans_info;
 		}
 		else{
+			//Transaction Details
 			$id = $trans_info['id'];
 			$trans_detail = $payment_obj->get_transaction_detail($id);
-			$this->view()->render('payment/payment_detail.php', array('trans_info' => $trans_info, 'trans_detail' => $trans_detail));
+
+			//Downpayment Percentage
+			$discount_percent = $this->get_dp_percentage();
+
+			//Collection Info
+			$collection_info = $this->get_collection_info($trans_sys_id);
+			$collection_id = $collection_info['id'];
+
+			//Collection Details
+			$collection_detail = $this->get_collection_detail($collection_id);
+			
+
+			$this->view()->render('payment/payment_detail.php', array('trans_info' => $trans_info, 'trans_detail' => $trans_detail, 'discount_percent' => $discount_percent, 'collection_info' => $collection_info, 'collection_detail' => $collection_detail));
 		}
 	}
 
@@ -26,7 +40,34 @@ class paymentController extends controller{
 		$status = $_POST['status'];
 		$payment_obj = new paymentModel();
 		$transactions = $payment_obj->get_transaction_list($status);
+
+
 		$this->view()->render('payment/transaction_list.php', array('transactions' => $transactions));
+	}
+
+	public function get_dp_percentage(){
+		$discount_percent;
+		$settings_obj = new settingsModel();
+		$settings = $settings_obj->retrieve_settings();
+		
+		foreach ($settings as $key => $setting) {
+			$setting_detail = (object) $setting;
+			if ($setting_detail->name = 'Down Payment Percentage'){
+				$discount_percent = $setting_detail->desc;
+			}
+		}
+
+		return $discount_percent;
+	}
+
+	public function get_collection_info($id){
+		$payment_obj = new paymentModel();
+		return $payment_obj->get_collection_info($id);
+	}
+
+	public function get_collection_detail($id){
+		$payment_obj = new paymentModel();
+		return $payment_obj->get_collection_detail($id);
 	}
 }
 ?>

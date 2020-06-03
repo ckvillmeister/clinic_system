@@ -43,13 +43,14 @@
             <div class="col-lg-3">
               <input type="text" class="form-control form-control-sm" id="text_transaction_id" placeholder="Transaction ID">
             </div>
-            <div class="col-lg-1">
+            <div class="col-lg-2">
               <button class="btn btn-primary btn-sm" id="btn_search" style="width:35px">
                 <i class="fas fa-search"></i>
               </button>  
               <button class="btn btn-secondary btn-sm" id="btn_transaction_list" style="width:35px">
                 <i class="fas fa-list-alt"></i>
-              </button>  
+              </button>
+              <input type="hidden" id="text_transaction_sys_id">
             </div>
           </div><br>
 
@@ -72,6 +73,50 @@
       <div class="modal-body">
         <div id="transaction_list">
         </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Tender Cash List -->
+<div class="modal fade" id="modal_tender_cash" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="modal_title"><strong><icon class="fas fa-money-bill"></icon>&nbsp;Tender Amount</strong></h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+            <div class="col-sm-9">
+              <input type="text" class="form-control form-control-sm" id="text_amount" placeholder="Enter Payment Amount">
+            </div>
+            <div class="col-sm-2">
+              <button class="btn btn-sm btn-primary" id="btn_enter_payment_amount">Enter</button>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Set Discount -->
+<div class="modal fade" id="modal_set_discount" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="modal_title"><strong><icon class="fas fa-percentage"></icon>&nbsp;Set Discount</strong></h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+          <div class="row">
+            <div class="col-sm-9">
+              <input type="text" class="form-control form-control-sm" id="text_discount" placeholder="Discounted Amount">
+            </div>
+            <div class="col-sm-2">
+              <button class="btn btn-sm btn-primary" id="btn_enter_discounted_amount">Enter</button>
+            </div>
+          </div>
       </div>
     </div>
   </div>

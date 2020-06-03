@@ -96,5 +96,56 @@ class paymentModel extends model{
 		$this->con->close();
 		return $transactions;
 	}
+
+	public function get_collection_info($id){
+		$query = 'SELECT record_id, transaction_id, total_amount, discounted_amount FROM tbl_collection_main WHERE transaction_id = ? AND status = 1';
+		$stmt = $this->con->prepare($query);
+		$stmt->bind_param("s", $id);
+		$stmt->execute();
+
+		if ($stmt->get_result()->num_rows >= 1){
+			$stmt = $this->con->prepare($query);
+			$stmt->bind_param("s", $id);
+			$stmt->execute();
+			$data = $stmt->get_result()->fetch_assoc();
+				
+			$collection_info = array('id' => $data['record_id'],
+							'transaction_id' => $data['transaction_id'],
+							'total_amount' => $data['total_amount'],
+							'discounted_amount' => $data['discounted_amount']);
+				
+
+			$stmt->close();
+			$this->con->close();
+			return $collection_info;
+		}
+		else{
+			$stmt->close();
+			$this->con->close();
+			return 0;
+		}
+		
+	}
+
+	public function get_collection_detail($id){
+		$query = 'SELECT record_id, collection_id, payment_amount FROM tbl_collection_details WHERE collection_id = ?';
+		
+		$stmt = $this->con->prepare($query);
+		$stmt->bind_param("s", $id);
+		$stmt->execute();
+		$stmt->bind_result($id, $collection_id, $payment);
+		$ctr=0;
+		$payment_details = array();
+
+		while ($stmt->fetch()) {
+			$payment_details[$ctr++] = array('id' => $name,
+												'collection_id' => $type,
+												'amount_paid' => $cost);
+		}
+
+		$stmt->close();
+		$this->con->close();
+		return $payment_details;
+	}
 	
 }
