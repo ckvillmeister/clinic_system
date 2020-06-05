@@ -3,9 +3,14 @@
 class userController extends controller{
 
 	public function index(){
-		$accessrole_obj = new accessroleModel();
-		$roles = $accessrole_obj->retrieve_roles(1);
-		$this->view()->render('main.php', array('content' => 'maintenance/user/index.php', 'roles' => $roles, 'system_name' => $this->system_name()));
+		if (!($this->is_session_empty())){
+			$accessrole_obj = new accessroleModel();
+			$roles = $accessrole_obj->retrieve_roles(1);
+			$this->view()->render('main.php', array('content' => 'maintenance/user/index.php', 'roles' => $roles, 'system_name' => $this->system_name()));
+		}
+		else{
+			header("Location: http://localhost".ROOT);
+		}
 	}
 
 	public function retrieve_users(){
@@ -50,8 +55,14 @@ class userController extends controller{
 	}
 
 	public function user_profile(){
-		$id = $_GET['id'];
-		$this->view()->render('main.php', array('content' => 'maintenance/user/user_profile.php', 'system_name' => $this->system_name()));
+		if (!($this->is_session_empty())){
+			$id = $_GET['id'];
+			$this->view()->render('main.php', array('content' => 'maintenance/user/user_profile.php', 'system_name' => $this->system_name()));
+		}
+		else{
+			header("Location: http://localhost".ROOT);
+		}
+
 	}
 }
 ?>

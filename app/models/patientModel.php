@@ -70,14 +70,14 @@ class patientModel extends model{
 	public function retrieve_patients($status){
 		$query = 'SELECT record_id, patient_id, firstname, middlename, lastname, 
 							extension, sex, birthdate, address_purok, 
-							address_brgy, address_citymun, contact_number, email, created_by
+							address_brgy, address_citymun, contact_number, email, medical_history_remarks, created_by
 							FROM tbl_patient_information AS tpi
 						WHERE status = ? ORDER BY record_id ASC';
 		
 		$stmt = $this->con->prepare($query);
 		$stmt->bind_param("s", $status);
 		$stmt->execute();
-		$stmt->bind_result($id, $patientid, $firstname, $middlename, $lastname, $extension, $sex, $birthdate, $address_purok, $address_brgy, $address_citymun, $contact_number, $email, $created_by);
+		$stmt->bind_result($id, $patientid, $firstname, $middlename, $lastname, $extension, $sex, $birthdate, $address_purok, $address_brgy, $address_citymun, $contact_number, $email, $remarks, $created_by);
 		$ctr=0;
 		$patients = array();
 
@@ -99,6 +99,7 @@ class patientModel extends model{
 										'address_citymun' => $address_citymun,
 										'contact_number' => $contact_number,
 										'email' => $email,
+										'remarks' => $remarks,
 										'createdby' => $creator);
 		}
 
@@ -127,17 +128,17 @@ class patientModel extends model{
 	public function get_patient_info($id){
 		$query = 'SELECT tpi.record_id, tpi.patient_id, tpi.firstname, tpi.middlename, tpi.lastname, 
 							tpi.extension, tpi.sex, tpi.birthdate, tpi.address_purok, 
-							tb.barangay_description, tc.city_municipality_description, tpi.contact_number, tpi.email, tpi.created_by, tpi.address_brgy, tpi.address_citymun
+							tb.barangay_description, tc.city_municipality_description, tpi.contact_number, tpi.email, tpi.medical_history_remarks, tpi.created_by, tpi.address_brgy, tpi.address_citymun
 							FROM tbl_patient_information AS tpi
-							INNER JOIN tbl_citymun AS tc ON tc.city_municipality_code = tpi.address_citymun
-							INNER JOIN tbl_barangay AS tb ON tb.id = tpi.address_brgy
+							LEFT JOIN tbl_citymun AS tc ON tc.city_municipality_code = tpi.address_citymun
+							LEFT JOIN tbl_barangay AS tb ON tb.id = tpi.address_brgy
 						WHERE tpi.record_id = ?
 						GROUP BY tpi.record_id';
 		
 		$stmt = $this->con->prepare($query);
 		$stmt->bind_param("s", $id);
 		$stmt->execute();
-		$stmt->bind_result($id, $patientid, $firstname, $middlename, $lastname, $extension, $sex, $birthdate, $address_purok, $address_brgy, $address_citymun, $contact_number, $email, $created_by, $address_brgy_id, $address_citymun_id);
+		$stmt->bind_result($id, $patientid, $firstname, $middlename, $lastname, $extension, $sex, $birthdate, $address_purok, $address_brgy, $address_citymun, $contact_number, $email, $remarks, $created_by, $address_brgy_id, $address_citymun_id);
 		$patient;
 
 		while ($stmt->fetch()) {
@@ -154,6 +155,7 @@ class patientModel extends model{
 										'address_citymun' => $address_citymun,
 										'contact_number' => $contact_number,
 										'email' => $email,
+										'remarks' => $remarks,
 										'address_brgy_id' => $address_brgy_id,
 										'address_citymun_id' => $address_citymun_id);
 		}
@@ -163,13 +165,15 @@ class patientModel extends model{
 		return $patient;
 	}
 
-	public function insert_patient($patient_id, $firstname, $middlename, $lastname, $extension, $addr_citymun, $addr_barangay, $addr_purok, $sex, $birthdate, $number, $email, $user, $datetime){
+	public function insert_patient($patient_id, $firstname, $middlename, $lastname, $extension, $addr_citymun, $addr_barangay, $addr_purok, $sex, $birthdate, $number, $email, $remarks, $user, $datetime, $proceed){
 
+		
 		$firstname = ucwords(strtolower($firstname)); 
 		$middlename = ucwords(strtolower($middlename));
 		$lastname = ucwords(strtolower($lastname));
-		$extension = ($extension == 'II' | $extension == 'III' | $extension == 'IV') ? $extension : ucwords(strtolower($extension == 'II'));
+		$extension = ($extension == 'II' | $extension == 'III' | $extension == 'IV') ? $extension : ucwords(strtolower($extension));
 		$status = 1;
+
 		$query = 'SELECT * FROM tbl_patient_information WHERE patient_id = ?';
 		$stmt = $this->con->prepare($query);
 		$stmt->bind_param('s', $patient_id);
@@ -189,22 +193,60 @@ class patientModel extends model{
 															address_citymun = ?,
 															contact_number = ?,
 															email = ?,
+															medical_history_remarks = ?,
 															updated_by = ?,
 															date_updated = ?,
 															status = ?
 															WHERE patient_id = ?';
 			$stmt = $this->con->prepare($query);
-			$stmt->bind_param('ssssssssssssssss', $patient_id, $firstname, $middlename, $lastname, $extension, $sex, $birthdate, $addr_purok, $addr_barangay, $addr_citymun, $number, $email, $user, $datetime, $status, $patient_id);
+			$stmt->bind_param('sssssssssssssssss', $patient_id, $firstname, $middlename, $lastname, $extension, $sex, $birthdate, $addr_purok, $addr_barangay, $addr_citymun, $number, $email, $remarks, $user, $datetime, $status, $patient_id);
 			$stmt->execute();
 			return 2;
 		}
 		else{
-			$query = 'INSERT INTO tbl_patient_information (patient_id, firstname, middlename, lastname, extension, sex, birthdate, address_purok, address_brgy, address_citymun, contact_number, email, created_by, date_created, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+			$query = 'SELECT firstname, middlename, lastname, extension FROM tbl_patient_information WHERE firstname = ? AND middlename = ? AND lastname = ?';
 			$stmt = $this->con->prepare($query);
-			$stmt->bind_param('sssssssssssssss', $patient_id, $firstname, $middlename, $lastname, $extension, $sex, $birthdate, $addr_purok, $addr_barangay, $addr_citymun, $number, $email, $user, $datetime, $status);
+			$stmt->bind_param('sss', $firstname, $middlename, $lastname);
 			$stmt->execute();
-			return 1;
+			$result = $stmt->get_result();
+
+			if ($result->num_rows >= 1){
+				if ($proceed == 1){
+					$query = 'INSERT INTO tbl_patient_information (patient_id, firstname, middlename, lastname, extension, sex, birthdate, address_purok, address_brgy, address_citymun, contact_number, email, medical_history_remarks, created_by, date_created, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+					$stmt = $this->con->prepare($query);
+					$stmt->bind_param('ssssssssssssssss', $patient_id, $firstname, $middlename, $lastname, $extension, $sex, $birthdate, $addr_purok, $addr_barangay, $addr_citymun, $number, $email, $remarks, $user, $datetime, $status);
+					$stmt->execute();
+					return 1;
+				}
+				else{
+					$stmt = $this->con->prepare($query);
+					$stmt->bind_param('sss', $firstname, $middlename, $lastname);
+					$stmt->execute();
+					$stmt->bind_result($firstname, $middlename, $lastname, $extension);
+					$ctr = 0;
+					$matching_patient_name = array();
+
+					while ($stmt->fetch()) {
+						$matching_patient_name[$ctr++] = array('firstname' => $firstname,
+																'middlename' => $middlename,
+																'lastname' => $lastname,
+																'extension' => $extension);
+					}
+
+					$stmt->close();
+					$this->con->close();
+					return $matching_patient_name;
+				}
+			}
+			else{
+				$query = 'INSERT INTO tbl_patient_information (patient_id, firstname, middlename, lastname, extension, sex, birthdate, address_purok, address_brgy, address_citymun, contact_number, email, medical_history_remarks, created_by, date_created, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+				$stmt = $this->con->prepare($query);
+				$stmt->bind_param('ssssssssssssssss', $patient_id, $firstname, $middlename, $lastname, $extension, $sex, $birthdate, $addr_purok, $addr_barangay, $addr_citymun, $number, $email, $remarks, $user, $datetime, $status);
+				$stmt->execute();
+				return 1;
+			}
 		}
+		
 	}
 
 	public function retrieve_payment_history($patient_id){
@@ -246,7 +288,7 @@ class patientModel extends model{
 	}
 
 	public function retrieve_patient_services_availed($patient_id){
-		$query = 'SELECT ttd.service_product_id 
+		$query = 'SELECT ttd.service_product_id, ttd.remarks
 					FROM tbl_transaction_main AS ttm
 					INNER JOIN tbl_transaction_details AS ttd ON ttd.transaction_id = ttm.record_id
 						WHERE ttm.patient_id = ? AND ttd.status <> 0 AND ttd.type = "Service"';
@@ -259,7 +301,7 @@ class patientModel extends model{
 			$stmt = $this->con->prepare($query);
 			$stmt->bind_param('s', $patient_id);
 			$stmt->execute();
-			$stmt->bind_result($service_id);
+			$stmt->bind_result($service_id, $remarks);
 			$ctr = 0;
 			$services_availed = array();
 
@@ -269,7 +311,8 @@ class patientModel extends model{
 
 				$services_availed[$ctr++] = array('id' => $service_id,
 													'name' => $service['name'],
-													'description' => $service['description']);
+													'description' => $service['description'],
+													'remarks' => $remarks);
 			}
 
 			$stmt->close();

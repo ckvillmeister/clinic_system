@@ -42,6 +42,9 @@
             <li class="nav-item">
               <a class="nav-link" id="custom-tabs-four-messages-tab" data-toggle="pill" href="#tab_products" role="tab" aria-controls="custom-tabs-four-messages" aria-selected="false">Products</a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link" id="custom-tabs-four-messages-tab" data-toggle="pill" href="#tab_collection" role="tab" aria-controls="custom-tabs-four-messages" aria-selected="false">Collection</a>
+            </li>
           </ul>
         </div>
         <div class="card-body">
@@ -55,10 +58,39 @@
                     <div class="row">
                       <select class="form-group form-group-sm mr-2">
                         <option value=""> [ Status ] </option>
+                        <option value="1">Active</option>
+                        <option value="2">Closed</option>
+                        <option value="0">Voided</option>
                       </select>
                       <select class="form-group form-group-sm mr-2">
                         <option value=""> [ Service Type ] </option>
+                        <?php
+                          $ctr = 0;
+                          foreach ($data['services'] as $key => $service) {
+                              $service_detail = (object) $service;
+                        ?>
+                        <option value="<?php echo $service_detail->id; ?>"> <?php echo $service_detail->description; ?> </option>
+                        <?php
+                          }
+                        ?>
                       </select>
+                      <select class="form-group form-group-sm mr-2">
+                        <option value=""> [ Month ] </option>
+                        <option value="1">January</option>
+                        <option value="2">February</option>
+                        <option value="3">March</option>
+                        <option value="4">April</option>
+                        <option value="5">May</option>
+                        <option value="6">June</option>
+                        <option value="7">July</option>
+                        <option value="8">August</option>
+                        <option value="9">September</option>
+                        <option value="10">October</option>
+                        <option value="11">November</option>
+                        <option value="12">December</option>
+                      </select>
+                      <input type="text" class="form-group form-group-sm mr-2" placeholder="Year From" id="text_year_from" style="width:100px">
+                      <input type="text" class="form-group form-group-sm mr-2" placeholder="Year To" id="text_year_to" style="width:100px" readonly="readonly">
                       <button class="btn btn-sm btn-primary form-group form-group-sm"><i class="fas fa-recycle mr-2"></i>Generate</button>
                     </div>
 
@@ -118,6 +150,10 @@
               </div>
 
             </div>
+
+            <div class="tab-pane fade" id="tab_collection" role="tabpanel" aria-labelledby="custom-tabs-four-profile-tab">
+            </div>
+
           </div>
         </div>
       </div>

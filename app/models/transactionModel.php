@@ -54,13 +54,14 @@ class transactionModel extends model{
 			{	
 				$service_product_id = $data[0];
     			$type = $data[1];
-    			$charge = $data[2];
-    			$qty = $data[3];
-    			$total = $data[4];
+    			$remarks = $data[2];
+    			$charge = $data[3];
+    			$qty = $data[4];
+    			$total = $data[5];
 
-    			$query = 'INSERT INTO tbl_transaction_details (transaction_id, service_product_id, type, cost, quantity, total, created_by, date_created, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
+    			$query = 'INSERT INTO tbl_transaction_details (transaction_id, service_product_id, type, remarks, cost, quantity, total, created_by, date_created, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
 				$stmt = $this->con->prepare($query);
-				$stmt->bind_param('sssssssss', $recordid, $service_product_id, $type, $charge, $qty, $total, $user, $datetime, $status);
+				$stmt->bind_param('ssssssssss', $recordid, $service_product_id, $type, $remarks, $charge, $qty, $total, $user, $datetime, $status);
 				$stmt->execute();
     			
 				if ($type == 'Product'){

@@ -21,6 +21,14 @@ class controller{
 		return $system_name_detail->desc;
 	}
 
+	public function is_session_empty(){
+		if (isset($_SESSION['user_id']) == ''){
+			return true;
+		}
+
+		return false;
+	}
+
 
 }
 

@@ -23,14 +23,14 @@
     <!-- Notifications Dropdown Menu -->
     <li class="nav-item dropdown">
       <a class="nav-link" data-toggle="dropdown" href="#">
-        <img class="img-circle elevation-1" src="<?php echo ROOT; ?>public/image/avatar25x25.jpg">
+        <img class="img-circle elevation-1" src="<?php echo ROOT; ?>public/image/silhouette25x25.png">
         <b></b>
       </a>
       <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
         <div class="card-outline">
           <div class="card-body box-profile">
             <div class="text-center">
-              <img class="profile-user-img img-fluid img-circle" src="<?php echo ROOT; ?>public/image/avatar100x100.jpg">
+              <img class="profile-user-img img-fluid img-circle" src="<?php echo ROOT; ?>public/image/silhouette100x100.png">
             </div>
             <h3 class="profile-username text-center"><?php echo strtoupper($firstname.' '.$lastname); ?></h3>
           </div>

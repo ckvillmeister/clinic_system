@@ -130,8 +130,7 @@ $('#btn_add_service').click(function(){
 		    var $this = $(this);
 		    var index = $(this).index();
 		    if(service_id == $('td:eq(0)', $this).text()){
-		    	$('#table_services_availed tbody tr:eq('+index+')').find('td:eq(3)').text(prescription);
-		    	$('#table_services_availed tbody tr:eq('+index+')').find('td:eq(4)').text(remarks);
+		    	$('#table_services_availed tbody tr:eq('+index+')').find('td:eq(3)').text(remarks);
 			}
 		});
 	}
@@ -139,7 +138,7 @@ $('#btn_add_service').click(function(){
 		$('#table_services_availed tbody').append('<tr><td style="display:none">'+ service_id +'</td>'+ 
 										'<td>'+ ++global_service_row_ctr +'</td>'+
 										'<td>'+ service_name +'</td>'+
-										'<td>'+ remarks +'</td>'+
+										'<td style="white-space: pre-line;">'+ remarks +'</td>'+
 										'<td>'+ charge +'</td>'+
 										'<td>'+
 										'<button value="' + service_id + '" class="btn btn-sm btn-warning mr-2" id="btn_edit_service" style="width:90px"><i class="fas fa-edit"> Edit</i></button>'+
@@ -157,11 +156,9 @@ $('#btn_add_service').click(function(){
 $('body').on('click', '#btn_edit_service', function(){
 	global_service_id = $(this).val();
 	var service_name =  $(this).closest("tr").find('td:eq(2)').text(),
-		prescription =  $(this).closest("tr").find('td:eq(3)').text(),
-		remarks =  $(this).closest("tr").find('td:eq(4)').text();
+		remarks =  $(this).closest("tr").find('td:eq(3)').text();
 
 	$('#text_service_name').val(service_name);
-	$('#text_prescription').val(prescription);
 	$('#text_remarks').val(remarks);
 
 	$("#modal_service_form").modal({
@@ -339,14 +336,14 @@ $('#btn_save_transaction').click(function(){
 	$('#table_services_availed tbody').find('tr').each(function(){
       var $this = $(this);
       var total = parseFloat($('td:eq(4)', $this).text().replace(/,/g, '')) * parseFloat(1);
-      transaction_detail[ctr] = [$('td:eq(0)', $this).text(), 'Service', $('td:eq(4)', $this).text(), '1', total];
+      transaction_detail[ctr] = [$('td:eq(0)', $this).text(), 'Service', $('td:eq(3)', $this).text(), $('td:eq(4)', $this).text(), '1', total];
       ctr++;
     });
 
     $('#table_products_ordered tbody').find('tr').each(function(){
       var $this = $(this);
       var total = parseFloat($('td:eq(4)', $this).text().replace(/,/g, '')) * parseFloat($('td:eq(5)', $this).text().replace(/,/g, ''));
-      transaction_detail[ctr] = [$('td:eq(0)', $this).text(), 'Product', $('td:eq(4)', $this).text(), $('td:eq(5)', $this).text(), total];
+      transaction_detail[ctr] = [$('td:eq(0)', $this).text(), 'Product', '', $('td:eq(4)', $this).text(), $('td:eq(5)', $this).text(), total];
       ctr++;
     });
 

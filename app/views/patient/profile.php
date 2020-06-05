@@ -79,13 +79,18 @@ $image = ($patient_info->sex == 'MALE') ? ROOT.'public/image/avatar100x100.jpg' 
             <div class="card card-primary card-outline" id="card_2">
               <div class="card-header p-2">
                 <ul class="nav nav-pills">
-                  <li class="nav-item"><a class="nav-link active" href="#patient_history" data-toggle="tab">Availed Services History</a></li>
+                  <li class="nav-item"><a class="nav-link active" href="#medical_history" data-toggle="tab">Medical History Remarks</a></li>
+                  <li class="nav-item"><a class="nav-link" href="#patient_history" data-toggle="tab">Availed Services History</a></li>
                   <li class="nav-item"><a class="nav-link" href="#payment_history" data-toggle="tab">Payment History</a></li>
                 </ul>
               </div>
               <div class="card-body">
                 <div class="tab-content">
-                  <div class="active tab-pane" id="patient_history">
+                  <div class="active tab-pane" id="medical_history">
+                    <textarea id="text_medical_history_remarks" rows="4" style="resize:none; font-size: 16pt" class="form-control form-control-sm bg-white" readonly="readonly"><?php echo $patient_info->remarks; ?></textarea>
+
+                  </div>
+                  <div class="tab-pane" id="patient_history">
                     <div class="overlay-wrapper"></div>
                     <table class="table table-striped" id="table_summary">
                       <thead>
@@ -107,7 +112,7 @@ $image = ($patient_info->sex == 'MALE') ? ROOT.'public/image/avatar100x100.jpg' 
                         <tr>
                           <td><?php echo ++$ctr; ?></td>
                           <td><?php echo $service_detail->name; ?></td>
-                          <td></td>
+                          <td style="white-space: pre-line;"><?php echo $service_detail->remarks; ?></td>
                         </tr>
                         <?php
                           }

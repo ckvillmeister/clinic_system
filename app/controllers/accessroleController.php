@@ -3,7 +3,12 @@
 class accessroleController extends controller{
 
 	public function index(){
-		$this->view()->render('main.php', array('content' => 'maintenance/access_role/index.php', 'system_name' => $this->system_name()));
+		if (!($this->is_session_empty())){
+			$this->view()->render('main.php', array('content' => 'maintenance/access_role/index.php', 'system_name' => $this->system_name()));
+		}
+		else{
+			header("Location: http://localhost".ROOT);
+		}
 	}
 
 	public function retrieve_accessroles(){
@@ -40,6 +45,15 @@ class accessroleController extends controller{
 		$accessrole_obj = new accessroleModel();
 		$result = $accessrole_obj->insert_accessrole($id, $name, $description, $user, $datetime);
 		echo $result;
+	}
+
+	public function manage_access_rights(){
+		if (!($this->is_session_empty())){
+			$this->view()->render('main.php', array('content' => 'maintenance/access_role/manage_access_rights.php', 'system_name' => $this->system_name()));
+		}
+		else{
+			header("Location: http://localhost".ROOT);
+		}
 	}
 }
 

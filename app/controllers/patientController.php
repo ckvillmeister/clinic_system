@@ -3,9 +3,14 @@
 class patientController extends controller{
 
 	public function index(){
-		$patient_obj = new patientModel();
-		$muncities = $patient_obj->get_city_mun();
-		$this->view()->render('main.php', array('content' => 'patient/index.php', 'muncities' => $muncities, 'system_name' => $this->system_name()));
+		if (!($this->is_session_empty())){
+			$patient_obj = new patientModel();
+			$muncities = $patient_obj->get_city_mun();
+			$this->view()->render('main.php', array('content' => 'patient/index.php', 'muncities' => $muncities, 'system_name' => $this->system_name()));
+		}
+		else{
+			header("Location: http://localhost".ROOT);
+		}
 	}
 
 	public function retrieve_patients(){
@@ -59,27 +64,41 @@ class patientController extends controller{
 		$birthdate = $_POST['birthdate'];
 		$number = $_POST['number'];
 		$email = $_POST['email'];
+		$remarks = $_POST['remarks'];
+		$proceed = $_POST['proceed'];
 		$user = $_SESSION['user_id'];
 		$datetime = date('Y-m-d H:i:s');
 
 		$patient_obj = new patientModel();
-		$result = $patient_obj->insert_patient($patient_id, $firstname, $middlename, $lastname, $extension, $addr_citymun, $addr_barangay, $addr_purok, $sex, $birthdate, $number, $email, $user, $datetime);
-		echo $result;
+		$result = $patient_obj->insert_patient($patient_id, $firstname, $middlename, $lastname, $extension, $addr_citymun, $addr_barangay, $addr_purok, $sex, $birthdate, $number, $email, $remarks, $user, $datetime, $proceed);
+
+		if ($result == 1 | $result == 2){
+			echo $result;
+		}
+		else{
+			$this->view()->render('patient/matched_patient_names.php', array('patient_names' => $result));
+		}
+	
 	}
 
 	public function patient_profile(){
-		$id = $_GET['id'];
+		if (!($this->is_session_empty())){
+			$id = $_GET['id'];
 
-		$patient_obj = new patientModel();
-		$patient_info = $patient_obj->get_patient_info($id);
+			$patient_obj = new patientModel();
+			$patient_info = $patient_obj->get_patient_info($id);
 
-		$patient_obj = new patientModel();
-		$patient_services_availed = $patient_obj->retrieve_patient_services_availed($id);
+			$patient_obj = new patientModel();
+			$patient_services_availed = $patient_obj->retrieve_patient_services_availed($id);
 
-		$patient_obj = new patientModel();
-		$patient_payments = $patient_obj->retrieve_payment_history($id);
+			$patient_obj = new patientModel();
+			$patient_payments = $patient_obj->retrieve_payment_history($id);
 
-		$this->view()->render('main.php', array('content' => 'patient/profile.php', 'patient_info' => $patient_info,  'system_name' => $this->system_name(), 'services_availed' => $patient_services_availed, 'payment_history' => $patient_payments));
+			$this->view()->render('main.php', array('content' => 'patient/profile.php', 'patient_info' => $patient_info,  'system_name' => $this->system_name(), 'services_availed' => $patient_services_availed, 'payment_history' => $patient_payments));
+		}
+		else{
+			header("Location: http://localhost".ROOT);
+		}
 	}
 
 }

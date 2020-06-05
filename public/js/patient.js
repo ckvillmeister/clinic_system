@@ -37,6 +37,7 @@ $('#btn_inactive').click(function(){
 $('body').on('click', '#btn_edit_control', function(){
 	var id = $(this).val();
 	get_patient_info(id);
+	global_action = 'edit';
 	$("#modal_patient_form").modal({
 		backdrop: 'static',
     	keyboard: false
@@ -84,6 +85,7 @@ $('#btn_submit').click(function(){
 		birthdate = $('#text_birthdate').val(),
 		number = $('#text_number').val(),
 		email = $('#text_email').val(),
+		remarks = $('#text_medical_history_remarks').val(),
 		error = false;
 
 	if (firstname == ''){
@@ -97,7 +99,7 @@ $('#btn_submit').click(function(){
 	}
 
 	if (error == false){
-		insert_patient(patient_id, firstname, middlename, lastname, extension, addr_citymun, addr_barangay, addr_purok, sex, birthdate, number, email);
+		insert_patient(patient_id, firstname, middlename, lastname, extension, addr_citymun, addr_barangay, addr_purok, sex, birthdate, number, email, remarks, 0);	
 	}
 })
 
@@ -110,12 +112,31 @@ $('#btn_yes').click(function(){
 	}
 })
 
+$('#btn_proceed').click(function(){
+	var patient_id = $('#text_patient_id').val(),
+		firstname = $('#text_firstname').val(),
+		middlename = $('#text_middlename').val(),
+		lastname = $('#text_lastname').val(),
+		extension = $('#cbo_extension').val(),
+		addr_citymun = $('#cbo_muncity').val(),
+		addr_barangay = $('#cbo_brgy').val(),
+		addr_purok = $('#cbo_purok').val(),
+		sex = $('#cbo_sex').val(),
+		birthdate = $('#text_birthdate').val(),
+		number = $('#text_number').val(),
+		email = $('#text_email').val(),
+		remarks = $('#text_medical_history_remarks').val();
+
+	$('#modal_matching_patient_name').modal('toggle');
+	insert_patient(patient_id, firstname, middlename, lastname, extension, addr_citymun, addr_barangay, addr_purok, sex, birthdate, number, email, remarks, 1);
+})
+
 //Function: Save Patient Info
-function insert_patient(patient_id, firstname, middlename, lastname, extension, addr_citymun, addr_barangay, addr_purok, sex, birthdate, number, email){
+function insert_patient(patient_id, firstname, middlename, lastname, extension, addr_citymun, addr_barangay, addr_purok, sex, birthdate, number, email, remarks, proceed){
 	$.ajax({
 		url: 'patient/insert_patient',
 		method: 'POST',
-		data: {patient_id:patient_id, firstname:firstname, middlename:middlename, lastname:lastname, extension:extension, addr_citymun:addr_citymun, addr_barangay:addr_barangay, addr_purok:addr_purok, sex:sex, birthdate:birthdate, number:number, email:email},
+		data: {patient_id:patient_id, firstname:firstname, middlename:middlename, lastname:lastname, extension:extension, addr_citymun:addr_citymun, addr_barangay:addr_barangay, addr_purok:addr_purok, sex:sex, birthdate:birthdate, number:number, email:email, remarks: remarks, proceed: proceed},
 		dataType: 'html',
 		success: function(result) {
 			var msg, header;
@@ -123,22 +144,38 @@ function insert_patient(patient_id, firstname, middlename, lastname, extension, 
 			if (result == 1){
 				header = 'Saved';
 				msg = 'Patient information successfully saved!';
+				$('#modal_body_header').html(header);
+				$('#modal_body_message').html(msg);
+				$('#modal_message').modal({
+					backdrop: 'static',
+			    	keyboard: false
+				});
+				setTimeout(function(){ $('#modal_message').modal('toggle'); }, 3000);
+				setTimeout(function(){ $('#modal_patient_form').modal('toggle'); }, 3000);
+				setTimeout(function(){ retrieve_patients(1); }, 4000);
+				setTimeout(function(){ clear(); }, 4000);
 			}
 			else if (result == 2){
 				header = 'Updated';
 				msg = 'Patient information successfully updated!';
+				$('#modal_body_header').html(header);
+				$('#modal_body_message').html(msg);
+				$('#modal_message').modal({
+					backdrop: 'static',
+			    	keyboard: false
+				});
+				setTimeout(function(){ $('#modal_message').modal('toggle'); }, 3000);
+				setTimeout(function(){ $('#modal_patient_form').modal('toggle'); }, 3000);
+				setTimeout(function(){ retrieve_patients(1); }, 4000);
+				setTimeout(function(){ clear(); }, 4000);
 			}
-			
-			$('#modal_body_header').html(header);
-			$('#modal_body_message').html(msg);
-			$('#modal_message').modal({
-				backdrop: 'static',
-		    	keyboard: false
-			});
-			setTimeout(function(){ $('#modal_message').modal('toggle'); }, 3000);
-			setTimeout(function(){ $('#modal_patient_form').modal('toggle'); }, 3000);
-			setTimeout(function(){ retrieve_patients(1); }, 4000);
-			setTimeout(function(){ clear(); }, 4000);
+			else{
+				$('#match_patient_name_list').html(result);
+				$('#modal_matching_patient_name').modal({
+					backdrop: 'static',
+			    	keyboard: false
+				});
+			}
 		}
 	})
 }
@@ -209,6 +246,7 @@ function get_patient_info(id){
 			$('#text_birthdate').val(result['birthdate']);
 			$('#text_number').val(result['contact_number']);
 			$('#text_email').val(result['email']);
+			$('#text_medical_history_remarks').val(result['remarks']);
 			$("#cbo_muncity option[value=" + result['address_citymun_id'] + "]").prop("selected",true);
 			$('#cbo_muncity').change();
 			setTimeout(function(){ $("#cbo_brgy option[value=" + result['address_brgy_id'] + "]").prop("selected",true); }, 500);
@@ -299,6 +337,7 @@ function clear(){
 	$('#text_number').val('');
 	$('#text_email').val('');
 	$('#text_age').val('');
+	$('#text_medical_history_remarks').val('');
 }
   
 function set_height(){

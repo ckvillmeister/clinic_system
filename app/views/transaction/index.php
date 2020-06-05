@@ -136,6 +136,14 @@
               <input type="text" id="text_age" class="form-control form-control-sm bg-white" readonly="readonly">
             </div>
           </div>
+          <div class="form-group row">
+            <div class="col-sm-2 text-muted">
+              <label class="col-form-label ml-3">Medical History Remarks:</label>
+            </div>
+            <div class="col-sm-10">
+              <textarea id="text_medical_history_remarks" rows="2" style="resize:none;" class="form-control form-control-sm bg-white" readonly="readonly"></textarea>
+            </div>
+          </div>
         </div>
 
       </div>  

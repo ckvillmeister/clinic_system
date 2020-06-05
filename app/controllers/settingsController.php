@@ -3,9 +3,14 @@
 class settingsController extends controller{
 	
 	public function index(){
-		$setting_obj = new settingsModel();
-		$settings = $setting_obj->retrieve_settings();
-		$this->view()->render('main.php', array('content' => 'maintenance/system_settings/index.php', 'settings' => $settings, 'system_name' => $this->system_name()));
+		if (!($this->is_session_empty())){
+			$setting_obj = new settingsModel();
+			$settings = $setting_obj->retrieve_settings();
+			$this->view()->render('main.php', array('content' => 'maintenance/system_settings/index.php', 'settings' => $settings, 'system_name' => $this->system_name()));
+		}
+		else{
+			header("Location: http://localhost".ROOT);
+		}
 	}
 
 	public function save_settings(){

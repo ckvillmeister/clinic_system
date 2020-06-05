@@ -32,7 +32,7 @@
               ?>
               <button class="btn btn-sm btn-warning controls" id="btn_edit_control" value="<?php echo $role_detail->id; ?>"><i class="fas fa-edit"></i>&nbsp;Edit</button>
               <button class="btn btn-sm btn-danger controls" id="btn_delete_control" value="<?php echo $role_detail->id; ?>"><i class="fas fa-trash"></i>&nbsp;Delete</button>
-              <a href="<?php echo ROOT; ?>accessrole/patient_profile?id=<?php echo $role_detail->id; ?>" class="btn btn-sm btn-primary controls" id="btn_manage_control" value="<?php echo $role_detail->id; ?>"><i class="fas fa-cog"></i>&nbsp;Rights</a>
+              <a href="<?php echo ROOT; ?>accessrole/manage_access_rights?id=<?php echo $role_detail->id; ?>" class="btn btn-sm btn-primary controls" id="btn_manage_control" value="<?php echo $role_detail->id; ?>"><i class="fas fa-cog"></i>&nbsp;Rights</a>
               <?php }
                 elseif ($status == 0){
               ?>

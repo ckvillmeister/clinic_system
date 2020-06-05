@@ -1,3 +1,4 @@
+
 <style>
   .content{
     font-family: 'Arial Narrow';
@@ -170,6 +171,14 @@
               <input type="email" class="form-control" id="text_email" placeholder="E-mail">
             </div>
           </div>
+          <div class="form-group row">
+            <div class="col-sm-2">
+              <label class="col-form-label">Medical History Remarks:</label>
+            </div>
+            <div class="col-sm-10">
+              <textarea id="text_medical_history_remarks" rows="2" style="resize:none;" class="form-control form-control-sm bg-white"></textarea>
+            </div>
+          </div>
         </div>
       </form>
       <div class="modal-footer">
@@ -195,7 +204,7 @@
   </div>
 </div>
 
-<!-- Modal Message -->
+<!-- Modal Confirm -->
 <div class="modal fade" id="modal_confirm" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
@@ -208,6 +217,26 @@
       <div class="modal-footer">
         <div class="float-right">
           <button class="btn btn-sm btn-primary" id="btn_yes">Yes</button>&nbsp;<button class="btn btn-sm btn-secondary" data-dismiss="modal">No</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Matching Patient Name -->
+<div class="modal fade" id="modal_matching_patient_name" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5>Confirm</h5>
+      </div>
+      <div class="modal-body">
+        <div id="match_patient_name_list">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="float-right">
+          <button class="btn btn-sm btn-primary" id="btn_proceed">Proceed</button>&nbsp;<button class="btn btn-sm btn-secondary" data-dismiss="modal">No</button>
         </div>
       </div>
     </div>

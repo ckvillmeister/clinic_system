@@ -3,7 +3,12 @@
 class serviceController extends controller{
 
 	public function index(){
-		$this->view()->render('main.php', array('content' => 'services/index.php', 'system_name' => $this->system_name()));
+		if (!($this->is_session_empty())){
+			$this->view()->render('main.php', array('content' => 'services/index.php', 'system_name' => $this->system_name()));
+		}
+		else{
+			header("Location: http://localhost".ROOT);
+		}
 	}
 
 	public function retrieve_services(){

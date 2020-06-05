@@ -3,9 +3,14 @@
 class transactionController extends controller{
 
 	public function index(){
-		$service_obj = new serviceModel();
-		$services = $service_obj->retrieve_services(1);
-		$this->view()->render('main.php', array('content' => 'transaction/index.php', 'services' => $services, 'system_name' => $this->system_name()));
+		if (!($this->is_session_empty())){
+			$service_obj = new serviceModel();
+			$services = $service_obj->retrieve_services(1);
+			$this->view()->render('main.php', array('content' => 'transaction/index.php', 'services' => $services, 'system_name' => $this->system_name()));
+		}
+		else{
+			header("Location: http://localhost".ROOT);
+		}
 	}
 
 	public function get_transaction_id(){
