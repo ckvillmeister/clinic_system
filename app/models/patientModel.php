@@ -207,6 +207,81 @@ class patientModel extends model{
 		}
 	}
 
+	public function retrieve_payment_history($patient_id){
+		$query = 'SELECT ttm.transaction_id, tcm.total_amount, tcm.discounted_amount, tcd.payment_amount, tcd.cash_tendered 
+					FROM tbl_transaction_main AS ttm
+					INNER JOIN tbl_collection_main AS tcm ON tcm.transaction_id = ttm.record_id
+					INNER JOIN tbl_collection_details AS tcd ON tcd.collection_id = tcm.record_id 
+						WHERE ttm.patient_id = ?';
+		$stmt = $this->con->prepare($query);
+		$stmt->bind_param('s', $patient_id);
+		$stmt->execute();
+		$result = $stmt->get_result();
+
+		if ($result->num_rows >= 1){
+			$stmt = $this->con->prepare($query);
+			$stmt->bind_param('s', $patient_id);
+			$stmt->execute();
+			$stmt->bind_result($transaction_id, $total_amount, $discounted_amount, $payment_amount, $amount_tendered);
+			$ctr = 0;
+			$payments = array();
+
+			while ($stmt->fetch()) {
+				$payments[$ctr++] = array('transaction_id' => $transaction_id,
+													'total_amount' => $total_amount,
+													'discounted_amount' => $discounted_amount,
+													'payment_amount' => $payment_amount,
+													'amount_tendered' => $amount_tendered);
+			}
+
+			$stmt->close();
+			$this->con->close();
+			return $payments;
+
+		}
+
+		$stmt->close();
+		$this->con->close();
+		return 0;
+	}
+
+	public function retrieve_patient_services_availed($patient_id){
+		$query = 'SELECT ttd.service_product_id 
+					FROM tbl_transaction_main AS ttm
+					INNER JOIN tbl_transaction_details AS ttd ON ttd.transaction_id = ttm.record_id
+						WHERE ttm.patient_id = ? AND ttd.status <> 0 AND ttd.type = "Service"';
+		$stmt = $this->con->prepare($query);
+		$stmt->bind_param('s', $patient_id);
+		$stmt->execute();
+		$result = $stmt->get_result();
+
+		if ($result->num_rows >= 1){
+			$stmt = $this->con->prepare($query);
+			$stmt->bind_param('s', $patient_id);
+			$stmt->execute();
+			$stmt->bind_result($service_id);
+			$ctr = 0;
+			$services_availed = array();
+
+			while ($stmt->fetch()) {
+				$service_obj = new serviceModel();
+				$service = $service_obj->get_service_info($service_id);
+
+				$services_availed[$ctr++] = array('id' => $service_id,
+													'name' => $service['name'],
+													'description' => $service['description']);
+			}
+
+			$stmt->close();
+			$this->con->close();
+			return $services_availed;
+		}
+
+		$stmt->close();
+		$this->con->close();
+		return 0;
+	}
+
 	public function id_format($id, $prefix, $branch){
 		$newID = "";
 		$number;

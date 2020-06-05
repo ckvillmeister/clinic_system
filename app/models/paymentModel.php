@@ -10,7 +10,7 @@ class paymentModel extends model{
 	}
 
 	public function get_transaction_info($transaction_id){
-		$query = 'SELECT record_id, patient_id FROM tbl_transaction_main WHERE transaction_id = ? AND status = 1';
+		$query = 'SELECT record_id, patient_id FROM tbl_transaction_main WHERE transaction_id = ?';
 		$stmt = $this->con->prepare($query);
 		$stmt->bind_param("s", $transaction_id);
 		$stmt->execute();
@@ -138,14 +138,99 @@ class paymentModel extends model{
 		$payment_details = array();
 
 		while ($stmt->fetch()) {
-			$payment_details[$ctr++] = array('id' => $name,
-												'collection_id' => $type,
-												'amount_paid' => $cost);
+			$payment_details[$ctr++] = array('id' => $id,
+												'collection_id' => $collection_id,
+												'amount_paid' => $payment);
 		}
 
 		$stmt->close();
 		$this->con->close();
 		return $payment_details;
+	}
+
+	public function save_payment($transaction_id, $total_amount, $balance_amount, $discounted_amount, $cash_tendered, $user, $datetime){
+		$status = 1;
+		$query = 'SELECT * FROM tbl_collection_main WHERE transaction_id = ? AND status = 1';
+		$stmt = $this->con->prepare($query);
+		$stmt->bind_param("s", $transaction_id);
+		$stmt->execute();
+
+		$difference = 0;
+		$payment = 0;
+
+		if ($cash_tendered > $balance_amount){
+			$payment = $balance_amount;
+		}
+		else{
+			$payment = $cash_tendered;
+		}
+
+		$difference = $balance_amount - $payment;
+
+		if ($stmt->get_result()->num_rows >= 1){
+
+			if ($difference <= 0){
+				$query = 'UPDATE tbl_transaction_main SET status = 2 WHERE record_id = ?';
+				$stmt = $this->con->prepare($query);
+				$stmt->bind_param('s', $transaction_id);
+				$stmt->execute();
+
+				$query = 'UPDATE tbl_transaction_details SET status = 2 WHERE transaction_id = ?';
+				$stmt = $this->con->prepare($query);
+				$stmt->bind_param('s', $transaction_id);
+				$stmt->execute();
+			}
+	
+			$stmt = $this->con->prepare("SELECT record_id FROM tbl_collection_main WHERE transaction_id = ?");
+			$stmt->bind_param('s', $transaction_id);
+			$stmt->execute();
+			$data = $stmt->get_result()->fetch_assoc();
+		 	$collection_id	= $data['record_id'];
+
+		 	$query = 'INSERT INTO tbl_collection_details (collection_id, payment_amount, cash_tendered, created_by, date_created, status) VALUES (?, ?, ?, ?, ?, ?)';
+			$stmt = $this->con->prepare($query);
+			$stmt->bind_param('ssssss', $collection_id, $payment, $cash_tendered, $user, $datetime, $status);
+			$stmt->execute();
+
+			$stmt->close();
+			$this->con->close();
+			return 1;
+			
+		}
+		else{
+			if ($difference <= 0){
+				$query = 'UPDATE tbl_transaction_main SET status = 2 WHERE record_id = ?';
+				$stmt = $this->con->prepare($query);
+				$stmt->bind_param('s', $transaction_id);
+				$stmt->execute();
+
+				$query = 'UPDATE tbl_transaction_details SET status = 2 WHERE transaction_id = ?';
+				$stmt = $this->con->prepare($query);
+				$stmt->bind_param('s', $transaction_id);
+				$stmt->execute();
+			}
+
+			$query = 'INSERT INTO tbl_collection_main (date_of_payment, transaction_id, total_amount, discounted_amount, created_by, date_created, status) VALUES (?, ?, ?, ?, ?, ?, ?)';
+			$stmt = $this->con->prepare($query);
+			$stmt->bind_param('sssssss', $datetime, $transaction_id, $total_amount, $discounted_amount, $user, $datetime, $status);
+			$stmt->execute();
+
+			$stmt = $this->con->prepare("SELECT record_id FROM tbl_collection_main WHERE transaction_id = ?");
+			$stmt->bind_param('s', $transaction_id);
+			$stmt->execute();
+			$data = $stmt->get_result()->fetch_assoc();
+		 	$collection_id	= $data['record_id'];
+
+		 	$query = 'INSERT INTO tbl_collection_details (collection_id, payment_amount, cash_tendered, created_by, date_created, status) VALUES (?, ?, ?, ?, ?, ?)';
+			$stmt = $this->con->prepare($query);
+			$stmt->bind_param('ssssss', $collection_id, $payment, $cash_tendered, $user, $datetime, $status);
+			$stmt->execute();
+
+			$stmt->close();
+			$this->con->close();
+			return 1;
+		}
+
 	}
 	
 }

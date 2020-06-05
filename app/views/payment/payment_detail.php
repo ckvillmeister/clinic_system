@@ -1,6 +1,8 @@
 <?php
 $total_amount = 0;
 $balance = 0;
+$discount = 0;
+$total_paid = 0;
 //Transaction Information
 $info = (object) $data['trans_info'];
 
@@ -62,7 +64,20 @@ $address .= ucwords(strtolower($patient_info->address_brgy.', '.$patient_info->a
                       $balance = $total_amount;
                     }
                     else{
+                      $collection_info = (object) $data['collection_info'];
+                      $discount = $collection_info->discounted_amount;
 
+                      foreach ($data['collection_detail'] as $key => $payment) {
+                        $payment_detail = (object) $payment;
+                        $total_paid += $payment_detail->amount_paid;
+                      }
+
+                      if ($discount == 0 | $discount == ''){
+                        $balance = $total_amount - $total_paid;
+                      }
+                      else{
+                        $balance = $discount - $total_paid;
+                      }
                     }
                   ?>
                 </tbody>
@@ -76,22 +91,40 @@ $address .= ucwords(strtolower($patient_info->address_brgy.', '.$patient_info->a
   <div class="col-lg-4">
     <div class="card" id="col_no_2">
       <div class="card-body">
-        <strong class="text-muted">Total Amount:</strong>
+        <strong class="text-muted">Total Amount Paid:</strong>
+        <p class="h3 text-success"><?php echo number_format($total_paid, 2); ?></p>
+        <hr>
+        <strong class="text-muted">Actual Total Amount:</strong>
         <p class="h3"><?php echo number_format($total_amount, 2); ?></p>
-        <strong class="text-muted">Remaining Balance:</strong>
-        <p class="h3"><?php echo number_format($balance, 2); ?></p>
+        <hr>
         <strong class="text-muted">Discounted Amount:</strong>
-        <p class="h3" id="discounted_amount">0.00</p>
+        <p class="h3" id="discounted_amount"><?php echo number_format($discount, 2); ?></p>
+        <hr>
+        <strong class="text-muted">Remaining Balance:</strong>
+        <p class="h3 text-danger" id="balance_amount"><?php echo number_format($balance, 2); ?></p>
+        <hr>
         <strong class="text-muted">Required Down Payment:</strong>
-        <p class="h3">
+        <p class="h3" id="downpayment_amount">
         <?php
-          $dp = $total_amount * $data['discount_percent'];
-          echo number_format($dp, 2);
+          if ($discount == 0 | $discount == ''){
+            $dp = $total_amount * $data['discount_percent'];
+            echo number_format($dp, 2);
+          }
+          else{
+            $dp = $discount * $data['discount_percent'];
+            echo number_format($dp, 2);
+          }
         ?>
-        </p>
+        </p><br>
         <div class="row form-group">
           <div class="col-sm-12">
+            <?php
+              if ($discount == 0 & ($total_amount == $balance)){
+            ?>
             <button class="btn btn-sm btn-primary form-control mb-2" id="btn_set_discount"><i class="fas fa-sliders-h mr-2"></i>Set Discount</button>
+            <?php
+              }
+            ?>
             <button class="btn btn-sm btn-success form-control" id="btn_tender_cash"><i class="fas fa-cash-register mr-2"></i>Tender Amount</button>
           </div>
         </div>
@@ -99,6 +132,7 @@ $address .= ucwords(strtolower($patient_info->address_brgy.', '.$patient_info->a
     </div>
   </div>
 </div>
+<input type="hidden" id="texth_dppercent" value="<?php echo $data['discount_percent']; ?>">
 <input type="hidden" id="texth_totalamount" value="<?php echo $total_amount; ?>">
 <input type="hidden" id="texth_balance" value="<?php echo $balance; ?>">
 <input type="hidden" id="texth_discount">

@@ -34,6 +34,7 @@ class productController extends controller{
 		$id = $_POST['id'];
 		$name = $_POST['name'];
 		$description = $_POST['description'];
+		$uom = $_POST['uom'];
 		$price = $_POST['price'];
 		$quantity = $_POST['quantity'];
 		$reorder = $_POST['reorder'];
@@ -41,7 +42,7 @@ class productController extends controller{
 		$datetime = date('Y-m-d H:i:s');
 
 		$product_obj = new productModel();
-		$result = $product_obj->insert_product($id, $name, $description, $price, $quantity, $reorder, $user, $datetime);
+		$result = $product_obj->insert_product($id, $name, $description, $uom, $price, $quantity, $reorder, $user, $datetime);
 		echo $result;
 	}
 

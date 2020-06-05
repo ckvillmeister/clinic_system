@@ -155,7 +155,7 @@
             <div class="col-sm-2 text-muted">
               <label class="col-form-label ml-3">Services:</label>
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-6">
               <select id="cbo_services" class="form-control form-control-sm bg-white">
                 <option value=""></option>
               <?php
@@ -163,7 +163,7 @@
                 foreach ($services as $key => $service) {
                   $service_detail = (object) $service;
               ?>
-                <option value="<?php echo $service_detail->id; ?>"><?php echo $service_detail->name; ?></option>
+                <option value="<?php echo $service_detail->id; ?>"><?php echo $service_detail->name.' - '.$service_detail->description; ?></option>
               <?php
                 }
               ?>
@@ -179,7 +179,6 @@
                     <th style="display:none"></th>
                     <th>No.</th>
                     <th>Service Name</th>
-                    <th>Prescription</th>
                     <th>Remarks</th>
                     <th>Charge</th>
                     <th style="width:200px">Control</th>
@@ -295,17 +294,8 @@
               <div class="col-sm-3">
                 <label class="col-form-label">Service Name:</label>
               </div>
-              <div class="col-sm-4">
-                <input type="text" id="text_service_name" class="form-control form-control-sm bg-white" readonly="readonly">
-              </div>
-            </div>
-
-            <div class="form-group row">
-              <div class="col-sm-3">
-                <label class="col-form-label">Prescription:</label>
-              </div>
               <div class="col-sm-9">
-                <textarea class="form-control" rows="5" id="text_prescription" placeholder="Prescription" style="resize:none;"></textarea>
+                <input type="text" id="text_service_name" class="form-control form-control-sm bg-white" readonly="readonly">
               </div>
             </div>
 
@@ -314,7 +304,7 @@
                 <label class="col-form-label">Remarks:</label>
               </div>
               <div class="col-sm-9">
-                <textarea class="form-control" rows="3" id="text_remarks" placeholder="Remarks" style="resize:none;"></textarea>
+                <textarea class="form-control" rows="10" id="text_remarks" placeholder="Remarks" style="resize:none;"></textarea>
               </div>
             </div>
 
@@ -452,18 +442,6 @@
 
                 <div class="table-responsive">
                   <table class="table">
-                    <tr>
-                      <th style="width:50%">Subtotal:</th>
-                      <td><span id="span_sub_total"></span></td>
-                    </tr>
-                    <tr>
-                      <th>Required Downpayment:</th>
-                      <td><span id="span_required_dp"></span></td>
-                    </tr>
-                    <tr>
-                      <th>Discount:</th>
-                      <td><span id="span_discount_price"></span></td>
-                    </tr>
                     <tr>
                       <th>Total:</th>
                       <td><span id="span_grand_total"></span></td>

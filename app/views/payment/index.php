@@ -51,6 +51,7 @@
                 <i class="fas fa-list-alt"></i>
               </button>
               <input type="hidden" id="text_transaction_sys_id">
+              <input type="hidden" id="texth_transaction_id">
             </div>
           </div><br>
 
@@ -105,7 +106,7 @@
   <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title" id="modal_title"><strong><icon class="fas fa-percentage"></icon>&nbsp;Set Discount</strong></h4>
+        <h4 class="modal-title" id="modal_title"><strong><icon class="fas fa-percentage"></icon>&nbsp;Set Discounted Amount</strong></h4>
         <button type="button" class="close" data-dismiss="modal">&times;</button>
       </div>
       <div class="modal-body">

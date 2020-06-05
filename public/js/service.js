@@ -77,10 +77,10 @@ $('#btn_submit').click(function(){
 		error = true;
 	}
 
-	if(!(rate.match(/^\d+.\d+$/))) {
-		$('#text_rate').addClass('is-invalid');
-	    error = true;
-	}
+	//if(!(rate.match(/^\d+.\d+$/))) {
+	//	$('#text_rate').addClass('is-invalid');
+	//    error = true;
+	//}
 
 	if (error == false){
 		if (global_action=='edit'){

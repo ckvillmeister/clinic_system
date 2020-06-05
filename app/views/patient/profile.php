@@ -25,7 +25,7 @@ $image = ($patient_info->sex == 'MALE') ? ROOT.'public/image/avatar100x100.jpg' 
     <div class="container-fluid">
       <div class="row">
         <div class="col-sm-5">
-          <div class="card card-primary card-outline">
+          <div class="card card-primary card-outline" id="card_1">
             <div class="card-body box-profile">
               <div class="text-center">
                 <img class="profile-user-img img-fluid img-circle" src="<?php echo $image; ?>">
@@ -76,24 +76,105 @@ $image = ($patient_info->sex == 'MALE') ? ROOT.'public/image/avatar100x100.jpg' 
           </div>
         </div>
         <div class="col-sm-7">
-            <div class="card">
+            <div class="card card-primary card-outline" id="card_2">
               <div class="card-header p-2">
                 <ul class="nav nav-pills">
-                  <li class="nav-item"><a class="nav-link active" href="#patient_history" data-toggle="tab">Patient History</a></li>
+                  <li class="nav-item"><a class="nav-link active" href="#patient_history" data-toggle="tab">Availed Services History</a></li>
                   <li class="nav-item"><a class="nav-link" href="#payment_history" data-toggle="tab">Payment History</a></li>
                 </ul>
               </div>
               <div class="card-body">
                 <div class="tab-content">
                   <div class="active tab-pane" id="patient_history">
-                    <div class="overlay-wrapper">
-      
-                    </div>
+                    <div class="overlay-wrapper"></div>
+                    <table class="table table-striped" id="table_summary">
+                      <thead>
+                        <tr>
+                          <th>No.</th>
+                          <th>Service</th>
+                          <th>Remarks</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <?php
+                          $ctr = 0;
+
+                          if ($data['services_availed'] != 0){
+
+                          foreach ($data['services_availed'] as $key => $service) {
+                            $service_detail = (object) $service;
+                        ?>
+                        <tr>
+                          <td><?php echo ++$ctr; ?></td>
+                          <td><?php echo $service_detail->name; ?></td>
+                          <td></td>
+                        </tr>
+                        <?php
+                          }
+
+                          }
+                        ?>
+                      </tbody>
+                    </table>
                   </div>
                   <div class="tab-pane" id="payment_history">
-                    <div class="overlay-wrapper">
-      
-                    </div>  
+                    <div class="overlay-wrapper"></div>
+                    <table class="table table-striped" id="table_summary">
+                      <thead>
+                        <tr>
+                          <th>No.</th>
+                          <th>Transaction ID</th>
+                          <th>Balance</th>
+                          <th>Amount Paid</th>
+                          <th>Change</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <?php
+                          $prev_transaction_id = '';
+                          $balance = 0;
+                          $ctr = 0;
+
+                          if ($data['payment_history'] != 0){
+
+                          foreach ($data['payment_history'] as $key => $payment) {
+                            $payment_detail = (object) $payment;
+
+                            if ($prev_transaction_id != $payment_detail->transaction_id){
+                              if ($payment_detail->discounted_amount == 0 | $payment_detail->transaction_id == ''){
+                                $balance = $payment_detail->total_amount;
+                              }
+                              else{
+                                $balance = $payment_detail->discounted_amount;
+                              }
+                            }
+
+                            $prev_transaction_id = $payment_detail->transaction_id;
+                        ?>
+                        <tr>
+                          <td><?php echo ++$ctr; ?></td>
+                          <td><?php echo $payment_detail->transaction_id; ?></td>
+                          <td><?php echo number_format($balance, 2); ?></td>
+                          <td><?php echo number_format($payment_detail->amount_tendered, 2); ?></td>
+                          <td>
+                            <?php
+                              if (($payment_detail->amount_tendered - $balance) < 0){
+                                echo number_format(0, 2);
+                              }
+                              else{
+                                echo number_format(($payment_detail->amount_tendered - $balance), 2);
+                              }
+                            ?>
+                          </td>
+                        </tr>
+                        <?php
+                          $balance -= $payment_detail->amount_tendered;
+                          }
+
+                          }
+                        ?>
+                      </tbody>
+                    </table>
                   </div>
                 </div>
               </div>

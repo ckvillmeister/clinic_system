@@ -69,5 +69,19 @@ class paymentController extends controller{
 		$payment_obj = new paymentModel();
 		return $payment_obj->get_collection_detail($id);
 	}
+
+	public function save_payment(){
+		$transaction_id = $_POST['transaction_id'];
+		$total_amount = $_POST['total_amount'];
+		$balance_amount = $_POST['balance_amount'];
+		$discounted_amount = $_POST['discounted_amount'];
+		$cash_tendered = $_POST['cash_tendered'];
+		$user = $_SESSION['user_id'];
+		$datetime = date('Y-m-d H:i:s');
+
+		$payment_obj = new paymentModel();
+		$result = $payment_obj->save_payment($transaction_id, $total_amount, $balance_amount, $discounted_amount, $cash_tendered, $user, $datetime);
+		echo $result;		
+	}
 }
 ?>

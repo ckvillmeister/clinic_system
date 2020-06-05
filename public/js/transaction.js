@@ -121,7 +121,6 @@ $('body').on('click', '#btn_remove_product', function(){
 
 $('#btn_add_service').click(function(){
 	var service_id = $('#cbo_services').val(),
-		prescription = $('#text_prescription').val(),
 		remarks = $('#text_remarks').val(),
 		charge = $('#text_charge').val(),
 		service_name = $("#cbo_services :selected").text();
@@ -140,7 +139,6 @@ $('#btn_add_service').click(function(){
 		$('#table_services_availed tbody').append('<tr><td style="display:none">'+ service_id +'</td>'+ 
 										'<td>'+ ++global_service_row_ctr +'</td>'+
 										'<td>'+ service_name +'</td>'+
-										'<td>'+ prescription +'</td>'+
 										'<td>'+ remarks +'</td>'+
 										'<td>'+ charge +'</td>'+
 										'<td>'+
@@ -282,9 +280,9 @@ $('#btn_confirm').click(function(){
 
 		$('#table_services_availed tbody').find('tr').each(function(){
 	      var $this = $(this);
-	      var total = parseFloat($('td:eq(5)', $this).text().replace(/,/g, '')) * parseFloat(1);
+	      var total = parseFloat($('td:eq(4)', $this).text().replace(/,/g, '')) * parseFloat(1);
 	      total = formatNumber(total.toFixed(2));
-	      record[ctr] = [$('td:eq(0)', $this).text(), ++row_ctr, $('td:eq(2)', $this).text(), 'Service', $('td:eq(5)', $this).text(), '1', total];
+	      record[ctr] = [$('td:eq(0)', $this).text(), ++row_ctr, $('td:eq(2)', $this).text(), 'Service', $('td:eq(4)', $this).text(), '1', total];
 	      ctr++;
 	      item_ctr++;
 	    });
@@ -340,16 +338,14 @@ $('#btn_save_transaction').click(function(){
 
 	$('#table_services_availed tbody').find('tr').each(function(){
       var $this = $(this);
-      var total = parseFloat($('td:eq(5)', $this).text().replace(/,/g, '')) * parseFloat(1);
-      total = formatNumber(total.toFixed(2));
-      transaction_detail[ctr] = [$('td:eq(0)', $this).text(), 'Service', $('td:eq(5)', $this).text(), '1', total];
+      var total = parseFloat($('td:eq(4)', $this).text().replace(/,/g, '')) * parseFloat(1);
+      transaction_detail[ctr] = [$('td:eq(0)', $this).text(), 'Service', $('td:eq(4)', $this).text(), '1', total];
       ctr++;
     });
 
     $('#table_products_ordered tbody').find('tr').each(function(){
       var $this = $(this);
       var total = parseFloat($('td:eq(4)', $this).text().replace(/,/g, '')) * parseFloat($('td:eq(5)', $this).text().replace(/,/g, ''));
-      total = formatNumber(total.toFixed(2));
       transaction_detail[ctr] = [$('td:eq(0)', $this).text(), 'Product', $('td:eq(4)', $this).text(), $('td:eq(5)', $this).text(), total];
       ctr++;
     });

@@ -10,14 +10,14 @@ class productModel extends model{
 	}
 
 	public function retrieve_products($status){
-		$query = 'SELECT record_id, name, description, price, quantity_on_hand, reorder_level, created_by
+		$query = 'SELECT record_id, name, description, unit_of_measurement, price, quantity_on_hand, reorder_level, created_by
 							FROM tbl_products
 						WHERE status = ? ORDER BY record_id ASC';
 		
 		$stmt = $this->con->prepare($query);
 		$stmt->bind_param("s", $status);
 		$stmt->execute();
-		$stmt->bind_result($id, $name, $description, $price, $quantity, $reorder, $created_by);
+		$stmt->bind_result($id, $name, $description, $uom, $price, $quantity, $reorder, $created_by);
 		$ctr=0;
 		$products = array();
 
@@ -29,6 +29,7 @@ class productModel extends model{
 			$products[$ctr++] = array('id' => $id, 
 										'name' => $name,
 										'description' => $description,
+										'uom' => $uom, 
 										'price' => $price,
 										'quantity' => $quantity,
 										'reorder' => $reorder,
@@ -58,20 +59,21 @@ class productModel extends model{
 	}
 
 	public function get_product_info($id){
-		$query = 'SELECT record_id, name, description, price, quantity_on_hand, reorder_level
+		$query = 'SELECT record_id, name, description, unit_of_measurement, price, quantity_on_hand, reorder_level
 							FROM tbl_products
 							WHERE record_id = ?';
 		
 		$stmt = $this->con->prepare($query);
 		$stmt->bind_param("s", $id);
 		$stmt->execute();
-		$stmt->bind_result($id, $name, $description, $price, $quantity, $reorder);
+		$stmt->bind_result($id, $name, $description, $uom, $price, $quantity, $reorder);
 		$product;
 
 		while ($stmt->fetch()) {
 			$product = array('id' => $id, 
 								'name' => $name,
 								'description' => $description,
+								'uom' => $uom,
 								'price' => $price,
 								'quantity' => $quantity,
 								'reorder' => $reorder);
@@ -82,13 +84,14 @@ class productModel extends model{
 		return $product;
 	}
 
-	public function insert_product($id, $name, $description, $price, $quantity, $reorder, $user, $datetime){
+	public function insert_product($id, $name, $description, $uom, $price, $quantity, $reorder, $user, $datetime){
 
 		$status = 1;
 		
 		if (trim($id) != ''){
 			$query = 'UPDATE tbl_products SET name = ?,
 												description = ?,
+												unit_of_measurement = ?,
 												price = ?,
 												quantity_on_hand = ?,
 												reorder_level = ?,
@@ -97,14 +100,14 @@ class productModel extends model{
 												status = ?
 												WHERE record_id = ?';
 			$stmt = $this->con->prepare($query);
-			$stmt->bind_param('sssssssss', $name, $description, $price, $quantity, $reorder, $user, $datetime, $status, $id);
+			$stmt->bind_param('ssssssssss', $name, $description, $uom, $price, $quantity, $reorder, $user, $datetime, $status, $id);
 			$stmt->execute();
 			return 2;
 		}
 		else{
-			$query = 'INSERT INTO tbl_products (name, description, price, quantity_on_hand, reorder_level, created_by, date_created, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+			$query = 'INSERT INTO tbl_products (name, description, unit_of_measurement, price, quantity_on_hand, reorder_level, created_by, date_created, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
 			$stmt = $this->con->prepare($query);
-			$stmt->bind_param('ssssssss', $name, $description, $price, $quantity, $reorder, $user, $datetime, $status);
+			$stmt->bind_param('sssssssss', $name, $description, $uom, $price, $quantity, $reorder, $user, $datetime, $status);
 			$stmt->execute();
 			return 1;
 		}

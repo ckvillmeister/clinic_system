@@ -2,6 +2,7 @@ var global_id;
 var global_action;
 
 retrieve_patients(1);
+set_height();
 
 $('#text_firstname').on('change', function() {
 	$('#text_firstname').removeClass('is-invalid');
@@ -298,4 +299,16 @@ function clear(){
 	$('#text_number').val('');
 	$('#text_email').val('');
 	$('#text_age').val('');
+}
+  
+function set_height(){
+	var col_left_height = $("#card_1").height(),
+	    col_right_height = $("#card_2").height();
+	
+	if (col_left_height > col_right_height){
+	 $("#card_2").css({'height':($("#card_1").height()+'px')});
+	}
+	else if (col_right_height > col_left_height){
+	  $("#card_1").css({'height':($("#card_2").height()+'px')});
+	}
 }

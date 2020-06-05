@@ -9,7 +9,7 @@
       <th style="width: 100px" class="text-center">No.</th>
       <th>Service Name</th>
       <th>Description</th>
-      <th>Rate</th>
+      <th>Fee</th>
       <th>Added By</th>
       <th style="width:250px">Control</th>
     </tr>

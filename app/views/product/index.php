@@ -84,6 +84,14 @@
           </div>
           <div class="form-group row">
             <div class="col-sm-4">
+              <label class="col-form-label">Unit of Measurement:</label>
+            </div>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" id="text_uom" placeholder="Unit of Measurement">
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-sm-4">
               <label class="col-form-label">Price:</label>
             </div>
             <div class="col-sm-8">

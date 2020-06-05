@@ -9,6 +9,7 @@
       <th style="width: 30px" class="text-center">No.</th>
       <th>Product Name</th>
       <th>Description</th>
+      <th>Unit of Measurement</th>
       <th>Price</th>
       <th>Quantity on Hand</th>
       <th>Re-order Level</th>
@@ -28,6 +29,7 @@
             <td class="text-center"><?php echo ++$ctr; ?></td>
             <td><?php echo $product_detail->name ?></td>
             <td><?php echo $product_detail->description; ?></td>
+            <td><?php echo $product_detail->uom; ?></td>
             <td><?php echo number_format((float)$product_detail->price, 2, '.', ''); ?></td>
             <td><?php echo $product_detail->quantity; ?></td>
             <td><?php echo $product_detail->reorder; ?></td>

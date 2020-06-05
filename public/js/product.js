@@ -69,6 +69,7 @@ $('body').on('click', '#btn_reactivate_control', function(){
 $('#btn_submit').click(function(){
 	var name = $('#text_name').val(),
 		description = $('#text_description').val(),
+		uom = $('#text_uom').val(),
 		price = $('#text_price').val(),
 		quantity = $('#text_quantity').val(),
 		reorder = $('#text_reorder').val(),
@@ -79,7 +80,7 @@ $('#btn_submit').click(function(){
 		error = true;
 	}
 
-	if (price == '' | !(price.match(/^\d+.\d+$/))){
+	if (price == '' | !(price.match(/^((\+|-)?(0|([1-9][0-9]*))(\.[0-9]+)?)$/))){
 		$('#text_price').addClass('is-invalid');
 		error = true;
 	}
@@ -96,10 +97,10 @@ $('#btn_submit').click(function(){
 
 	if (error == false){
 		if (global_action=='edit'){
-			insert_product(global_id, name, description, price, quantity, reorder);
+			insert_product(global_id, name, description, uom, price, quantity, reorder);
 		}
 		else if (global_action=='add'){
-			insert_product('', name, description, price, quantity, reorder);
+			insert_product('', name, description, uom, price, quantity, reorder);
 		}
 		
 	}
@@ -115,11 +116,11 @@ $('#btn_yes').click(function(){
 })
 
 //Function: Save Product Info
-function insert_product(id, name, description, price, quantity, reorder){
+function insert_product(id, name, description, uom, price, quantity, reorder){
 	$.ajax({
 		url: 'product/insert_product',
 		method: 'POST',
-		data: {id: id, name: name, description: description, price: price, quantity: quantity, reorder: reorder},
+		data: {id: id, name: name, description: description, uom: uom, price: price, quantity: quantity, reorder: reorder},
 		dataType: 'html',
 		success: function(result) {
 			var msg, header;
@@ -181,6 +182,7 @@ function get_product_info(id){
 			clear();
 			$('#text_name').val(result['name']);
 			$('#text_description').val(result['description']);
+			$('#text_uom').val(result['uom']);
 			$('#text_price').val(result['price']);
 			$('#text_quantity').val(result['quantity']);
 			$('#text_reorder').val(result['reorder']);
@@ -233,6 +235,7 @@ function toggle_product_status(id, status){
 function clear(){
 	$('#text_name').val('');
 	$('#text_description').val('');
+	$('#text_uom').val('');
 	$('#text_price').val('');
 	$('#text_quantity').val('');
 	$('#text_reorder').val('');
