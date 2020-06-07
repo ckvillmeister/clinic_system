@@ -35,13 +35,13 @@
             <h3 class="profile-username text-center"><?php echo strtoupper($firstname.' '.$lastname); ?></h3>
           </div>
           <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
+          <a href="<?php echo ROOT; ?>user/user_profile" class="dropdown-item">
             <i class="fas fa-id-badge ml-3 mr-3"></i> Profile
           </a>
-          <a href="#" class="dropdown-item">
+          <a href="<?php echo ROOT; ?>user/user_profile" class="dropdown-item">
             <i class="fas fa-key ml-3 mr-3"></i> Change Password
           </a>
-          <a href="authentication/logout" class="dropdown-item">
+          <a href="<?php echo ROOT; ?>authentication/logout" class="dropdown-item">
             <i class="fas fa-sign-out-alt ml-3 mr-3"></i> Logout
           </a>
         </div>

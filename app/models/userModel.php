@@ -98,12 +98,15 @@ class userModel extends model{
 			$user_info;
 
 			while ($stmt->fetch()) {
+				$role_obj = new accessroleModel();
+				$role_info = $role_obj->get_accessrole_info($role_type);
 				$user_info = array('username' => $username,
 										'firstname' => $firstname,
 										'middlename' => $middlename,
 										'lastname' => $lastname,
 										'extension' => $extension,
-										'role_type' => $role_type);
+										'role_type' => $role_type,
+										'role_name' => $role_info['name']);
 			}
 
 			$stmt->close();
@@ -143,5 +146,49 @@ class userModel extends model{
 			$stmt->execute();
 			return 1;
 		}
+	}
+
+	public function change_password($old_password, $new_password, $confirm_password, $userid, $user, $datetime){
+		$old_password = md5($old_password);
+		$new_password = md5($new_password);
+		$confirm_password = md5($confirm_password);
+
+		$query = 'SELECT * FROM tbl_users WHERE record_id = ? AND password = ?';
+		
+		$stmt = $this->con->prepare($query);
+		$stmt->bind_param('ss', $user, $old_password);
+		$stmt->execute();
+		$result = $stmt->get_result();
+
+		if ($result->num_rows >= 1){
+			$query = 'UPDATE tbl_users SET password = ?, updated_by = ?, date_updated = ? WHERE record_id = ?';
+			$stmt = $this->con->prepare($query);
+			$stmt->bind_param('ssss', $new_password, $userid, $datetime, $user);
+			$stmt->execute();
+
+			$stmt->close();
+			$this->con->close();
+			return 1;
+		}
+		else{
+			$stmt->close();
+			$this->con->close();
+			return 0;
+		}
+	}
+
+	public function reset_password($new_password, $confirm_password, $userid, $user, $datetime){
+		$new_password = md5($new_password);
+		$confirm_password = md5($confirm_password);
+
+		$query = 'UPDATE tbl_users SET password = ?, updated_by = ?, date_updated = ? WHERE record_id = ?';
+		$stmt = $this->con->prepare($query);
+		$stmt->bind_param('ssss', $new_password, $userid, $datetime, $user);
+		$stmt->execute();
+		
+		$stmt->close();
+		$this->con->close();
+		return 1;
+		
 	}
 }

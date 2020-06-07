@@ -77,7 +77,7 @@ $(document).ready(function(){
 						backdrop: 'static',
 				    	keyboard: false
 					});
-					setTimeout(function(){ window.location = 'main';}, 4000);
+					setTimeout(function(){ window.location = 'dashboard';}, 4000);
 				}
 				else if (result == 2){
 					header = 'Login Error';

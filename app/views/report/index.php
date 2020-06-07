@@ -17,7 +17,7 @@
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="<?php echo ROOT; ?>main">Main</a></li>
+            <li class="breadcrumb-item"><a href="<?php echo ROOT; ?>dashboard">Dashboard</a></li>
             <li class="breadcrumb-item active">Reports</li>
           </ol>
         </div>
@@ -27,8 +27,6 @@
 
   <section class="content">
     <div class="container-fluid">
-
-      <div class="overlay-wrapper"></div>
 
       <div class="card card-primary card-outline card-outline-tabs">
         <div class="card-header p-0 border-bottom-0">
@@ -54,50 +52,85 @@
               <div class="row-fluid p-2 shadow-none">
                 <div class="row">
                   <div class="col-lg-12">
+                    <div class="overlay-wrapper"></div>
 
-                    <div class="row">
-                      <select class="form-group form-group-sm mr-2">
-                        <option value=""> [ Status ] </option>
-                        <option value="1">Active</option>
-                        <option value="2">Closed</option>
-                        <option value="0">Voided</option>
-                      </select>
-                      <select class="form-group form-group-sm mr-2">
-                        <option value=""> [ Service Type ] </option>
-                        <?php
-                          $ctr = 0;
-                          foreach ($data['services'] as $key => $service) {
-                              $service_detail = (object) $service;
-                        ?>
-                        <option value="<?php echo $service_detail->id; ?>"> <?php echo $service_detail->description; ?> </option>
-                        <?php
-                          }
-                        ?>
-                      </select>
-                      <select class="form-group form-group-sm mr-2">
-                        <option value=""> [ Month ] </option>
-                        <option value="1">January</option>
-                        <option value="2">February</option>
-                        <option value="3">March</option>
-                        <option value="4">April</option>
-                        <option value="5">May</option>
-                        <option value="6">June</option>
-                        <option value="7">July</option>
-                        <option value="8">August</option>
-                        <option value="9">September</option>
-                        <option value="10">October</option>
-                        <option value="11">November</option>
-                        <option value="12">December</option>
-                      </select>
-                      <input type="text" class="form-group form-group-sm mr-2" placeholder="Year From" id="text_year_from" style="width:100px">
-                      <input type="text" class="form-group form-group-sm mr-2" placeholder="Year To" id="text_year_to" style="width:100px" readonly="readonly">
-                      <button class="btn btn-sm btn-primary form-group form-group-sm"><i class="fas fa-recycle mr-2"></i>Generate</button>
+                    <div class="row form-group">
+                      <div class="col-sm-2">
+                      <label class="col-form-label">Status:</label>
+                      </div>
+                      <div class="col-sm-4">
+                        <select class="form-control form-control-sm mr-2" id="transaction_cbo_status">
+                          <option value=""> [ Status ] </option>
+                          <option value="1">Active</option>
+                          <option value="2">Closed</option>
+                          <option value="0">Voided</option>
+                        </select>
+                      </div>
                     </div>
+
+                    <div class="row form-group">
+                      <div class="col-sm-2">
+                        <label class="col-form-label">Service Type:</label>
+                      </div>
+                      <div class="col-sm-4">
+                        <select class="form-control form-control-sm mr-2" id="transaction_cbo_services">
+                          <option value=""> [ Service Type ] </option>
+                          <?php
+                            $ctr = 0;
+                            foreach ($data['services'] as $key => $service) {
+                                $service_detail = (object) $service;
+                          ?>
+                          <option value="<?php echo $service_detail->id; ?>"> <?php echo $service_detail->description; ?> </option>
+                          <?php
+                            }
+                          ?>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="row form-group">
+                      <div class="col-sm-2">
+                      <label class="col-form-label">Month:</label>
+                      </div>
+                      <div class="col-sm-4">
+                        <select class="form-control form-control-sm mr-2" id="transaction_cbo_months">
+                          <option value=""> [ Month ] </option>
+                          <option value="1">January</option>
+                          <option value="2">February</option>
+                          <option value="3">March</option>
+                          <option value="4">April</option>
+                          <option value="5">May</option>
+                          <option value="6">June</option>
+                          <option value="7">July</option>
+                          <option value="8">August</option>
+                          <option value="9">September</option>
+                          <option value="10">October</option>
+                          <option value="11">November</option>
+                          <option value="12">December</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="row form-group">
+                      <div class="col-sm-2">
+                        <label class="col-form-label">Years From-To:</label>
+                      </div>
+                      <div class="col-sm-2">
+                        <input type="text" class="form-control form-control-sm mr-2" placeholder="Year From" id="transaction_text_year_from">
+                      </div>
+                      <div class="col-sm-2">
+                        <input type="text" class="form-control form-control-sm mr-2" placeholder="Year To" id="transaction_text_year_to">
+                      </div>
+                    </div>
+                          
+                    <button class="btn btn-sm btn-primary form-group form-group-sm" id="transaction_btn_generate"><i class="fas fa-recycle mr-2"></i>Generate</button>
 
                     <div id="transaction_list" class="">
 
                     </div>
+
                   </div>
+                    
                 </div>
               </div>
 
@@ -107,16 +140,22 @@
               <div class="row-fluid p-2 shadow-none">
                 <div class="row">
                   <div class="col-lg-12">
+                    <div class="overlay-wrapper"></div>
 
-                    <div class="row">
-                      <select class="form-group form-group-sm mr-2">
-                        <option value=""> [ Status ] </option>
-                      </select>
-                      <select class="form-group form-group-sm mr-2">
-                        <option value=""> [ Balance ] </option>
-                      </select>
-                      <button class="btn btn-sm btn-primary form-group form-group-sm"><i class="fas fa-recycle mr-2"></i>Generate</button>
+                    <div class="row form-group">
+                      <div class="col-sm-2">
+                        <label class="col-form-label">Filter By:</label>
+                      </div>
+                      <div class="col-sm-4">
+                        <select class="form-control form-control-sm mr-2" id="patient_cbo_filter">
+                          <option value=""> [ Filter By ] </option>
+                          <option value="1">With Balance</option>
+                          <option value="2">Patient w/ Most Visit</option>
+                        </select>
+                      </div>
                     </div>
+
+                    <button class="btn btn-sm btn-primary form-group form-group-sm" id="patient_btn_generate"><i class="fas fa-recycle mr-2"></i>Generate</button>
 
                     <div id="patient_list" class="">
 
@@ -131,18 +170,24 @@
               <div class="row-fluid p-2 shadow-none">
                 <div class="row">
                   <div class="col-lg-12">
+                    <div class="overlay-wrapper"></div>
 
-                    <div class="row">
-                      <select class="form-group form-group-sm mr-2">
-                        <option value=""> [ Status ] </option>
-                      </select>
-                      <select class="form-group form-group-sm mr-2">
-                        <option value=""> [ Balance ] </option>
-                      </select>
-                      <button class="btn btn-sm btn-primary form-group form-group-sm"><i class="fas fa-recycle mr-2"></i>Generate</button>
+                    <div class="row form-group">
+                      <div class="col-sm-2">
+                        <label class="col-form-label">Filter By:</label>
+                      </div>
+                      <div class="col-sm-4">
+                        <select class="form-control form-control-sm mr-2" id="product_cbo_filter">
+                          <option value=""> [ Filter By ] </option>
+                          <option value="1">Best Selling</option>
+                          <option value="2">Below Re-Order Level</option>
+                        </select>
+                      </div>
                     </div>
 
-                    <div id="patient_list" class="">
+                    <button class="btn btn-sm btn-primary form-group form-group-sm" id="product_btn_generate"><i class="fas fa-recycle mr-2"></i>Generate</button>
+
+                    <div id="product_list" class="">
 
                     </div>
                   </div>
@@ -152,6 +197,55 @@
             </div>
 
             <div class="tab-pane fade" id="tab_collection" role="tabpanel" aria-labelledby="custom-tabs-four-profile-tab">
+
+              <div class="row-fluid p-2 shadow-none">
+                <div class="row">
+                  <div class="col-lg-12">
+                    <div class="overlay-wrapper"></div>
+
+                    <div class="row form-group">
+                      <div class="col-sm-2">
+                      <label class="col-form-label">Month:</label>
+                      </div>
+                      <div class="col-sm-2">
+                        <select class="form-control form-control-sm mr-2" id="collection_cbo_months">
+                          <option value=""> [ Month ] </option>
+                          <option value="1">January</option>
+                          <option value="2">February</option>
+                          <option value="3">March</option>
+                          <option value="4">April</option>
+                          <option value="5">May</option>
+                          <option value="6">June</option>
+                          <option value="7">July</option>
+                          <option value="8">August</option>
+                          <option value="9">September</option>
+                          <option value="10">October</option>
+                          <option value="11">November</option>
+                          <option value="12">December</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="row form-group">
+                      <div class="col-sm-2">
+                        <label class="col-form-label">Year:</label>
+                      </div>
+                      <div class="col-sm-2">
+                        <input type="text" class="form-control form-control-sm mr-2" placeholder="Year" id="collection_text_year">
+                      </div>
+                    </div>
+                          
+                    <button class="btn btn-sm btn-primary form-group form-group-sm" id="collection_btn_generate"><i class="fas fa-recycle mr-2"></i>Generate</button>
+
+                    <div id="collection_list" class="">
+
+                    </div>
+
+                  </div>
+                    
+                </div>
+              </div>
+
             </div>
 
           </div>

@@ -71,11 +71,15 @@ class patientModel extends model{
 		$query = 'SELECT record_id, patient_id, firstname, middlename, lastname, 
 							extension, sex, birthdate, address_purok, 
 							address_brgy, address_citymun, contact_number, email, medical_history_remarks, created_by
-							FROM tbl_patient_information AS tpi
-						WHERE status = ? ORDER BY record_id ASC';
+							FROM tbl_patient_information AS tpi';
+
+		if ($status != ''){
+			$query .= ' WHERE status ='.$status;
+		}
+
+		$query .= ' ORDER BY record_id ASC';
 		
 		$stmt = $this->con->prepare($query);
-		$stmt->bind_param("s", $status);
 		$stmt->execute();
 		$stmt->bind_result($id, $patientid, $firstname, $middlename, $lastname, $extension, $sex, $birthdate, $address_purok, $address_brgy, $address_citymun, $contact_number, $email, $remarks, $created_by);
 		$ctr=0;
@@ -100,7 +104,9 @@ class patientModel extends model{
 										'contact_number' => $contact_number,
 										'email' => $email,
 										'remarks' => $remarks,
-										'createdby' => $creator);
+										'createdby' => $creator,
+										'address_brgy_desc' => $this->retrieve_address_info('barangay', $address_brgy),
+										'address_citymun_desc' => $this->retrieve_address_info('municipality', $address_citymun));
 		}
 
 		$stmt->close();
@@ -318,6 +324,59 @@ class patientModel extends model{
 			$stmt->close();
 			$this->con->close();
 			return $services_availed;
+		}
+
+		$stmt->close();
+		$this->con->close();
+		return 0;
+	}
+
+	public function retrieve_address_info($level, $id){
+		$query = '';
+
+		if ($id != ''){
+			if ($level == 'barangay'){
+				$query = 'SELECT barangay_description FROM tbl_barangay WHERE id = '.$id;
+				$db = new database();
+				$connection = $db->connection();
+				$stmt_2 = $connection->prepare($query);
+				$stmt_2->execute();
+				$data = $stmt_2->get_result()->fetch_assoc();
+				return $data['barangay_description'];
+			}
+			elseif ($level == 'municipality' | $level == 'city'){
+				$query = 'SELECT city_municipality_description FROM tbl_citymun WHERE city_municipality_code = '.$id;
+				$db = new database();
+				$connection = $db->connection();
+				$stmt_2 = $connection->prepare($query);
+				$stmt_2->execute();
+				$data = $stmt_2->get_result()->fetch_assoc();
+				return $data['city_municipality_description'];
+			}
+		}	
+
+	}
+
+	public function no_of_visits($id){
+		$query = 'SELECT COUNT(transaction_id) AS no_of_visits 
+							FROM tbl_transaction_main 
+							WHERE status <> 0 
+							AND patient_id = ?';
+
+		$stmt = $this->con->prepare($query);
+		$stmt->bind_param('s', $id);
+		$stmt->execute();
+		$result = $stmt->get_result();
+
+		if ($result->num_rows >= 1){
+			$stmt = $this->con->prepare($query);
+			$stmt->bind_param('s', $id);
+			$stmt->execute();
+			$data = $stmt->get_result()->fetch_assoc();
+		 	$id	= $data['no_of_visits'];
+		 	$stmt->close();
+			$this->con->close();
+			return $id;
 		}
 
 		$stmt->close();

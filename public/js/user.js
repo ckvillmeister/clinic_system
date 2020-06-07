@@ -281,3 +281,168 @@ function clear(){
 	$('#text_firstname').val('');
 	$('#cbo_accessroles').val('');
 }
+
+$('#btn_change_pass').click(function(){
+	var old_password = $('#text_old_password').val(),
+		new_password = $('#text_new_password').val(),
+		confirm_password = $('#text_confirm_password').val(),
+		error = false;
+
+	if (old_password == ''){
+		$('#text_old_password').addClass('is-invalid');
+		error = true;
+	}
+
+	if (new_password == ''){
+		$('#text_new_password').addClass('is-invalid');
+		error = true;
+	}
+
+	if (confirm_password == ''){
+		$('#text_confirm_password').addClass('is-invalid');
+		error = true;
+	}
+
+	if (confirm_password != new_password){
+		$('#text_new_password').addClass('is-invalid');
+		$('#text_confirm_password').addClass('is-invalid');
+		error = true;
+	}
+
+	if (error == false){
+		change_password(old_password, new_password, confirm_password);
+	}
+})
+
+$('#btn_reset_pass').click(function(){
+	var new_password = $('#text_reset_new_password').val(),
+		confirm_password = $('#text_reset_confirm_password').val(),
+		error = false;
+
+	if (new_password == ''){
+		$('#text_reset_new_password').addClass('is-invalid');
+		error = true;
+	}
+
+	if (confirm_password == ''){
+		$('#text_reset_confirm_password').addClass('is-invalid');
+		error = true;
+	}
+
+	if (confirm_password != new_password){
+		$('#text_reset_new_password').addClass('is-invalid');
+		$('#text_reset_confirm_password').addClass('is-invalid');
+		error = true;
+	}
+
+	if (error == false){
+		reset_password(new_password, confirm_password);
+	}
+})
+
+function change_password(old_password, new_password, confirm_password){
+	$.ajax({
+		url: 'change_password',
+		method: 'POST',
+		data: {old_password: old_password, new_password: new_password, confirm_password: confirm_password},
+		dataType: 'json',
+		success: function(result) {
+			if (result == 1){
+				var header = 'Change Password',
+					msg = 'Password successfully changed!';
+				
+				$('#modal_body_header').html(header);
+				$('#modal_body_message').html(msg);
+				$('.message_modal_header').removeClass('bg-danger');
+				$('.message_modal_header').addClass('bg-success');
+				$('.message_icon').removeClass('fas fa-times');
+				$('.message_icon').addClass('fas fa-check');
+				$('#modal_message').modal({
+					backdrop: 'static',
+			    	keyboard: false
+				});
+
+				setTimeout(function(){ $('#modal_message').modal('toggle'); }, 3000);
+			}
+			else if (result == 0){
+				var header = 'Incorrect',
+					msg = 'Old password is incorrect!';
+				
+				$('#modal_body_header').html(header);
+				$('#modal_body_message').html(msg);
+				$('.message_modal_header').removeClass('bg-success');
+				$('.message_modal_header').addClass('bg-danger');
+				$('.message_icon').removeClass('fas fa-check');
+				$('.message_icon').addClass('fas fa-times');
+				$('#modal_message').modal({
+					backdrop: 'static',
+			    	keyboard: false
+				});
+
+				setTimeout(function(){ $('#modal_message').modal('toggle'); }, 3000);
+			}
+			else{
+				var header = 'Error',
+					msg = 'Error during processing!';
+				
+				$('#modal_body_header').html(header);
+				$('#modal_body_message').html(msg);
+				$('.message_modal_header').removeClass('bg-success');
+				$('.message_modal_header').addClass('bg-danger');
+				$('.message_icon').removeClass('fas fa-check');
+				$('.message_icon').addClass('fas fa-times');
+				$('#modal_message').modal({
+					backdrop: 'static',
+			    	keyboard: false
+				});
+
+				setTimeout(function(){ $('#modal_message').modal('toggle'); }, 3000);
+			}
+		}
+	})
+}
+
+function reset_password(new_password, confirm_password){
+	$.ajax({
+		url: 'reset_password',
+		method: 'POST',
+		data: {new_password: new_password, confirm_password: confirm_password},
+		dataType: 'json',
+		success: function(result) {
+			if (result == 1){
+				var header = 'Reset Password',
+					msg = 'Password reset successful!';
+				
+				$('#modal_body_header').html(header);
+				$('#modal_body_message').html(msg);
+				$('.message_modal_header').removeClass('bg-danger');
+				$('.message_modal_header').addClass('bg-success');
+				$('.message_icon').removeClass('fas fa-times');
+				$('.message_icon').addClass('fas fa-check');
+				$('#modal_message').modal({
+					backdrop: 'static',
+			    	keyboard: false
+				});
+
+				setTimeout(function(){ $('#modal_message').modal('toggle'); }, 3000);
+			}
+			else{
+				var header = 'Error',
+					msg = 'Error during processing!';
+				
+				$('#modal_body_header').html(header);
+				$('#modal_body_message').html(msg);
+				$('.message_modal_header').removeClass('bg-success');
+				$('.message_modal_header').addClass('bg-danger');
+				$('.message_icon').removeClass('fas fa-check');
+				$('.message_icon').addClass('fas fa-times');
+				$('#modal_message').modal({
+					backdrop: 'static',
+			    	keyboard: false
+				});
+
+				setTimeout(function(){ $('#modal_message').modal('toggle'); }, 3000);
+			}
+		}
+	})
+}

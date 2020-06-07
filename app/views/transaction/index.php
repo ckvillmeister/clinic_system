@@ -1,10 +1,10 @@
 <style>
   .patient_information_section{
-    font-family: 'Courier New';
+    font-family: 'Arial Narrow';
   }
 
   .services_section, .products_section, .transaction_id_section{
-    font-family: 'Courier New';
+    font-family: 'Arial Narrow';
   }
 
 </style>
@@ -18,7 +18,7 @@
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="<?php echo ROOT; ?>main">Main</a></li>
+            <li class="breadcrumb-item"><a href="<?php echo ROOT; ?>dashboard">Dashboard</a></li>
             <li class="breadcrumb-item active">Dental Service</li>
           </ol>
         </div>
@@ -141,7 +141,7 @@
               <label class="col-form-label ml-3">Medical History Remarks:</label>
             </div>
             <div class="col-sm-10">
-              <textarea id="text_medical_history_remarks" rows="2" style="resize:none;" class="form-control form-control-sm bg-white" readonly="readonly"></textarea>
+              <textarea id="text_medical_history_remarks" rows="2" style="resize:none; font-size: 12pt" class="form-control form-control-sm bg-white" readonly="readonly"></textarea>
             </div>
           </div>
         </div>

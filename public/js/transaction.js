@@ -498,7 +498,8 @@ function get_patient_info(id){
 			$('#text_sex').val(result['sex'].toUpperCase());
 			$('#text_contact_number').val(result['contact_number'].toUpperCase());
 			$('#text_email').val(result['email']);
-			
+			$('#text_medical_history_remarks').val(result['remarks'].toString());
+
 			var birthdate = result['birthdate'].toString();
 			
 			if(birthdate != '0000-00-00'){

@@ -21,7 +21,7 @@
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="<?php echo ROOT; ?>main">Main</a></li>
+            <li class="breadcrumb-item"><a href="<?php echo ROOT; ?>dashboard">Dashboard</a></li>
             <li class="breadcrumb-item"><a href="<?php echo ROOT; ?>user">System User Accounts</a></li>
             <li class="breadcrumb-item active">User Profile</li>
           </ol>
@@ -53,13 +53,134 @@
               <div class="col-7 col-sm-9">
                 <div class="tab-content" id="vert-tabs-tabContent">
                   <div class="tab-pane text-left fade show active" id="tab_profile" role="tabpanel" aria-labelledby="vert-tabs-home-tab">
-                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin malesuada lacus ullamcorper dui molestie, sit amet congue quam finibus. Etiam ultricies nunc non magna feugiat commodo. Etiam odio magna, mollis auctor felis vitae, ullamcorper ornare ligula. Proin pellentesque tincidunt nisi, vitae ullamcorper felis aliquam id. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Proin id orci eu lectus blandit suscipit. Phasellus porta, ante et varius ornare, sem enim sollicitudin eros, at commodo leo est vitae lacus. Etiam ut porta sem. Proin porttitor porta nisl, id tempor risus rhoncus quis. In in quam a nibh cursus pulvinar non consequat neque. Mauris lacus elit, condimentum ac condimentum at, semper vitae lectus. Cras lacinia erat eget sapien porta consectetur. 
+                    
+                    <div class="m-3 border border-primary p-5 rounded">
+                      <?php 
+                        $user_detail = (object) $data['user_info'];
+                      ?>
+
+                      <div class="row form-group">
+                        <div class="col-sm-12 text-center">
+                          <h3><strong><i class="fas fa-user pr-2"></i>User Profile</strong></h3>
+                        </div>
+                      </div><br>
+
+                      <div class="row form-group">
+                        <div class="col-sm-2">
+                          Name:
+                        </div>
+                        <div class="col-sm-6">
+                          <input type="text" class="form-control form-control-sm bg-white" value="<?php echo trim($user_detail->firstname).' '.trim($user_detail->middlename).' '.trim($user_detail->lastname).' '.trim($user_detail->extension); ?>" readonly="readonly">
+                        </div>
+                      </div>
+
+                      <div class="row form-group">
+                        <div class="col-sm-2">
+                          Username:
+                        </div>
+                        <div class="col-sm-6">
+                          <input type="text" class="form-control form-control-sm bg-white" value="<?php echo $user_detail->username; ?>" readonly="readonly">
+                        </div>
+                      </div>
+
+                      <div class="row form-group">
+                        <div class="col-sm-2">
+                          Role:
+                        </div>
+                        <div class="col-sm-6">
+                          <input type="text" class="form-control form-control-sm bg-white" value="<?php echo $user_detail->role_name; ?>" readonly="readonly">
+                        </div>
+                      </div>
+
+                    </div>
+
                   </div>
                   <div class="tab-pane fade" id="tab_change_password" role="tabpanel" aria-labelledby="vert-tabs-profile-tab">
-                     Mauris tincidunt mi at erat gravida, eget tristique urna bibendum. Mauris pharetra purus ut ligula tempor, et vulputate metus facilisis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Maecenas sollicitudin, nisi a luctus interdum, nisl ligula placerat mi, quis posuere purus ligula eu lectus. Donec nunc tellus, elementum sit amet ultricies at, posuere nec nunc. Nunc euismod pellentesque diam. 
+                     
+                    <div class="m-3 border border-primary p-5 rounded">  
+
+                      <div class="row form-group">
+                        <div class="col-sm-12 text-center">
+                          <h3><strong><i class="fas fa-key pr-2"></i>Change Password</strong></h3>
+                        </div>
+                      </div><br>
+
+                      <div class="row form-group">
+                        <div class="col-sm-3">
+                          Old Password:
+                        </div>
+                        <div class="col-sm-6">
+                          <input type="password" id="text_old_password" class="form-control form-control-sm">
+                        </div>
+                      </div>
+
+                      <div class="row form-group">
+                        <div class="col-sm-3">
+                          New Password:
+                        </div>
+                        <div class="col-sm-6">
+                          <input type="password" id="text_new_password" class="form-control form-control-sm">
+                        </div>
+                      </div>
+
+                      <div class="row form-group">
+                        <div class="col-sm-3">
+                          Confirm Password:
+                        </div>
+                        <div class="col-sm-6">
+                          <input type="password" id="text_confirm_password" class="form-control form-control-sm">
+                        </div>
+                      </div>
+
+                      <div class="row form-group">
+                        <div class="col-sm-9">
+                          <div class="float-right">
+                            <button class="btn btn-sm btn-primary" id="btn_change_pass">Submit</button>
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+
                   </div>
                   <div class="tab-pane fade" id="tab_reset_password" role="tabpanel" aria-labelledby="vert-tabs-messages-tab">
-                     Morbi turpis dolor, vulputate vitae felis non, tincidunt congue mauris. Phasellus volutpat augue id mi placerat mollis. Vivamus faucibus eu massa eget condimentum. Fusce nec hendrerit sem, ac tristique nulla. Integer vestibulum orci odio. Cras nec augue ipsum. Suspendisse ut velit condimentum, mattis urna a, malesuada nunc. Curabitur eleifend facilisis velit finibus tristique. Nam vulputate, eros non luctus efficitur, ipsum odio volutpat massa, sit amet sollicitudin est libero sed ipsum. Nulla lacinia, ex vitae gravida fermentum, lectus ipsum gravida arcu, id fermentum metus arcu vel metus. Curabitur eget sem eu risus tincidunt eleifend ac ornare magna. 
+                    
+                    <div class="m-3 border border-primary p-5 rounded">  
+
+                      <div class="row form-group">
+                        <div class="col-sm-12 text-center">
+                          <h3><strong><i class="fas fa-sync-alt pr-2"></i>Reset Password</strong></h3>
+                        </div>
+                      </div><br>
+
+                      <div class="row form-group">
+                        <div class="col-sm-3">
+                          New Password:
+                        </div>
+                        <div class="col-sm-6">
+                          <input type="password" id="text_reset_new_password" class="form-control form-control-sm">
+                        </div>
+                      </div>
+
+                      <div class="row form-group">
+                        <div class="col-sm-3">
+                          Confirm Password:
+                        </div>
+                        <div class="col-sm-6">
+                          <input type="password" id="text_reset_confirm_password" class="form-control form-control-sm">
+                        </div>
+                      </div>
+
+                      <div class="row form-group">
+                        <div class="col-sm-9">
+                          <div class="float-right">
+                            <button class="btn btn-sm btn-primary" id="btn_reset_pass">Submit</button>
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+
                   </div>
                 </div>
               </div>
@@ -71,6 +192,20 @@
       </div>    
     </div>
   </section>
+</div>
+
+<!-- Modal Message -->
+<div class="modal fade" id="modal_message" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="message_modal_header modal-header bg-success">
+        <h5><i class="message_icon icon fas fa-check"></i><span class="ml-2" id="modal_body_header"></span></h5>
+      </div>
+      <div class="modal-body">
+        <span id="modal_body_message"></span>
+      </div>
+    </div>
+  </div>
 </div>
 
 

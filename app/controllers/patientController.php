@@ -94,7 +94,10 @@ class patientController extends controller{
 			$patient_obj = new patientModel();
 			$patient_payments = $patient_obj->retrieve_payment_history($id);
 
-			$this->view()->render('main.php', array('content' => 'patient/profile.php', 'patient_info' => $patient_info,  'system_name' => $this->system_name(), 'services_availed' => $patient_services_availed, 'payment_history' => $patient_payments));
+			$patient_obj = new patientModel();
+			$no_of_visits = $patient_obj->no_of_visits($id);
+
+			$this->view()->render('main.php', array('content' => 'patient/profile.php', 'patient_info' => $patient_info,  'system_name' => $this->system_name(), 'services_availed' => $patient_services_availed, 'payment_history' => $patient_payments, 'no_of_visits' => $no_of_visits));
 		}
 		else{
 			header("Location: http://localhost".ROOT);

@@ -34,7 +34,7 @@
               ?>
               <button class="btn btn-sm btn-warning controls" id="btn_edit_control" value="<?php echo $user_detail->id; ?>"><i class="fas fa-edit"></i>&nbsp;Edit</button>
               <button class="btn btn-sm btn-danger controls" id="btn_delete_control" value="<?php echo $user_detail->id; ?>"><i class="fas fa-trash"></i>&nbsp;Delete</button>
-              <a href="<?php echo ROOT; ?>user/user_profile?id=<?php echo $user_detail->id; ?>" class="btn btn-sm btn-primary controls" id="btn_view_control" value="<?php echo $user_detail->id; ?>"><i class="fas fa-eye"></i>&nbsp;View</a>
+              <a href="<?php echo ROOT; ?>user/view_user_profile?id=<?php echo $user_detail->id; ?>" class="btn btn-sm btn-primary controls" id="btn_view_control" value="<?php echo $user_detail->id; ?>"><i class="fas fa-eye"></i>&nbsp;View</a>
               <?php }
                 elseif ($status == 0){
               ?>

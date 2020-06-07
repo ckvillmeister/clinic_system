@@ -6,8 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
 
-  <title>TSIS</title>
+  <title><?php echo $data['system_name']; ?></title>
 
+  <link rel="icon" type="image/png" href="<?php echo ROOT; ?>public/image/AdminLTELogo.png" sizes="96x96">
   <link rel="stylesheet" href="<?php echo ROOT.BOOTSTRAP; ?>plugins/fontawesome-free/css/all.min.css">
   <link rel="stylesheet" href="<?php echo ROOT.BOOTSTRAP; ?>plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
   <link rel="stylesheet" href="<?php echo ROOT.BOOTSTRAP; ?>dist/css/adminlte.min.css">
@@ -40,7 +41,7 @@
         <h5 class="modal-title" id="modal_title"></h5>
       </div>
       <div class="modal-body">
-        <h6 class="modal-body" id="modal_body"></h5>
+        <h6 class="modal-body" id="modal_body"></h6>
       </div>
       <div class="modal-footer">
     
@@ -74,7 +75,11 @@
     $link_2 = rtrim($arr_url[1], '/');
   }
 
-  if ($link == 'patient'){
+  if ($link == 'dashboard'){
+    echo '<script src="'.ROOT.'public/js/dashboard.js"></script>';
+    echo '<script src="'.ROOT.'public/bootstrap/plugins/chart.js/Chart.min.js"></script>';
+  }
+  elseif ($link == 'patient'){
     echo '<script src="'.ROOT.'public/js/patient.js"></script>';
   }
   elseif ($link == 'transaction'){
@@ -86,6 +91,10 @@
   elseif ($link == 'service'){
     echo '<script src="'.ROOT.'public/js/service.js"></script>';
   }
+  elseif ($link == 'report'){
+    echo '<script src="'.ROOT.'public/js/report.js"></script>';
+    echo '<script src="'.ROOT.'public/plugins/export_to_excel/src/jquery.table2excel.js"></script>';
+  }
   elseif ($link == 'product'){
     echo '<script src="'.ROOT.'public/js/product.js"></script>';
   }
@@ -93,6 +102,9 @@
     echo '<script src="'.ROOT.'public/js/role.js"></script>';
   }
   elseif ($link == 'user'){
+    echo '<script src="'.ROOT.'public/js/user.js"></script>';
+  }
+  elseif ($link_2 == 'user_profile'){
     echo '<script src="'.ROOT.'public/js/user.js"></script>';
   }
   elseif ($link == 'settings'){

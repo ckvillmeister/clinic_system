@@ -12,7 +12,7 @@ $image = ($patient_info->sex == 'MALE') ? ROOT.'public/image/avatar100x100.jpg' 
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="<?php echo ROOT; ?>main">Main</a></li>
+            <li class="breadcrumb-item"><a href="<?php echo ROOT; ?>dashboard">Dashboard</a></li>
             <li class="breadcrumb-item"><a href="<?php echo ROOT; ?>patient">Patient Records</a></li>
             <li class="breadcrumb-item active">Patient Profile</li>
           </ol>
@@ -36,7 +36,7 @@ $image = ($patient_info->sex == 'MALE') ? ROOT.'public/image/avatar100x100.jpg' 
 
               <ul class="list-group list-group-unbordered mb-3">
                 <li class="list-group-item">
-                  <b>Number of Visits</b> <a class="float-right"></a>
+                  <b>Number of Visits</b> <a class="float-right"><?php echo $data['no_of_visits']; ?></a>
                 </li>
               </ul>
 
