@@ -40,13 +40,13 @@ class paymentModel extends model{
 	}
 
 	public function get_transaction_detail($transaction_id){
-		$query = 'SELECT service_product_id, type, cost, quantity, total FROM tbl_transaction_details WHERE transaction_id = ?';
+		$query = 'SELECT transaction_date, service_product_id, type, cost, quantity, total FROM tbl_transaction_details WHERE transaction_id = ?';
 		$db = new database();
 		$this->con = $db->connection();
 		$stmt = $this->con->prepare($query);
 		$stmt->bind_param("s", $transaction_id);
 		$stmt->execute();
-		$stmt->bind_result($id, $type, $cost, $quantity, $total);
+		$stmt->bind_result($date, $id, $type, $cost, $quantity, $total);
 		$ctr=0;
 		$transaction_details = array();
 
@@ -64,6 +64,7 @@ class paymentModel extends model{
 			}
 
 			$transaction_details[$ctr++] = array('service_product_info' => $name,
+													'date' => $date,
 													'type' => $type,
 													'cost' => $cost,
 													'quantity' => $quantity,

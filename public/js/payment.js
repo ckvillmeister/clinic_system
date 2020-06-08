@@ -109,7 +109,7 @@ $('#btn_enter_discounted_amount').click(function(){
 $('#btn_enter_payment_amount').click(function(){
 	var total_amount = parseFloat($('#texth_totalamount').val()),
 		balance_amount = parseFloat($('#texth_balance').val()),
-		discounted_amount = parseFloat($('#text_discount').val()),
+		discounted_amount = parseFloat($('#texth_discount').val()),
 		down_payment_amount = parseFloat($('#texth_dp').val()),
 		cash_tendered = parseFloat($('#text_amount').val()),
 		transaction_sys_id = $('#text_transaction_sys_id').val();

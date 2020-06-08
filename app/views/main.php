@@ -8,7 +8,7 @@
 
   <title><?php echo $data['system_name']; ?></title>
 
-  <link rel="icon" type="image/png" href="<?php echo ROOT; ?>public/image/AdminLTELogo.png" sizes="96x96">
+  <link rel="icon" type="image/png" href="<?php echo ROOT; ?>public/image/Clinic_Logo.png" sizes="96x96">
   <link rel="stylesheet" href="<?php echo ROOT.BOOTSTRAP; ?>plugins/fontawesome-free/css/all.min.css">
   <link rel="stylesheet" href="<?php echo ROOT.BOOTSTRAP; ?>plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
   <link rel="stylesheet" href="<?php echo ROOT.BOOTSTRAP; ?>dist/css/adminlte.min.css">

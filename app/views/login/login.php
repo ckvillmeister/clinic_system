@@ -51,7 +51,7 @@
     </div>
   </nav>
   <div class="imgbox">
-    <img class="center-fit" src="<?php echo ROOT; ?>public/image/Home_Image.png"
+    <img class="center-fit" src="<?php echo ROOT; ?>public/image/Home_Image.png">
   </div>
 </div>  
 

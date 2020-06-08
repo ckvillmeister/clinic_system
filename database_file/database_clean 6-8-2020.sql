@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 08, 2020 at 06:02 AM
+-- Generation Time: Jun 08, 2020 at 04:45 PM
 -- Server version: 10.1.29-MariaDB
 -- PHP Version: 7.1.12
 
@@ -43957,6 +43957,7 @@ INSERT INTO `tbl_settings` (`record_id`, `setting_name`, `description`, `status`
 CREATE TABLE `tbl_transaction_details` (
   `record_id` int(10) NOT NULL,
   `transaction_id` int(10) NOT NULL,
+  `transaction_date` date DEFAULT NULL,
   `service_product_id` int(10) NOT NULL,
   `type` varchar(20) NOT NULL,
   `remarks` varchar(1000) DEFAULT NULL,
@@ -44016,7 +44017,7 @@ CREATE TABLE `tbl_users` (
 --
 
 INSERT INTO `tbl_users` (`record_id`, `username`, `password`, `firstname`, `middlename`, `lastname`, `extension`, `role_type`, `created_by`, `date_created`, `updated_by`, `date_updated`, `status`) VALUES
-(1, 'admin', '3b09ed529e66a3ebda836b1ffc1f6eab', 'System', '', 'Administrator', '', 1, 1, '2020-05-27 13:53:00', 1, '2020-06-08 05:53:49', 1);
+(1, 'admin', 'cecfb4bde75ba40a0952f11f9b05275f', 'System', '', 'Administrator', '', 1, 1, '2020-05-27 13:53:00', 1, '2020-06-07 13:50:32', 1);
 
 --
 -- Indexes for dumped tables

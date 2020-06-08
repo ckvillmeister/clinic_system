@@ -18,11 +18,14 @@ $('#btn_search').click(function(){
 $('#cbo_services').on('change', function(){
 	$('#text_service_name').val($("#cbo_services :selected").text());
 	var id = $("#cbo_services").val();
-	get_service_info(id);
-	$("#modal_service_form").modal({
-		backdrop: 'static',
-    	keyboard: false
-	});
+
+	if (id != ''){
+		get_service_info(id);
+		$("#modal_service_form").modal({
+			backdrop: 'static',
+	    	keyboard: false
+		});
+	}
 })
 
 $('#btn_search_product').click(function(){
@@ -121,6 +124,7 @@ $('body').on('click', '#btn_remove_product', function(){
 
 $('#btn_add_service').click(function(){
 	var service_id = $('#cbo_services').val(),
+		service_date = $('#text_service_date').val(),
 		remarks = $('#text_remarks').val(),
 		charge = $('#text_charge').val(),
 		service_name = $("#cbo_services :selected").text();
@@ -130,13 +134,16 @@ $('#btn_add_service').click(function(){
 		    var $this = $(this);
 		    var index = $(this).index();
 		    if(service_id == $('td:eq(0)', $this).text()){
-		    	$('#table_services_availed tbody tr:eq('+index+')').find('td:eq(3)').text(remarks);
+		    	$('#table_services_availed tbody tr:eq('+index+')').find('td:eq(2)').text(service_date);
+		    	$('#table_services_availed tbody tr:eq('+index+')').find('td:eq(4)').text(remarks);
+		    	$('#table_services_availed tbody tr:eq('+index+')').find('td:eq(5)').text(charge);
 			}
 		});
 	}
 	else{
 		$('#table_services_availed tbody').append('<tr><td style="display:none">'+ service_id +'</td>'+ 
 										'<td>'+ ++global_service_row_ctr +'</td>'+
+										'<td>'+ service_date +'</td>'+
 										'<td>'+ service_name +'</td>'+
 										'<td style="white-space: pre-line;">'+ remarks +'</td>'+
 										'<td>'+ charge +'</td>'+
@@ -155,10 +162,12 @@ $('#btn_add_service').click(function(){
 
 $('body').on('click', '#btn_edit_service', function(){
 	global_service_id = $(this).val();
-	var service_name =  $(this).closest("tr").find('td:eq(2)').text(),
-		remarks =  $(this).closest("tr").find('td:eq(3)').text();
+	var service_name =  $(this).closest("tr").find('td:eq(3)').text(),
+		date =  $(this).closest("tr").find('td:eq(2)').text(),
+		remarks =  $(this).closest("tr").find('td:eq(4)').text();
 
 	$('#text_service_name').val(service_name);
+	$('#text_service_date').val(date);
 	$('#text_remarks').val(remarks);
 
 	$("#modal_service_form").modal({
@@ -175,6 +184,25 @@ $('body').on('click', '#btn_remove_service', function(){
 	global_product_id = $(this).val();
 	global_remove_action = 'service';
 	$('#modal_confirm_message').html('Are you sure you want to remove this service?');
+});
+
+$('#text_charge').keypress(function(event){
+	var theEvent = event || window.event;
+
+	// Handle paste
+	if (theEvent.type === 'paste') {
+	  key = event.clipboardData.getData('text/plain');
+	} 
+	else {
+	// Handle key press
+	  var key = theEvent.keyCode || theEvent.which;
+	  key = String.fromCharCode(key);
+	}
+	var regex = /^\d+(\.)?(\d+)?$/;
+	if( !regex.test(key) ) {
+		theEvent.returnValue = false;
+		if(theEvent.preventDefault) theEvent.preventDefault();
+	}
 });
 
 $('#btn_yes').click(function(){
@@ -277,9 +305,9 @@ $('#btn_confirm').click(function(){
 
 		$('#table_services_availed tbody').find('tr').each(function(){
 	      var $this = $(this);
-	      var total = parseFloat($('td:eq(4)', $this).text().replace(/,/g, '')) * parseFloat(1);
+	      var total = parseFloat($('td:eq(5)', $this).text().replace(/,/g, '')) * parseFloat(1);
 	      total = formatNumber(total.toFixed(2));
-	      record[ctr] = [$('td:eq(0)', $this).text(), ++row_ctr, $('td:eq(2)', $this).text(), 'Service', $('td:eq(4)', $this).text(), '1', total];
+	      record[ctr] = [$('td:eq(0)', $this).text(), ++row_ctr, $('td:eq(3)', $this).text(), 'Service', $('td:eq(5)', $this).text(), '1', total];
 	      ctr++;
 	      item_ctr++;
 	    });
@@ -288,7 +316,7 @@ $('#btn_confirm').click(function(){
 	      var $this = $(this);
 	      var total = parseFloat($('td:eq(4)', $this).text().replace(/,/g, '')) * parseFloat($('td:eq(5)', $this).text().replace(/,/g, ''));
 	      total = formatNumber(total.toFixed(2));
-	      record[ctr] = [$('td:eq(0)', $this).text(), ++row_ctr, $('td:eq(2)', $this).text(), 'Product', $('td:eq(4)', $this).text(), $('td:eq(5)', $this).text(), total];
+	      record[ctr] = [$('td:eq(0)', $this).text(), ++row_ctr, $('td:eq(3)', $this).text(), 'Product', $('td:eq(4)', $this).text(), $('td:eq(5)', $this).text(), total];
 	      ctr++;
 	      item_ctr++;
 	    });
@@ -335,15 +363,15 @@ $('#btn_save_transaction').click(function(){
 
 	$('#table_services_availed tbody').find('tr').each(function(){
       var $this = $(this);
-      var total = parseFloat($('td:eq(4)', $this).text().replace(/,/g, '')) * parseFloat(1);
-      transaction_detail[ctr] = [$('td:eq(0)', $this).text(), 'Service', $('td:eq(3)', $this).text(), $('td:eq(4)', $this).text(), '1', total];
+      var total = parseFloat($('td:eq(5)', $this).text().replace(/,/g, '')) * parseFloat(1);
+      transaction_detail[ctr] = [$('td:eq(2)', $this).text(), $('td:eq(0)', $this).text(), 'Service', $('td:eq(4)', $this).text(), $('td:eq(5)', $this).text(), '1', total];
       ctr++;
     });
 
     $('#table_products_ordered tbody').find('tr').each(function(){
       var $this = $(this);
       var total = parseFloat($('td:eq(4)', $this).text().replace(/,/g, '')) * parseFloat($('td:eq(5)', $this).text().replace(/,/g, ''));
-      transaction_detail[ctr] = [$('td:eq(0)', $this).text(), 'Product', '', $('td:eq(4)', $this).text(), $('td:eq(5)', $this).text(), total];
+      transaction_detail[ctr] = [date, $('td:eq(0)', $this).text(), 'Product', '', $('td:eq(4)', $this).text(), $('td:eq(5)', $this).text(), total];
       ctr++;
     });
 

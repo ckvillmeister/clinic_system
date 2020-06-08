@@ -170,8 +170,11 @@
                 $services = $data['services'];
                 foreach ($services as $key => $service) {
                   $service_detail = (object) $service;
+                  $service_name = '';
+                  $service_name = $service_detail->name;
+                  $service_name .= ($service_detail->description) ? ' - '.$service_detail->description : ''; 
               ?>
-                <option value="<?php echo $service_detail->id; ?>"><?php echo $service_detail->name.' - '.$service_detail->description; ?></option>
+                <option value="<?php echo $service_detail->id; ?>"><?php echo $service_name; ?></option>
               <?php
                 }
               ?>
@@ -186,6 +189,7 @@
                   <tr>
                     <th style="display:none"></th>
                     <th>No.</th>
+                    <th>Date</th>
                     <th>Service Name</th>
                     <th>Remarks</th>
                     <th>Charge</th>
@@ -297,12 +301,21 @@
               </div>
               <div class="col-sm-2"></div>
             </div><br>
+
+            <div class="form-group row">
+              <div class="col-sm-3">
+                <label class="col-form-label">Date:</label>
+              </div>
+              <div class="col-sm-6">
+                <input type="date" id="text_service_date" class="form-control form-control-sm bg-white" value="<?php echo date('Y-m-d'); ?>">
+              </div>
+            </div>
             
             <div class="form-group row">
               <div class="col-sm-3">
                 <label class="col-form-label">Service Name:</label>
               </div>
-              <div class="col-sm-9">
+              <div class="col-sm-6">
                 <input type="text" id="text_service_name" class="form-control form-control-sm bg-white" readonly="readonly">
               </div>
             </div>
@@ -321,7 +334,7 @@
                 <label class="col-form-label">Charge:</label>
               </div>
               <div class="col-sm-4">
-                <input type="text" id="text_charge" class="form-control form-control-sm bg-white" readonly="readonly">
+                <input type="text" id="text_charge" onkeypress='validate(event)' class="form-control form-control-sm bg-white">
               </div>
             </div>
 

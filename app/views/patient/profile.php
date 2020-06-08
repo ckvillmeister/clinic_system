@@ -96,6 +96,7 @@ $image = ($patient_info->sex == 'MALE') ? ROOT.'public/image/avatar100x100.jpg' 
                       <thead>
                         <tr>
                           <th>No.</th>
+                          <th>Date</th>
                           <th>Service</th>
                           <th>Remarks</th>
                         </tr>
@@ -111,6 +112,7 @@ $image = ($patient_info->sex == 'MALE') ? ROOT.'public/image/avatar100x100.jpg' 
                         ?>
                         <tr>
                           <td><?php echo ++$ctr; ?></td>
+                          <td><?php echo ($service_detail->date) ? date('F d, Y', strtotime($service_detail->date)) : ''; ?></td>
                           <td><?php echo $service_detail->name; ?></td>
                           <td style="white-space: pre-line;"><?php echo $service_detail->remarks; ?></td>
                         </tr>
