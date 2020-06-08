@@ -3,7 +3,12 @@
 class authenticationController extends controller{
 
 	public function index(){
-		$this->view()->render('login\login.php');
+		if (!($this->is_session_empty())){
+			header("Location: ".ROOT.'dashboard');
+		}
+		else{
+			$this->view()->render('login\login.php');
+		}
 	}
 
 	public function validate_login(){
@@ -18,7 +23,7 @@ class authenticationController extends controller{
 
 	public function logout(){
 		session_destroy();
-		header("Location: http://localhost".ROOT);
+		header("Location: ".ROOT);
 	}
 
 }

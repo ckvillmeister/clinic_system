@@ -9,7 +9,7 @@ class reportController extends controller{
 			$this->view()->render('main.php', array('content' => 'report/index.php', 'system_name' => $this->system_name(), 'services' => $services));
 		}
 		else{
-			header("Location: http://localhost".ROOT);
+			header("Location: ".ROOT);
 		}
 	}
 
@@ -23,7 +23,7 @@ class reportController extends controller{
 		$report_obj = new reportModel();
 		$result = $report_obj->transaction_report($status, $services, $months, $from, $to);
 
-		$this->view()->render('report/transaction_report.php', array('transactions' => $result, 'system_name' => $this->system_name()));
+		$this->view()->render('report/transaction_report.php', array('transactions' => $result, 'address' => $this->system_address(), 'system_name' => $this->system_name()));
 	}
 
 	public function patient_report(){
@@ -32,7 +32,7 @@ class reportController extends controller{
 		$report_obj = new reportModel();
 		$result = $report_obj->patient_report($filter);
 
-		$this->view()->render('report/patient_report.php', array('patients' => $result, 'filter' => $filter, 'system_name' => $this->system_name()));
+		$this->view()->render('report/patient_report.php', array('patients' => $result, 'address' => $this->system_address(), 'filter' => $filter, 'system_name' => $this->system_name()));
 	}
 
 	public function product_report(){
@@ -41,7 +41,7 @@ class reportController extends controller{
 		$report_obj = new reportModel();
 		$result = $report_obj->product_report($filter);
 
-		$this->view()->render('report/product_report.php', array('products' => $result, 'filter' => $filter, 'system_name' => $this->system_name()));
+		$this->view()->render('report/product_report.php', array('products' => $result, 'address' => $this->system_address(), 'filter' => $filter, 'system_name' => $this->system_name()));
 	}
 
 	public function collection_report(){
@@ -51,7 +51,7 @@ class reportController extends controller{
 		$report_obj = new reportModel();
 		$result = $report_obj->collection_report($month, $year);
 
-		$this->view()->render('report/collection_report.php', array('collection' => $result, 'system_name' => $this->system_name()));
+		$this->view()->render('report/collection_report.php', array('collection' => $result, 'address' => $this->system_address(), 'system_name' => $this->system_name()));
 	}
 }
 ?>

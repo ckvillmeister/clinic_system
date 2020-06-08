@@ -27,7 +27,7 @@ class settingsModel extends model{
 		return $setting;
 	}
 
-	public function save_settings($system_name, $branch_no, $down_payment){
+	public function save_settings($system_name, $address, $branch_no, $down_payment){
 		if ($branch_no < 10){
 			$branch_no = '0'.ltrim($branch_no, '0');
 		}
@@ -47,6 +47,24 @@ class settingsModel extends model{
 			$query = 'INSERT INTO tbl_settings (setting_name, description, status) VALUES ("System Name", ?, 1)';
 			$stmt = $this->con->prepare($query);
 			$stmt->bind_param('s', $system_name);
+			$stmt->execute();
+		}
+
+		$query = 'SELECT * FROM tbl_settings WHERE setting_name = "Address"';
+		$stmt = $this->con->prepare($query);
+		$stmt->execute();
+		$result = $stmt->get_result();
+
+		if ($result->num_rows >= 1){
+			$query = 'UPDATE tbl_settings SET description = ? WHERE setting_name = "Address"';
+			$stmt = $this->con->prepare($query);
+			$stmt->bind_param('s', $address);
+			$stmt->execute();
+		}
+		else{
+			$query = 'INSERT INTO tbl_settings (setting_name, description, status) VALUES ("Address", ?, 1)';
+			$stmt = $this->con->prepare($query);
+			$stmt->bind_param('s', $address);
 			$stmt->execute();
 		}
 

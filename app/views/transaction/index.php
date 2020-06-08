@@ -61,7 +61,7 @@
             <div class="col-sm-6">
               <div class='text-center'>
                 <strong style='font-size: 16pt'><?php echo $data['system_name']; ?></strong><br>
-                Poblacion, Talibon, Bohol
+                <?php echo $data['address']; ?>
               </div>
             </div>
             <div class="col-sm-3">
@@ -292,7 +292,7 @@
               <div class="col-sm-8">
                 <div class='text-center'>
                   <strong style='font-size: 16pt'><?php echo $data['system_name']; ?></strong><br>
-                  Poblacion, Talibon, Bohol
+                  <?php echo $data['address']; ?>
                 </div>
               </div>
               <div class="col-sm-2"></div>

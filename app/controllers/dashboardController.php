@@ -14,7 +14,7 @@ class dashboardController extends controller{
 			$this->view()->render('main.php', array('content' => 'dashboard/index.php', 'users' => $users, 'patients' => $patients, 'products' => $products, 'balances' => $balances, 'system_name' => $this->system_name()));
 		}
 		else{
-			header("Location: http://localhost".ROOT);
+			header("Location: ".ROOT);
 		}
 	}
 

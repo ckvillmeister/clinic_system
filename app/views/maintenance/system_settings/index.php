@@ -12,6 +12,9 @@ foreach ($settings as $key => $setting) {
   else if ($ctr == 2){
     $down_payment_detail = (object) $settings[2];
   }
+   else if ($ctr == 3){
+    $address = (object) $settings[3];
+  }
   $ctr++;
 }
 
@@ -63,6 +66,15 @@ foreach ($settings as $key => $setting) {
             </div>
             <div class="col-sm-6">
                 <input type="text" class="form-control" id="text_system_name" value="<?php echo $system_name_detail->desc; ?>">
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <div class="col-sm-2 align-self-center">
+                Address:
+            </div>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" id="text_address" value="<?php echo $address->desc; ?>">
             </div>
           </div>
 

@@ -9,7 +9,7 @@ class userController extends controller{
 			$this->view()->render('main.php', array('content' => 'maintenance/user/index.php', 'roles' => $roles, 'system_name' => $this->system_name()));
 		}
 		else{
-			header("Location: http://localhost".ROOT);
+			header("Location: ".ROOT);
 		}
 	}
 
@@ -65,7 +65,7 @@ class userController extends controller{
 			$this->view()->render('main.php', array('content' => 'maintenance/user/user_profile.php', 'user_info' => $user_info, 'system_name' => $this->system_name()));
 		}
 		else{
-			header("Location: http://localhost".ROOT);
+			header("Location: ".ROOT);
 		}
 	}
 
@@ -80,7 +80,7 @@ class userController extends controller{
 			$this->view()->render('main.php', array('content' => 'maintenance/user/user_profile.php', 'user_info' => $user_info, 'system_name' => $this->system_name()));
 		}
 		else{
-			header("Location: http://localhost".ROOT);
+			header("Location: ".ROOT);
 		}
 	}
 

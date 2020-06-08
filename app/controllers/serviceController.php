@@ -7,7 +7,7 @@ class serviceController extends controller{
 			$this->view()->render('main.php', array('content' => 'services/index.php', 'system_name' => $this->system_name()));
 		}
 		else{
-			header("Location: http://localhost".ROOT);
+			header("Location: ".ROOT);
 		}
 	}
 

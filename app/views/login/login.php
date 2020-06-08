@@ -9,6 +9,21 @@
   <link rel="stylesheet" href="<?php echo ROOT.BOOTSTRAP; ?>plugins/fontawesome-free/css/all.min.css">
   <link rel="stylesheet" href="<?php echo ROOT.BOOTSTRAP; ?>plugins/icheck-bootstrap/icheck-bootstrap.min.css">
   <link rel="stylesheet" href="<?php echo ROOT.BOOTSTRAP; ?>dist/css/adminlte.min.css">
+  <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        .imgbox {
+            display: grid;
+            height: 100%;
+        }
+        .center-fit {
+            max-width: 100%;
+            max-height: 100vh;
+            margin: auto;
+        }
+    </style>
 </head>
 
 <body class="hold-transition layout-top-nav">
@@ -17,7 +32,7 @@
     <div class="container">
       
       <a href="<?php echo ROOT; ?>" class="navbar-brand">
-        <img src="<?php echo ROOT; ?>public/image/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+        <img src="<?php echo ROOT; ?>public/image/Clinic_Logo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
              style="opacity: .8">
         <span class="brand-text font-weight-light" style="color:white">Dental Clinic</span>
       </a>
@@ -35,6 +50,9 @@
       </ul>
     </div>
   </nav>
+  <div class="imgbox">
+    <img class="center-fit" src="<?php echo ROOT; ?>public/image/Home_Image.png"
+  </div>
 </div>  
 
 <!-- Modal Message -->

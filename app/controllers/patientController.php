@@ -9,7 +9,7 @@ class patientController extends controller{
 			$this->view()->render('main.php', array('content' => 'patient/index.php', 'muncities' => $muncities, 'system_name' => $this->system_name()));
 		}
 		else{
-			header("Location: http://localhost".ROOT);
+			header("Location: ".ROOT);
 		}
 	}
 
@@ -100,7 +100,7 @@ class patientController extends controller{
 			$this->view()->render('main.php', array('content' => 'patient/profile.php', 'patient_info' => $patient_info,  'system_name' => $this->system_name(), 'services_availed' => $patient_services_availed, 'payment_history' => $patient_payments, 'no_of_visits' => $no_of_visits));
 		}
 		else{
-			header("Location: http://localhost".ROOT);
+			header("Location: ".ROOT);
 		}
 	}
 

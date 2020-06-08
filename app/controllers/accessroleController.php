@@ -7,7 +7,7 @@ class accessroleController extends controller{
 			$this->view()->render('main.php', array('content' => 'maintenance/access_role/index.php', 'system_name' => $this->system_name()));
 		}
 		else{
-			header("Location: http://localhost".ROOT);
+			header("Location: ".ROOT);
 		}
 	}
 
@@ -52,7 +52,7 @@ class accessroleController extends controller{
 			$this->view()->render('main.php', array('content' => 'maintenance/access_role/manage_access_rights.php', 'system_name' => $this->system_name()));
 		}
 		else{
-			header("Location: http://localhost".ROOT);
+			header("Location: ".ROOT);
 		}
 	}
 }

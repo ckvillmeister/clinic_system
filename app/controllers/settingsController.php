@@ -9,17 +9,18 @@ class settingsController extends controller{
 			$this->view()->render('main.php', array('content' => 'maintenance/system_settings/index.php', 'settings' => $settings, 'system_name' => $this->system_name()));
 		}
 		else{
-			header("Location: http://localhost".ROOT);
+			header("Location: ".ROOT);
 		}
 	}
 
 	public function save_settings(){
 		$system_name = $_POST['system_name'];
+		$address = $_POST['address'];
 		$branch_no = $_POST['branch_no'];
 		$down_payment = $_POST['down_payment'];
 
 		$setting_obj = new settingsModel();
-		$result = $setting_obj->save_settings($system_name, $branch_no, $down_payment);
+		$result = $setting_obj->save_settings($system_name, $address, $branch_no, $down_payment);
 		echo $result;
 	}
 

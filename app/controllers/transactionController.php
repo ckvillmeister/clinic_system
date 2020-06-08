@@ -6,10 +6,10 @@ class transactionController extends controller{
 		if (!($this->is_session_empty())){
 			$service_obj = new serviceModel();
 			$services = $service_obj->retrieve_services(1);
-			$this->view()->render('main.php', array('content' => 'transaction/index.php', 'services' => $services, 'system_name' => $this->system_name()));
+			$this->view()->render('main.php', array('content' => 'transaction/index.php', 'services' => $services, 'system_name' => $this->system_name(), 'address' => $this->system_address()));
 		}
 		else{
-			header("Location: http://localhost".ROOT);
+			header("Location: ".ROOT);
 		}
 	}
 

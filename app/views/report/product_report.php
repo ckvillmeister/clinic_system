@@ -30,7 +30,7 @@
   
   <div class="row">
     <div class="col-lg-12 text-center">
-      Poblacion, Talibon, Bohol
+      <?php echo $data['address']; ?>
     </div>
   </div>
   <br>

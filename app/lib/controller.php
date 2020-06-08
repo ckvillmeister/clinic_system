@@ -21,6 +21,13 @@ class controller{
 		return $system_name_detail->desc;
 	}
 
+	public function system_address(){
+		$settings_obj = new settingsModel();
+		$settings = $settings_obj->retrieve_settings();
+		$system_address = (object) $settings[3];
+		return $system_address->desc;
+	}
+
 	public function is_session_empty(){
 		if (isset($_SESSION['user_id']) == ''){
 			return true;
