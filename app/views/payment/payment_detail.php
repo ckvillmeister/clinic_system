@@ -34,6 +34,7 @@ $address .= ucwords(strtolower($patient_info->address_brgy.', '.$patient_info->a
                 <thead>
                 <tr>
                   <th>No.</th>
+                  <th>Date</th>
                   <th>Item/Service</th>
                   <th>Type</th>
                   <th>Charge</th>
@@ -50,6 +51,7 @@ $address .= ucwords(strtolower($patient_info->address_brgy.', '.$patient_info->a
                   ?>
                     <tr>
                       <td><?php echo ++$ctr; ?></td>
+                      <td><?php echo $detail_info->date; ?></</td>
                       <td><?php echo $detail_info->service_product_info; ?></td>
                       <td><?php echo $detail_info->type; ?></td>
                       <td><?php echo $detail_info->cost; ?></td>

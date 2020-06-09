@@ -294,7 +294,7 @@ class patientModel extends model{
 	}
 
 	public function retrieve_patient_services_availed($patient_id){
-		$query = 'SELECT ttd.service_product_id, ttd.remarks
+		$query = 'SELECT ttd.service_product_id, ttd.transaction_date, ttd.remarks
 					FROM tbl_transaction_main AS ttm
 					INNER JOIN tbl_transaction_details AS ttd ON ttd.transaction_id = ttm.record_id
 						WHERE ttm.patient_id = ? AND ttd.status <> 0 AND ttd.type = "Service"';
@@ -307,7 +307,7 @@ class patientModel extends model{
 			$stmt = $this->con->prepare($query);
 			$stmt->bind_param('s', $patient_id);
 			$stmt->execute();
-			$stmt->bind_result($service_id, $remarks);
+			$stmt->bind_result($service_id, $date, $remarks);
 			$ctr = 0;
 			$services_availed = array();
 
@@ -316,6 +316,7 @@ class patientModel extends model{
 				$service = $service_obj->get_service_info($service_id);
 
 				$services_availed[$ctr++] = array('id' => $service_id,
+													'date' => $date,
 													'name' => $service['name'],
 													'description' => $service['description'],
 													'remarks' => $remarks);

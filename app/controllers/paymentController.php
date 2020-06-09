@@ -57,7 +57,7 @@ class paymentController extends controller{
 		
 		foreach ($settings as $key => $setting) {
 			$setting_detail = (object) $setting;
-			if ($setting_detail->name = 'Down Payment Percentage'){
+			if ($setting_detail->name == 'Down Payment Percentage'){
 				$discount_percent = $setting_detail->desc;
 			}
 		}
