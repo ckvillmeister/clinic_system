@@ -24,6 +24,12 @@ class settingsController extends controller{
 		echo $result;
 	}
 
+	public function back_up_database(){
+		$str = exec('start /B C:\xampp\htdocs\clinic_system\app\lib\database-backup.bat'); 
+		//exec('c:\WINDOWS\system32\cmd.exe /c START C:\xampp\htdocs\clinic_system\app\lib\database-backup.bat');
+		//return 1;
+	}
+
 }
 
 ?>

@@ -27,6 +27,10 @@ $('#btn_submit').click(function(){
 	}
 })
 
+$('#btn_backup').click(function(){
+	back_up_database();
+});
+
 //Function: Save Settings
 function save_settings(system_name, address, branch_no, down_payment){
 	$.ajax({
@@ -55,6 +59,33 @@ function save_settings(system_name, address, branch_no, down_payment){
 
 			setTimeout(function(){ $('#modal_message').modal('toggle'); }, 3000);
 			setTimeout(function(){ window.location = 'settings'; }, 4000);
+			
+		}
+	})
+}
+
+//Function: Backup Database
+function back_up_database(){
+	$.ajax({
+		url: 'settings/back_up_database',
+		method: 'POST',
+		success: function(result) {
+			var msg, header;
+
+			header = 'Database Backup';
+			msg = 'Database backed up successfully!';
+			$('#modal_body_header').html(header);
+			$('#modal_body_message').html(msg);
+			$('.message_modal_header').removeClass('bg-danger');
+			$('.message_modal_header').addClass('bg-success');
+			$('.message_icon').removeClass('fas fa-times');
+			$('.message_icon').addClass('fas fa-check');
+			$('#modal_message').modal({
+				backdrop: 'static',
+		    	keyboard: false
+			});
+
+			setTimeout(function(){ $('#modal_message').modal('toggle'); }, 3000);
 			
 		}
 	})

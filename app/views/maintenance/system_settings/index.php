@@ -105,7 +105,23 @@ foreach ($settings as $key => $setting) {
           </div>
 
         </div>
-      </div>    
+      </div> 
+
+      <div class="card">
+
+        <div class="row-fluid pt-4 pl-4 pr-3 shadow-none">
+          <div class="form-group row">
+            <div class="col-sm-2 align-self-center">
+               Backup Database:
+            </div>
+            <div class="col-sm-6">
+                <button class="btn btn-sm btn-primary" id="btn_backup"><i class="fas fa-database mr-2"></i>Click Me to Backup Your Database!</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
     </div>
   </section>
 </div>
